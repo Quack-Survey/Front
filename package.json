@@ -6,8 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "prepare": "husky install",
     "lint": "next lint",
-    "prepare": "husky install"
+    "postinstall": "husky install",
+    "format": "prettier --cache --write .",
+    "pre-commit": "eslint --cache ."
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
