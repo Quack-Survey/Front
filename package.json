@@ -6,10 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "prepare": "husky install",
     "lint": "next lint",
-    "postinstall": "husky install",
-    "format": "prettier --cache --write .",
+    "prepare": "husky install",
+    "format": "npx prettier . --write --cache",
     "pre-commit": "eslint --cache ."
   },
   "dependencies": {
