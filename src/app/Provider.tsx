@@ -1,10 +1,10 @@
 "use client";
 
-import store from "@/store/store";
 import { ReactNode, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import store from "@/store/store";
 
 // import "sfac-designkit-react/style.css";
 
