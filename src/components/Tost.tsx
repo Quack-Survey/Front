@@ -1,16 +1,13 @@
-import Image from "next/image";
-import styles from '@/components/commonComponents.module.css'
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import styles from "@/components/commonComponents.module.css";
 
-interface props {
+interface IToastProps {
   toastMsg: string;
   onClose: () => void;
-};
+}
 
-export default function Toast ({ 
-  toastMsg, 
-  onClose 
-}: props):JSX.Element {
+const Toast = ({ toastMsg, onClose }: IToastProps): JSX.Element => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -20,7 +17,7 @@ export default function Toast ({
 
     const closeTimer = setTimeout(() => {
       onClose();
-    }, 3300); 
+    }, 3300);
 
     return () => {
       clearTimeout(timer);
@@ -29,14 +26,11 @@ export default function Toast ({
   }, [onClose]);
 
   return (
-    <div
-      className={visible ? styles.toast : styles.toast_hid}
-    >
-      <Image 
-        src="images/체크_검.svg" alt="" width={24} height={24}/>
-      <span>
-        {toastMsg}
-      </span>
+    <div className={visible ? styles.toast : styles.toast_hid}>
+      <Image src="images/체크_검.svg" alt="" width={24} height={24} />
+      <span>{toastMsg}</span>
     </div>
   );
 };
+
+export default Toast;
