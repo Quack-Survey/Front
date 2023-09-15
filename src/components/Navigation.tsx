@@ -17,27 +17,39 @@ const Navigation = (): JSX.Element => {
             onClick={() => {
               setRoute(1);
             }}
-            className={route === 1 ? styles.nav_icon_on : styles.nav_icon_off}
+            className={route === 1 ? styles.navicon_on : styles.navicon_off}
           >
-            <Image src="images/대쉬보드.svg" alt="" width={24} height={24} />
+            <Image
+              priority
+              src="images/대쉬보드.svg"
+              alt=""
+              width={24}
+              height={24}
+            />
           </Link>
           <Link
             href="#"
             onClick={() => {
               setRoute(2);
             }}
-            className={route === 2 ? styles.nav_icon_on : styles.nav_icon_off}
+            className={route === 2 ? styles.navicon_on : styles.navicon_off}
           >
-            <Image src="images/홈.svg" alt="" width={24} height={24} />
+            <Image priority src="images/홈.svg" alt="" width={24} height={24} />
           </Link>
           <Link
             href="#"
             onClick={() => {
               setRoute(3);
             }}
-            className={route === 3 ? styles.nav_icon_on : styles.nav_icon_off}
+            className={route === 3 ? styles.navicon_on : styles.navicon_off}
           >
-            <Image src="images/마이페이지.svg" alt="" width={24} height={24} />
+            <Image
+              priority
+              src="images/마이페이지.svg"
+              alt=""
+              width={24}
+              height={24}
+            />
           </Link>
         </div>
       </div>
