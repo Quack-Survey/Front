@@ -1,8 +1,7 @@
-import styles from "@/components/commonComponents.module.css";
-
 interface IInputModalProps {
   isOpen: boolean;
   child: JSX.Element;
+  submitText: string;
   onCancel: () => void;
   onSubmit: () => void;
 }
@@ -10,21 +9,35 @@ interface IInputModalProps {
 const InputModal = ({
   isOpen,
   child,
+  submitText,
   onCancel,
   onSubmit,
 }: IInputModalProps): JSX.Element => {
   return (
-    <div className={isOpen ? styles.modalwrapper : styles.modalwrapper_hid}>
-      <div className={styles.grayshadow} onClick={onCancel} />
-      <div className="flex flex-col modal relative z-1 w-[280px] bg-white ">
+    <div
+      className={
+        isOpen
+          ? "fixed left-0 top-0 h-screen w-screen z-100 flex justify-center items-center transition-opacity opacity-100"
+          : "fixed left-0 top-0 h-screen w-screen z-100 flex justify-center items-center pointer-events-none opacity-0"
+      }
+    >
+      <div
+        className="md-[360px] w-full h-full bg-n-black absolute opacity-30"
+        onClick={onCancel}
+      />
+      <div className="modal flex flex-col relative z-1 min-w-[280px] h-auto w-auto bg-white ">
         <form onSubmit={onSubmit}>
-          <div className="p-[24px] w-[100%] h-[100%]">{child}</div>
-          <div className="flex flex-row justify-between items-center px-[24px] h-[52px] w-[100%] border border-t-[#e0e0e0] text-base">
-            <button onClick={onCancel} className="px-[8px] text-[#bebebe]">
+          <div className="p-n-lg w-full h-full">{child}</div>
+          <div className="flex flex-row justify-between items-center px-n-lg h-[52px] w-full border border-t-n-light-gray text-n-md">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-n-xs text-n-gray"
+            >
               취소
             </button>
-            <button type="submit" className="px-[8px] text-[#788ef5]">
-              저장
+            <button type="submit" className="px-n-sm text-n-blue">
+              {submitText}
             </button>
           </div>
         </form>

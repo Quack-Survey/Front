@@ -1,4 +1,3 @@
-import styles from "@/components/commonComponents.module.css";
 import Image from "next/image";
 
 interface IToolbarTopProps {
@@ -18,8 +17,8 @@ const ToolbarTop = ({
 }: IToolbarTopProps): JSX.Element => {
   return (
     <div>
-      <div className={styles.toolbar_top}>
-        <div className="flex gap-[16px]">
+      <div className="flex justify-between fixed top-0 min-w-[360px] w-full h-[56px] bg-n-light-black text-n-white p-n-md">
+        <div className="flex gap-n-md">
           <button onClick={onBackward}>
             <Image
               priority
@@ -48,7 +47,7 @@ const ToolbarTop = ({
             ></Image>
           </button>
         </div>
-        <div className="flex gap-[16px]">
+        <div className="flex gap-n-md">
           <button onClick={onTempsave}>임시저장</button>
           <button onClick={onSave}>저장</button>
         </div>
