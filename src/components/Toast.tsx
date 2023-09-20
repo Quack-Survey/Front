@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-interface IToastProps {
-  tostText: string;
-  onClose: () => void;
-}
-
-const Toast = ({ tostText, onClose }: IToastProps): JSX.Element => {
+const Toast = ({ toastText, onClose }: IToastProps): JSX.Element => {
   const [visible, setVisible] = useState<boolean>(true);
 
   useEffect(() => {
@@ -33,7 +28,7 @@ const Toast = ({ tostText, onClose }: IToastProps): JSX.Element => {
       }
     >
       <Image src="images/체크_검.svg" alt="" width={24} height={24} />
-      <span>{tostText}</span>
+      <span>{toastText}</span>
     </div>
   );
 };

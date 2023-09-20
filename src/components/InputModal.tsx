@@ -1,14 +1,6 @@
-interface IInputModalProps {
-  isOpen: boolean;
-  child: JSX.Element;
-  submitText: string;
-  onCancel: () => void;
-  onSubmit: () => void;
-}
-
 const InputModal = ({
   isOpen,
-  child,
+  children,
   submitText,
   onCancel,
   onSubmit,
@@ -27,7 +19,7 @@ const InputModal = ({
       />
       <div className="modal flex flex-col relative z-1 min-w-[280px] h-auto w-auto bg-white ">
         <form onSubmit={onSubmit}>
-          <div className="p-n-lg w-full h-full">{child}</div>
+          <div className="p-n-lg w-full h-full">{children}</div>
           <div className="flex flex-row justify-between items-center px-n-lg h-[52px] w-full border border-t-n-light-gray text-n-md">
             <button
               type="button"

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const Navigation = (): JSX.Element => {
+const GlobalNavigation = (): JSX.Element => {
   const [route, setRoute] = useState<number>(2);
 
   return (
@@ -72,4 +72,4 @@ const Navigation = (): JSX.Element => {
   );
 };
 
-export default Navigation;
+export default GlobalNavigation;
