@@ -7,9 +7,19 @@ interface ICheckModalProps {
 }
 
 interface IFloatingFormButtonProps {
-  onCreateSingle: () => void; //인자 필요시 수정필요
-  onCreatePlural: () => void; //인자 필요시 수정필요
-  onCreateDescription: () => void; //인자 필요시 수정필요
+  imageName: string;
+  size: number;
+  onClick: () => void;
+  isBlocked?: boolean;
+}
+
+interface IFloatingFormButtonCollectionProps {
+  toolPart: IcreateModeTool | IfocuseModeTool;
+  isBlocked?: boolean;
+}
+
+interface IInitialModeScreenProps {
+  innerText?: string;
 }
 
 interface IInputModalProps {
@@ -24,41 +34,14 @@ interface ILogoBarProps {
   modeName: string; //light dark
 }
 
-interface IsingleCaseTool {
-  buttonText: string;
-  onClick: () => void;
-}
-
-interface IdoubleCaseTool {
-  buttonText: string[];
-  onLeftClick: () => void;
-  onRightClick: () => void;
-}
-
 interface INextPreviousButtonProps {
   modeName: string;
   toolPart: IsingleCaseTool | IdoubleCaseTool;
 }
 
-interface IsavePreservetool {
-  onBackward: () => void;
-  onOption: () => void;
-  onWorkstorage: () => void;
-  onLocalsave: () => void;
-  onSave: () => void;
-}
-
 interface ISavePreserveProps {
   isTyping: boolean;
-  toolPart?: IsavePreservetool;
-}
-
-interface IclosingTool extends IsingleCaseTool {}
-
-interface IsubmitResetTool {
-  buttonText: string;
-  onSubmit: () => void;
-  onReset: () => void;
+  toolPart?: IsavePreserveTool;
 }
 
 interface ISubmitResponseButtonProps {
@@ -71,12 +54,34 @@ interface IToastProps {
   onClose: () => void;
 }
 
+interface IToolbarTypeCaseProp {
+  toolPart: ItypeModeTool;
+}
+
+interface IToolbarOtherCaseProp {
+  toolPart: IinitialModeTool | IclickedModeTool;
+  modeName: string;
+}
+
+interface IToolbarProps {
+  toolCollection: IinitialModeTool | IclickedModeTool | ItypeModeTool | Object;
+  modeName: string;
+}
+
+interface IToolTipProps {
+  isOpen: boolean;
+  bottom: number;
+  children: JSX.Element;
+  onCancel: () => void;
+}
+
 interface IinitialModeTool {
   onCreateText: () => void;
   onCreateImage: () => void;
   onCreateSection: () => void;
   onCreatePreview: () => void;
   onFoldingAll: () => void;
+  onPreview: () => void;
 }
 
 interface IclickedModeTool {
@@ -86,22 +91,53 @@ interface IclickedModeTool {
 }
 
 interface ItypeModeTool {
-  onFocusAbove: () => void;
-  onFocusBelow: () => void;
-  onAddBlock: () => void;
+  onFocusUp: () => void;
+  onFocusDown: () => void;
+  onDuplicate: () => void;
   onConfirm: () => void;
   onEnter: () => void; //수정된 내역 저장 후 블록 추가 & 포커싱
 }
 
-interface IToolbarProps {
-  modeName: string; // initial clicked type
-  toolCollection: IinitialModeTool | IclickedModeTool | ItypeModeTool;
+interface IpreviewModeTool {
+  onBackward: () => void;
 }
 
-interface IInitialModeScreenProps {
-  innerText?: string;
-}
-
-interface IFormCreatingSampleProps {
+interface IcreateModeTool {
   modeName: string;
+  onCreateSingle: () => void; //인자 필요시 수정필요
+  onCreatePlural: () => void; //인자 필요시 수정필요
+  onCreateDescription: () => void; //인자 필요시 수정필요
+}
+
+interface IfocuseModeTool {
+  modeName: string;
+  onDuplicate: () => void;
+  onDelete: () => void;
+  onCreateLogic: () => void;
+}
+
+interface IsingleCaseTool {
+  buttonText: string;
+  onClick: () => void;
+}
+
+interface IdoubleCaseTool {
+  buttonText: string[];
+  onLeftClick: () => void;
+  onRightClick: () => void;
+}
+
+interface IsavePreserveTool {
+  onBackward: () => void;
+  onOption: () => void;
+  onNavigateHome: () => void;
+  onSave: () => void;
+}
+
+interface IclosingTool extends IsingleCaseTool {}
+
+interface IsubmitResetTool {
+  buttonText: string;
+  onSubmit: () => void;
+  onReset: () => void;
 }
