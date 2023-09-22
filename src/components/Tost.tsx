@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 interface IToastProps {
-  tostText: string;
+  toastText: string;
   onClose: () => void;
 }
 
-const Toast = ({ tostText, onClose }: IToastProps): JSX.Element => {
+const Toast = ({ toastText, onClose }: IToastProps): JSX.Element => {
   const [visible, setVisible] = useState<boolean>(true);
 
   useEffect(() => {
@@ -28,12 +28,12 @@ const Toast = ({ tostText, onClose }: IToastProps): JSX.Element => {
     <div
       className={
         visible
-          ? "fixed left-[16px] bottom-[65px] flex items-center gap-n-sm max-w-[200px] overflow-hidden min-w-[150px] h-[43px] bg-n-white z-100 transition-all shadow-n-base text-n-md p-n-md"
-          : "fixed left-[16px] bottom-[65px] flex items-center gap-n-sm max-w-[200px] overflow-hiddenmin-w-[150px] h-[43px] bg-n-white z-100 transition-all shadow-n-base text-n-md p-n-md opacity-0"
+          ? "z-100 shadow-n-base fixed bottom-[65px] left-[16px] flex h-[43px] min-w-[150px] max-w-[200px] items-center gap-n-sm overflow-hidden bg-n-white p-n-md text-n-md transition-all"
+          : "overflow-hiddenmin-w-[150px] z-100 shadow-n-base fixed bottom-[65px] left-[16px] flex h-[43px] max-w-[200px] items-center gap-n-sm bg-n-white p-n-md text-n-md opacity-0 transition-all"
       }
     >
-      <Image src="images/체크_검.svg" alt="" width={24} height={24} />
-      <span>{tostText}</span>
+      <Image src="images/check_black.svg" alt="" width={24} height={24} />
+      <span>{toastText}</span>
     </div>
   );
 };
