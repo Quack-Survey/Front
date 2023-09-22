@@ -19,13 +19,14 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
+    "chart.js": "^4.4.0",
     "d3": "^7.8.5",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "next": "13.4.19",
     "postcss": "8.4.29",
-    "prettier": "^3.0.3",
     "react": "18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dnd": "^16.0.1",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.46.0",
@@ -38,6 +39,8 @@
   "devDependencies": {
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.4"
   }
 }
