@@ -9,12 +9,12 @@ const TemplateDescription = ({ title, description }): JSX.Element => {
       <form className="flex flex-col p-n-md space-y-n-sm ">
         <input
           className="outline-none text-n-lg"
-          placeholder="제목을 작성 해주세요."
+          placeholder="제목을 작성해주세요."
           maxLength={19}
         />
         <textarea
           className="outline-none resize-none text-n-sm bg-white"
-          placeholder="해당 설문조사에 대한 설명을 작성 해주세요."
+          placeholder="해당 설문조사에 대한 설명을 작성해주세요."
         />
       </form>
     </div>

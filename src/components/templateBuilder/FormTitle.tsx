@@ -12,7 +12,7 @@ const FormTitle = ({}: IFormTitleProps): JSX.Element => {
       </span>
       <form>
         <textarea
-          className={`text-black w-[300px] text-n-md ml-n-md  self-end pt-[5px] bg-white outline-none resize-none  ${
+          className={`text-black w-[300px] text-n-md ml-n-md  self-end pt-[5px] bg-white outline-none resize-none ${
             testValue < 21 ? "disabled:h-[36px] " : "disabled:text-xs"
           }`}
           placeholder='"하루에 몇번 정도 배가 고프십니까?"'

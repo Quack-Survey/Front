@@ -3,7 +3,9 @@ import FormContentInput from "./FormContentInput";
 import FormTitle from "./FormTitle";
 import FormOption from "./FormOption";
 
-const FormWrapper = (): JSX.Element => {
+interface IFormWrapperProps {}
+
+const FormWrapper = ({}: IFormWrapperProps): JSX.Element => {
   return (
     <>
       <div
