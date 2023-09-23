@@ -1,10 +1,8 @@
 import Image from "next/image";
 
-interface IFormContentInputProps {
-  type: string;
-}
+interface IFormContentInputProps {}
 
-const FormContentInput = ({ type }: IFormContentInputProps): JSX.Element => {
+const FormContentInput = ({}: IFormContentInputProps): JSX.Element => {
   return (
     <>
       {true ? (

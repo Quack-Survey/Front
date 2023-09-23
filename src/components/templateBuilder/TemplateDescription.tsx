@@ -3,7 +3,10 @@ interface ITemplateDescriptionProps {
   description: string;
 }
 
-const TemplateDescription = ({ title, description }): JSX.Element => {
+const TemplateDescription = ({
+  title,
+  description,
+}: ITemplateDescriptionProps): JSX.Element => {
   return (
     <div className="bg-white w-[360px] h-full border-t-[16px] border-n-dark-gray rounded-t-n-lg">
       <form className="flex flex-col p-n-md space-y-n-sm ">

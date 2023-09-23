@@ -26,3 +26,30 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* templateOption */
+/* .toggle-button {
+  display: flex;
+  background-color: white;
+  justify-content: start;
+  align-items: center;
+  border: 1px solid #bebebe;
+  width: 3.5rem;
+  height: 1.75rem;
+  border-radius: 20px;
+  transition: all 0.5s;
+}
+
+.circle {
+  background-color: white;
+  border: 1px solid #bebebe;
+  border-radius: 100%;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.moving {
+  justify-content: end;
+  background-color: #788ef5;
+} */
+/*  */
