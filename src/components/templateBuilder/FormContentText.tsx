@@ -1,6 +1,6 @@
-interface IFormContentText {}
+interface IFormContentTextProps {}
 
-const FormContentText = ({}: IFormContentText) => {
+const FormContentText = ({}: IFormContentTextProps): JSX.Element => {
   return (
     <form className="w-full">
       <textarea

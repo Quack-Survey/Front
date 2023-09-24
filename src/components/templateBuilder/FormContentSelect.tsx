@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-interface IFormContentSelect {}
+interface IFormContentSelectProps {}
 
-const FormContentSelect = ({}: IFormContentSelect): JSX.Element => {
+const FormContentSelect = ({}: IFormContentSelectProps): JSX.Element => {
   return (
     <div className="space-y-n-sm w-full ">
       {[1, 2, 4, 5].map((a, i) => {
