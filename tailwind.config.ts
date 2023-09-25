@@ -21,6 +21,7 @@ const config: Config = {
         "n-black": "#212121",
         "n-light-blue": "#a7b8ff",
         "n-blue": "#788ef5",
+        "n-purple": "#8564fb",
         "n-red": "#E74C3C",
         "n-white": "#FFFFFF",
       },
@@ -30,19 +31,23 @@ const config: Config = {
         "n-md": ["1rem", { lineHeight: "1.5rem" }], //16px
         "n-lg": ["1.125rem", { lineHeight: "1.75rem" }], //18px
         "n-xl": ["1.5rem", { lineHeight: "2rem" }], //24px
+        "n-2xl": ["1.875rem", { lineHeight: "2.25rem" }], //30px
       },
       boxShadow: {
-        "n-base": "0px 2px 5px 0px rgb(158, 158, 158)",
+        "n-md": "0px 2px 5px 0px rgb(158, 158, 158)",
       },
       spacing: {
+        "n-xs": "0.25rem", //4px
         "n-sm": "0.5rem", //8px
         "n-md": "1rem", //16px
         "n-lg": "1.5rem", //24px
-        "n-xlg": "2rem", //32px
+        "n-xl": "2rem", //32px
+        "n-2xl": "2.5rem", //40px
       },
       borderRadius: {
         "n-sm": "5px",
-        "n-lg": "10px",
+        "n-md": "10px",
+        "n-full": "100%",
       },
     },
   },
