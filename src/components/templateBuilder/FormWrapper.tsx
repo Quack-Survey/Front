@@ -13,7 +13,7 @@ const FormWrapper = ({}: IFormWrapperProps): JSX.Element => {
       <div className="ml-n-sm pt-n-sm pb-n-xlg">
         <FormTitle />
         <div className={`flex ${"옵션 및 로직이 있으면" ? null : "ml-n-xlg"}`}>
-          {"옵션 및 로직이 있으면" === null ? <FormOption /> : null}
+          {"옵션 및 로직이 있으면" ? <FormOption /> : null}
           {true ? <FormContentSelect /> : <FormContentText />}
         </div>
       </div>

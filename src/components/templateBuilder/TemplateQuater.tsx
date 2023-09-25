@@ -34,7 +34,6 @@ const TemplateQuater = ({}: ITemplateQuaterProps): JSX.Element => {
               {!toggle ? (
                 <div className="flex items-center justify-center bg-white w-[10%]">
                   <Image
-                    className="cursor-pointer "
                     src="/images/create_b.svg"
                     width={24}
                     height={16}
