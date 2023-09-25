@@ -1,6 +1,6 @@
 interface IInputModalProps {
   isOpen: boolean;
-  child: JSX.Element;
+  children: JSX.Element;
   submitText: string;
   onCancel: () => void;
   onSubmit: () => void;
@@ -8,7 +8,7 @@ interface IInputModalProps {
 
 const InputModal = ({
   isOpen,
-  child,
+  children,
   submitText,
   onCancel,
   onSubmit,
@@ -17,18 +17,18 @@ const InputModal = ({
     <div
       className={
         isOpen
-          ? "fixed left-0 top-0 h-screen w-screen z-100 flex justify-center items-center transition-opacity opacity-100"
-          : "fixed left-0 top-0 h-screen w-screen z-100 flex justify-center items-center pointer-events-none opacity-0"
+          ? "z-100 fixed left-0 top-0 flex h-screen w-screen items-center justify-center opacity-100 transition-opacity"
+          : "z-100 pointer-events-none fixed left-0 top-0 flex h-screen w-screen items-center justify-center opacity-0"
       }
     >
       <div
-        className="md-[360px] w-full h-full bg-n-black absolute opacity-30"
+        className="md-[360px] absolute h-full w-full bg-n-black opacity-30"
         onClick={onCancel}
       />
-      <div className="modal flex flex-col relative z-1 min-w-[280px] h-auto w-auto bg-white ">
+      <div className="modal z-1 relative flex h-auto w-auto min-w-[280px] flex-col bg-white ">
         <form onSubmit={onSubmit}>
-          <div className="p-n-lg w-full h-full">{child}</div>
-          <div className="flex flex-row justify-between items-center px-n-lg h-[52px] w-full border border-t-n-light-gray text-n-md">
+          <div className="h-full w-full p-n-lg">{children}</div>
+          <div className="flex h-[52px] w-full flex-row items-center justify-between border border-t-n-light-gray px-n-lg text-n-md">
             <button
               type="button"
               onClick={onCancel}
