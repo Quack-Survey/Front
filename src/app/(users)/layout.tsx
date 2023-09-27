@@ -11,7 +11,7 @@ const layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
             src="/images/quack survey.png"
             fill={true}
             priority={true}
-            sizes="(max-width: 768px) 100vw"
+            sizes="(min-width: 0px) 100vw"
             alt="Quack Survey"
           />
         </div>
