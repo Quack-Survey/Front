@@ -13,12 +13,12 @@ const TemplateTargetNumber = ({}: ITemplateTargetNumberProps): JSX.Element => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex justify-between items-center mb-n-md">
+      <div className="mb-n-md flex items-center justify-between">
         <span className="text-n-lg">목표응답수</span>
         <ToggleButton toggle={toggle} handleToggleButton={handleToggleButton} />
       </div>
       <input
-        className="outline-none border border-n-gray rounded-n-sm px-[5px] py-[4px] disabled:bg-n-light-gray"
+        className="rounded-n-sm border border-n-gray px-[5px] py-[4px] outline-none disabled:bg-n-light-gray"
         placeholder="내용을 입력해주세요."
         disabled={!toggle}
       />

@@ -74,7 +74,7 @@ const ToolbarInitialClickedCase = ({
                       ></Image>
                     </button>
                   ))
-                : ""}
+                : null}
             </div>
           }
         </div>

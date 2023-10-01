@@ -14,25 +14,25 @@ const TemplateQuater = ({}: ITemplateQuaterProps): JSX.Element => {
 
   return (
     <div>
-      <div className="flex justify-between mb-n-lg">
-        <span className="text-n-lg items-center">쿼터비율 설정</span>
+      <div className="mb-n-lg flex justify-between">
+        <span className="items-center text-n-lg">쿼터비율 설정</span>
         <ToggleButton toggle={toggle} handleToggleButton={handleToggleButton} />
       </div>
       <div className="border-x border-t border-n-gray bg-n-light-gray ">
-        <p className="text-center border-b border-n-gray py-[5px]">
+        <p className="border-b border-n-gray py-[5px] text-center">
           {"하루에 몇번 배가 고프십니까?"}
         </p>
         {[1, 2, 3].map((a, i) => {
           return (
             <div className="flex border-b border-n-gray" key={i}>
               <label
-                className="w-[90%] py-[5px] border-r border-n-gray pl-n-sm"
+                className="w-[90%] border-r border-n-gray py-[5px] pl-n-sm"
                 htmlFor={`select ${i}`}
               >
                 {a}
               </label>
               {!toggle ? (
-                <div className="flex items-center justify-center bg-white w-[10%]">
+                <div className="flex w-[10%] items-center justify-center bg-white">
                   <Image
                     src="/images/create_b.svg"
                     width={24}
@@ -43,7 +43,7 @@ const TemplateQuater = ({}: ITemplateQuaterProps): JSX.Element => {
                 </div>
               ) : (
                 <input
-                  className="w-[10%] outline-none text-center"
+                  className="w-[10%] text-center outline-none"
                   maxLength={2}
                   id={`select ${i}`}
                 />

@@ -2,7 +2,7 @@ interface IInputModalProps {
   isOpen: boolean;
   children: JSX.Element;
   submitText: string;
-  onCancel: () => void;
+  onCancel: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
   onSubmit: () => void;
 }
 
@@ -28,7 +28,7 @@ const InputModal = ({
       <div className="modal z-1 relative flex h-auto w-auto min-w-[280px] flex-col bg-white ">
         <form onSubmit={onSubmit}>
           <div className="h-full w-full p-n-lg">{children}</div>
-          <div className="flex h-[52px] w-full flex-row items-center justify-between border border-t-n-light-gray px-n-lg text-n-md">
+          <div className="flex h-[52px] w-full items-center justify-around border border-t-n-light-gray px-n-lg text-n-md">
             <button
               type="button"
               onClick={onCancel}

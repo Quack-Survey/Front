@@ -9,11 +9,13 @@ interface IFloatingFormButtonCollectionProps {
   onCreateLogic?: () => void;
   modeName: string; // initial | clicked
   isBlocked?: boolean;
+  isOpen: boolean;
 }
 
 const FloatingFormButtonCollection = ({
   modeName,
   isBlocked,
+  isOpen,
   onCreateSingle,
   onCreatePlural,
   onCreateDescription,
@@ -22,12 +24,13 @@ const FloatingFormButtonCollection = ({
   onCreateLogic,
 }: IFloatingFormButtonCollectionProps): JSX.Element => {
   return (
-    <div className="fixed bottom-[67px] right-[18px] h-[181px] w-[50px] ">
-      {modeName === "initial" &&
-      onCreateSingle &&
-      onCreatePlural &&
-      onCreateDescription ? (
-        <div className="flex gap-n-md">
+    <div
+      className={`fixed bottom-[67px] right-[18px] h-[181px] w-[50px] ${
+        isOpen ? "-z-10" : ""
+      }`}
+    >
+      {true ? (
+        <div className="flex flex-col gap-n-md">
           <FloatingFormButton
             onClick={onCreateSingle}
             imageName={"single"}
@@ -78,3 +81,8 @@ const FloatingFormButtonCollection = ({
 };
 
 export default FloatingFormButtonCollection;
+
+// modeName === "initial" &&
+//       onCreateSingle &&
+//       onCreatePlural &&
+//       onCreateDescription

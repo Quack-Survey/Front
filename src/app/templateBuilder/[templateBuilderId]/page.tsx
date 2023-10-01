@@ -1,15 +1,36 @@
+"use client";
+
 import { NextPage } from "next";
-import TemplateDescription from "@/components/templateBuilder/TemplateDescription";
-import FormWrapper from "@/components/templateBuilder/FormWrapper";
-import TemplateOption from "@/components/templateBuilder/TemplateOption";
+import { useState } from "react";
+import { read } from "@/constants/mode";
+import TemplateWrapper from "@/components/templateBuilder/TemplateWrapper";
+import SavePreserveBar from "@/components/SavePreserveBar";
+import FloatingFormButtonCollection from "@/components/FloatingFormButtonCollection";
+import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";
 
 const TemplateBuilder: NextPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [mode, setMode] = useState("");
+
+  const onOption = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
+  ) => {
+    e.preventDefault();
+    setIsOpen((prev) => !prev);
+  };
+
   return (
-    <div className="">
-      <TemplateOption />
-      <TemplateDescription />
-      <FormWrapper />
-    </div>
+    <>
+      <SavePreserveBar onOption={onOption} />
+      <TemplateWrapper
+        isOpen={isOpen}
+        onOption={onOption}
+        mode={mode}
+        setMode={setMode}
+      />
+      <FloatingFormButtonCollection isOpen={isOpen} />
+      {mode === read || mode === "" ? <ToolbarInitialClickedCase /> : null}
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 interface IToggleButtonProps {
   toggle: boolean;
-  handleToggleButton: () => void;
+  handleToggleButton: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const ToggleButton = ({

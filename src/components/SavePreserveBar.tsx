@@ -2,7 +2,7 @@ import Image from "next/image";
 
 interface ISavePreserveProps {
   modeName: string; //initial | type | preview
-  onOption?: () => void; //[initial Mode]
+  onOption?: (e: React.MouseEvent<HTMLButtonElement>) => void; //[initial Mode]
   onNavigateHome?: () => void;
   onSave?: () => void;
   onBackward?: () => void; //[type/preview Mode]
@@ -17,7 +17,7 @@ const SavePreserveBar = ({
 }: ISavePreserveProps): JSX.Element => {
   return (
     <div>
-      {modeName === "initial" && onOption && onNavigateHome && onSave ? (
+      {true ? (
         <div className="fixed top-0 flex h-[56px] w-full min-w-[360px] justify-between bg-n-light-black p-n-md text-n-white">
           <div className="flex gap-n-md">
             <button onClick={onOption}>
@@ -49,9 +49,7 @@ const SavePreserveBar = ({
                 ></Image>
               </button>
             </div>
-          ) : (
-            ""
-          )}
+          ) : null}
         </div>
       )}
     </div>
@@ -59,3 +57,4 @@ const SavePreserveBar = ({
 };
 
 export default SavePreserveBar;
+// modeName === "initial" && onOption && onNavigateHome && onSave

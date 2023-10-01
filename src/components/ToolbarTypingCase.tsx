@@ -5,7 +5,6 @@ interface IToolbarTypeCaseProp {
   onFocusUp: () => void;
   onFocusDown: () => void;
   onDuplicate: () => void;
-  onConfirm: () => void;
   onEnter: () => void;
 }
 
@@ -14,16 +13,15 @@ const ToolbarTypeCase = ({
   onFocusUp,
   onFocusDown,
   onDuplicate,
-  onConfirm,
   onEnter,
 }: IToolbarTypeCaseProp): JSX.Element => {
-  const imageName = ["duplicate_white", "down", "up", "enter", "confirm"];
+  const imageName = ["down", "up", "duplicate", "enter", "confirm"];
   const toolPartLeft = [onDuplicate, onFocusDown, onFocusUp];
-  const toolPartRight = [onEnter, onConfirm];
+  const toolPartRight = [onEnter];
   return (
-    <div>
-      {modeName === "type" ? (
-        <div className="fixed bottom-[0px] flex h-[49px] w-full min-w-[360px] justify-between bg-n-light-black px-n-md py-n-sm">
+    <>
+      {true ? (
+        <div className="fixed bottom-[0px] left-0 flex h-[49px] w-full min-w-[360px] justify-between bg-n-light-black px-n-md py-n-sm">
           <div className="flex items-center gap-n-sm">
             {toolPartLeft.map((tool, index) => (
               <button
@@ -56,7 +54,8 @@ const ToolbarTypeCase = ({
               />
             </button>
             <button
-              onClick={toolPartRight[1]}
+              type="submit"
+              // onClick={toolPartRight[1]}
               className="flex h-[34px] w-[51px]  items-center justify-center rounded-[5px] bg-n-purple"
             >
               <Image
@@ -69,10 +68,8 @@ const ToolbarTypeCase = ({
             </button>
           </div>
         </div>
-      ) : (
-        ""
-      )}
-    </div>
+      ) : null}
+    </>
   );
 };
 
