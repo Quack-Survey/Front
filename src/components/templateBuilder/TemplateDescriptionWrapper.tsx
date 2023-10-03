@@ -1,54 +1,71 @@
 "use client";
 
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { setTemplate } from "@/store/store";
+import { create, update, read } from "@/constants/mode";
 import TemplateDescription from "./TemplateDescription";
 
 interface ITemplateDescriptionWrapperProps {
-  mode: string;
-  setMode: React.Dispatch<React.SetStateAction<string>>;
+  setModeName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const TemplateDescriptionWrapper = ({
   template,
-  mode,
-  setMode,
+  setModeName,
 }: any): JSX.Element => {
-  const dispatch = useDispatch();
+  const [mode, setMode] = useState("");
+  const [updateActive, setUpdateActive] = useState(0);
+  const [templateData, setTemplateData] = useState({
+    title: "",
+    description: "",
+  });
   const { register, handleSubmit } = useForm();
-  const stateData = useSelector((state) => state);
-  console.log(stateData);
+  const editMode = mode === create || mode === update;
 
-  const onValid: SubmitHandler<FieldValues> = (templateData) => {
-    dispatch(setTemplate(templateData));
-    setMode("read");
+  const onValid: SubmitHandler<FieldValues> = ({ title, description }) => {
+    setTemplateData((prev) => {
+      return { ...prev, title, description };
+    });
+    setMode(read);
+    setModeName(read);
+  };
+
+  const startPress = () => {
+    if (editMode) return;
+    setUpdateActive(Date.now());
+  };
+
+  const endPress = () => {
+    if (editMode) return;
+
+    const endTime = Date.now();
+    const duration = endTime - updateActive;
+
+    if (mode === read && duration > 1000) {
+      setMode(update);
+      setModeName(update);
+    }
   };
 
   useEffect(() => {
     if (!template) {
-      setMode("create");
+      setMode(create);
     } else {
-      setMode("read");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (mode === "read") {
-      setMode("update");
+      setMode(read);
     }
   }, []);
 
   return (
-    <TemplateDescription
-      // title={template.title}
-      // description={template.description}
-      register={register}
-      mode={mode}
-      handleSubmit={handleSubmit}
-      onValid={onValid}
-    />
+    <div onMouseDown={startPress} onMouseUp={endPress}>
+      <TemplateDescription
+        // title={template.title}
+        // description={template.description}
+        register={register}
+        handleSubmit={handleSubmit}
+        onValid={onValid}
+        editMode={editMode}
+      />
+    </div>
   );
 };
 

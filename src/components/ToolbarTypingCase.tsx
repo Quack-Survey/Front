@@ -18,9 +18,10 @@ const ToolbarTypeCase = ({
   const imageName = ["down", "up", "duplicate", "enter", "confirm"];
   const toolPartLeft = [onDuplicate, onFocusDown, onFocusUp];
   const toolPartRight = [onEnter];
+
   return (
     <>
-      {true ? (
+      {modeName === "form" ? (
         <div className="fixed bottom-[0px] left-0 flex h-[49px] w-full min-w-[360px] justify-between bg-n-light-black px-n-md py-n-sm">
           <div className="flex items-center gap-n-sm">
             {toolPartLeft.map((tool, index) => (
@@ -55,7 +56,6 @@ const ToolbarTypeCase = ({
             </button>
             <button
               type="submit"
-              // onClick={toolPartRight[1]}
               className="flex h-[34px] w-[51px]  items-center justify-center rounded-[5px] bg-n-purple"
             >
               <Image
@@ -68,7 +68,44 @@ const ToolbarTypeCase = ({
             </button>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className="fixed bottom-[0px] left-0 flex h-[49px] w-full min-w-[360px] justify-between bg-n-light-black px-n-md py-n-sm">
+          <div className="flex items-center gap-n-sm">
+            {toolPartLeft
+              .slice(0, toolPartLeft.length - 1)
+              .map((tool, index) => (
+                <button
+                  key={index}
+                  onClick={tool}
+                  className="flex h-[34px] w-[34px] items-center justify-center rounded-[5px] bg-[#7f7f7f]"
+                >
+                  <Image
+                    priority
+                    src={`/images/${imageName[index]}.svg`}
+                    alt=""
+                    width={24}
+                    height={24}
+                  />
+                </button>
+              ))}
+          </div>
+          <div className="flex items-center gap-n-sm">
+            <div className="mr-n-sm h-[30px] w-[1px] bg-n-dark-gray"></div>
+            <button
+              type="submit"
+              className="flex h-[34px] w-[51px]  items-center justify-center rounded-[5px] bg-n-purple"
+            >
+              <Image
+                priority
+                src={`/images/${imageName[4]}.svg`}
+                alt=""
+                width={24}
+                height={24}
+              />
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

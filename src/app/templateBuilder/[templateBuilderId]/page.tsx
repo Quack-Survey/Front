@@ -10,7 +10,7 @@ import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";
 
 const TemplateBuilder: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [mode, setMode] = useState("");
+  const [modeName, setModeName] = useState("");
 
   const onOption = (
     e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
@@ -21,15 +21,17 @@ const TemplateBuilder: NextPage = () => {
 
   return (
     <>
-      <SavePreserveBar onOption={onOption} />
+      <SavePreserveBar onOption={onOption} modeName={modeName} />
       <TemplateWrapper
         isOpen={isOpen}
         onOption={onOption}
-        mode={mode}
-        setMode={setMode}
+        modeName={modeName}
+        setModeName={setModeName}
       />
       <FloatingFormButtonCollection isOpen={isOpen} />
-      {mode === read || mode === "" ? <ToolbarInitialClickedCase /> : null}
+      {modeName === read || modeName === "" ? (
+        <ToolbarInitialClickedCase />
+      ) : null}
     </>
   );
 };

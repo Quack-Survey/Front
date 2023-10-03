@@ -1,3 +1,4 @@
+import { create, update } from "@/constants/mode";
 import Image from "next/image";
 
 interface ISavePreserveProps {
@@ -16,9 +17,9 @@ const SavePreserveBar = ({
   onBackward,
 }: ISavePreserveProps): JSX.Element => {
   return (
-    <div>
-      {true ? (
-        <div className="fixed top-0 flex h-[56px] w-full min-w-[360px] justify-between bg-n-light-black p-n-md text-n-white">
+    <div className="fixed top-0  h-[56px] w-full min-w-[360px] bg-n-light-black  p-n-md ">
+      {modeName === create || modeName === update ? (
+        <div className="flex   justify-between   text-n-white">
           <div className="flex gap-n-md">
             <button onClick={onOption}>
               <Image
