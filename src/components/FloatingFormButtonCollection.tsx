@@ -56,7 +56,7 @@ const FloatingFormButtonCollection = ({
             <div className="flex flex-col gap-n-md">
               <FloatingFormButton
                 onClick={onDuplicate}
-                imageName={"duplicate"}
+                imageName={"duplicate_black"}
                 imageSize={18}
               ></FloatingFormButton>
               <FloatingFormButton

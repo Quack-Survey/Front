@@ -2,12 +2,12 @@ interface IFormContentTextProps {}
 
 const FormContentText = ({}: IFormContentTextProps): JSX.Element => {
   return (
-    <form className="w-full">
+    <div className="w-full">
       <textarea
-        className="w-[90%] bg-white resize-none outline-none"
+        className="w-[90%] resize-none bg-white outline-none"
         placeholder="답변을 작성해주세요."
       />
-    </form>
+    </div>
   );
 };
 

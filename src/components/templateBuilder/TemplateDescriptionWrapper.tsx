@@ -5,25 +5,30 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
 import TemplateDescription from "./TemplateDescription";
 
+interface ITemplateData {
+  title: string;
+  description: string;
+}
+
 interface ITemplateDescriptionWrapperProps {
+  template: ITemplateData;
   setModeName: React.Dispatch<React.SetStateAction<string>>;
+  setTemplateData: React.Dispatch<React.SetStateAction<ITemplateData>>;
 }
 
 const TemplateDescriptionWrapper = ({
   template,
   setModeName,
+  setTemplateData,
 }: any): JSX.Element => {
   const [mode, setMode] = useState("");
   const [updateActive, setUpdateActive] = useState(0);
-  const [templateData, setTemplateData] = useState({
-    title: "",
-    description: "",
-  });
   const { register, handleSubmit } = useForm();
   const editMode = mode === create || mode === update;
 
+  // Fn
   const onValid: SubmitHandler<FieldValues> = ({ title, description }) => {
-    setTemplateData((prev) => {
+    setTemplateData((prev: ITemplateData) => {
       return { ...prev, title, description };
     });
     setMode(read);
@@ -47,6 +52,7 @@ const TemplateDescriptionWrapper = ({
     }
   };
 
+  // Effect
   useEffect(() => {
     if (!template) {
       setMode(create);

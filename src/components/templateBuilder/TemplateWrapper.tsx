@@ -3,6 +3,8 @@ import InputModal from "@/components/InputModal";
 import TemplateDescriptionWrapper from "./TemplateDescriptionWrapper";
 import TemplateOption from "./TemplateOption";
 import InitialModeScreen from "../InitialModeScreen";
+import FloatingFormButtonCollection from "@/components/FloatingFormButtonCollection";
+import FormWrapper from "./FormWrapper";
 
 interface ITemplateWrapperProps {
   isOpen: boolean;
@@ -18,27 +20,105 @@ const TemplateWrapper = ({
   setModeName,
 }: ITemplateWrapperProps): JSX.Element => {
   const [createTemplate, setCreateTemplate] = useState(false);
+  const [templateData, setTemplateData] = useState({
+    title: "",
+    description: "",
+  });
+  const [allFormData, setFormData] = useState<any>([]);
 
   const handleCreateTemplate = (e: React.MouseEvent<HTMLDivElement>) => {
     setCreateTemplate((prev) => !prev);
     setModeName("create");
   };
 
+  const onCreateSingle = () => {
+    const copyFormData = [...allFormData];
+    copyFormData.push({
+      formData: {
+        title: "",
+        type: "select",
+        order: allFormData.length + 1,
+        option: [],
+        plural: false,
+        bookMark: false,
+      },
+      formContentData: {
+        text: "",
+        select: [],
+      },
+    });
+    setFormData(copyFormData);
+  };
+
+  const onCreatePlural = () => {
+    const copyFormData = [...allFormData];
+    copyFormData.push({
+      formData: {
+        title: "",
+        type: "select",
+        order: allFormData.length + 1,
+        option: [],
+        plural: true,
+        bookMark: false,
+      },
+      formContentData: {
+        text: "",
+        select: [],
+      },
+    });
+    setFormData(copyFormData);
+  };
+
+  const onCreateDescription = () => {
+    const copyFormData = [...allFormData];
+    copyFormData.push({
+      formData: {
+        title: "",
+        type: "text",
+        order: allFormData.length + 1,
+        option: [],
+        plural: false,
+        bookMark: false,
+      },
+      formContentData: {
+        text: "",
+        select: [],
+      },
+    });
+    setFormData(copyFormData);
+  };
+
   return (
     <>
-      {false || createTemplate ? (
-        <div className="mx-auto min-h-[620px] max-w-[360px]">
-          <TemplateDescriptionWrapper setModeName={setModeName} />
-        </div>
+      {createTemplate ? (
+        <>
+          <div className="mx-auto min-h-[620px] max-w-[360px]">
+            <TemplateDescriptionWrapper
+              setModeName={setModeName}
+              setTemplateData={setTemplateData}
+            />
+            <div className="space-y-n-md">
+              {allFormData?.map((form: any, i: any) => (
+                <FormWrapper key={i} form={form} />
+              ))}
+            </div>
+          </div>
+          <FloatingFormButtonCollection
+            onCreateSingle={onCreateSingle}
+            onCreatePlural={onCreatePlural}
+            onCreateDescription={onCreateDescription}
+            isOpen={isOpen}
+          />
+          <InputModal isOpen={isOpen} onCancel={onOption} submitText="저장">
+            {isOpen ? <TemplateOption /> : <></>}
+          </InputModal>
+        </>
       ) : (
         <InitialModeScreen
           createTemplate={handleCreateTemplate}
           innerText="폼을 생성해주세요."
         />
       )}
-      <InputModal isOpen={isOpen} onCancel={onOption} submitText="저장">
-        {isOpen ? <TemplateOption /> : <></>}
-      </InputModal>
     </>
   );
 };

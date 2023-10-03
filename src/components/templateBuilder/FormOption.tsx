@@ -4,7 +4,7 @@ interface IFormOptionProps {}
 
 const FormOption = ({}: IFormOptionProps): JSX.Element => {
   return (
-    <div className="space-y-n-xlg w-n-xl mr-n-sm self-center">
+    <div className="mr-n-sm w-n-xl space-y-n-lg self-center">
       {[1, 2, 3].map((a, i) => (
         <Image
           key={i}

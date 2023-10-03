@@ -4,11 +4,11 @@ interface IFormContentSelectProps {}
 
 const FormContentSelect = ({}: IFormContentSelectProps): JSX.Element => {
   return (
-    <div className="space-y-n-sm w-full ">
+    <div className="w-full space-y-n-sm pb-n-md ">
       {[1, 2, 4, 5].map((a, i) => {
         return (
           <div
-            className="flex w-[85%] bg-n-light-gray rounded-n-sm  h-n-xlg items-center "
+            className="h-n-xlg flex w-[85%] items-center  rounded-n-sm bg-n-light-gray "
             key={i}
           >
             <Image
@@ -19,14 +19,14 @@ const FormContentSelect = ({}: IFormContentSelectProps): JSX.Element => {
               alt=""
               priority
             />
-            <form className="w-[90%]">
+            <div className="w-[90%]">
               <input
-                className="shrink-0 mx-n-sm w-full outline-none bg-inherit text-n-sm"
+                className="mx-n-sm w-full shrink-0 bg-inherit text-n-sm outline-none"
                 type="text"
                 placeholder="보기를 작성해주세요"
                 maxLength={18}
               />
-            </form>
+            </div>
             <Image
               className="mx-n-sm cursor-pointer"
               src="/images/delete.svg"
@@ -38,7 +38,7 @@ const FormContentSelect = ({}: IFormContentSelectProps): JSX.Element => {
           </div>
         );
       })}
-      <div className="flex w-[85%] cursor-pointer bg-n-light-gray rounded-n-sm  h-n-xlg items-center justify-center">
+      <div className="h-n-xlg flex w-[85%] cursor-pointer items-center  justify-center rounded-n-sm bg-n-light-gray">
         <Image src="/images/plus.svg" width={24} height={24} alt="" priority />
       </div>
     </div>

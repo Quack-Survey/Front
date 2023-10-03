@@ -10,15 +10,13 @@ const FormTitle = ({}: IFormTitleProps): JSX.Element => {
       >
         {"1"}
       </span>
-      <form>
-        <textarea
-          className={`ml-n-md w-[300px] resize-none self-end  bg-white pt-[5px] text-n-md text-black outline-none ${
-            testValue < 21 ? "disabled:h-[36px] " : "disabled:text-xs"
-          }`}
-          placeholder='"하루에 몇번 정도 배가 고프십니까?"'
-          maxLength={60}
-        />
-      </form>
+      <textarea
+        className={`ml-n-md w-[300px] resize-none self-end  bg-white pt-[5px] text-n-md text-black outline-none ${
+          testValue < 21 ? "disabled:h-[36px] " : "disabled:text-xs"
+        }`}
+        placeholder='"하루에 몇번 정도 배가 고프십니까?"'
+        maxLength={60}
+      />
     </div>
   );
 };

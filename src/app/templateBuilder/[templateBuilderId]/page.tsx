@@ -5,7 +5,6 @@ import { useState } from "react";
 import { read } from "@/constants/mode";
 import TemplateWrapper from "@/components/templateBuilder/TemplateWrapper";
 import SavePreserveBar from "@/components/SavePreserveBar";
-import FloatingFormButtonCollection from "@/components/FloatingFormButtonCollection";
 import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";
 
 const TemplateBuilder: NextPage = () => {
@@ -28,7 +27,6 @@ const TemplateBuilder: NextPage = () => {
         modeName={modeName}
         setModeName={setModeName}
       />
-      <FloatingFormButtonCollection isOpen={isOpen} />
       {modeName === read || modeName === "" ? (
         <ToolbarInitialClickedCase />
       ) : null}
