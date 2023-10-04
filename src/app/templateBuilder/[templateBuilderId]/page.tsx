@@ -9,7 +9,7 @@ import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";
 
 const TemplateBuilder: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [modeName, setModeName] = useState("");
+  const [modeName, setModeName] = useState(read);
 
   const onOption = (
     e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
@@ -27,9 +27,7 @@ const TemplateBuilder: NextPage = () => {
         modeName={modeName}
         setModeName={setModeName}
       />
-      {modeName === read || modeName === "" ? (
-        <ToolbarInitialClickedCase />
-      ) : null}
+      {modeName === read ? <ToolbarInitialClickedCase /> : null}
     </>
   );
 };

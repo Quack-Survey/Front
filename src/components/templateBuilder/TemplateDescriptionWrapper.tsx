@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
 import TemplateDescription from "./TemplateDescription";
+import Toast from "../Tost";
 
 interface ITemplateData {
   title: string;
@@ -12,19 +13,23 @@ interface ITemplateData {
 
 interface ITemplateDescriptionWrapperProps {
   template: ITemplateData;
+  modeName: string;
   setModeName: React.Dispatch<React.SetStateAction<string>>;
   setTemplateData: React.Dispatch<React.SetStateAction<ITemplateData>>;
 }
 
 const TemplateDescriptionWrapper = ({
   template,
+  modeName,
   setModeName,
   setTemplateData,
 }: any): JSX.Element => {
   const [mode, setMode] = useState("");
+  const [toastText, setToastText] = useState("");
   const [updateActive, setUpdateActive] = useState(0);
   const { register, handleSubmit } = useForm();
   const editMode = mode === create || mode === update;
+  const editModeName = modeName === create || modeName === update;
 
   // Fn
   const onValid: SubmitHandler<FieldValues> = ({ title, description }) => {
@@ -46,10 +51,17 @@ const TemplateDescriptionWrapper = ({
     const endTime = Date.now();
     const duration = endTime - updateActive;
 
-    if (mode === read && duration > 1000) {
+    if (editModeName && duration > 500) {
+      return setToastText("폼을 저장해주세요.");
+    } else if (!editModeName && duration > 500) {
+      // if(title === "")
       setMode(update);
       setModeName(update);
     }
+  };
+
+  const onClose = () => {
+    setToastText("");
   };
 
   // Effect
@@ -71,6 +83,9 @@ const TemplateDescriptionWrapper = ({
         onValid={onValid}
         editMode={editMode}
       />
+      {toastText !== "" ? (
+        <Toast toastText={toastText} onClose={onClose} editMode={editMode} />
+      ) : null}
     </div>
   );
 };

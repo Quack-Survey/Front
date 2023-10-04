@@ -4,8 +4,8 @@ interface IToolbarTypeCaseProp {
   modeName: string; //type
   onFocusUp: () => void;
   onFocusDown: () => void;
-  onDuplicate: () => void;
-  onEnter: () => void;
+  onDuplicate?: () => void;
+  onEnter?: () => void;
 }
 
 const ToolbarTypeCase = ({

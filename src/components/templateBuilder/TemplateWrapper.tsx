@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { create } from "@/constants/mode";
 import InputModal from "@/components/InputModal";
 import TemplateDescriptionWrapper from "./TemplateDescriptionWrapper";
 import TemplateOption from "./TemplateOption";
@@ -24,11 +25,11 @@ const TemplateWrapper = ({
     title: "",
     description: "",
   });
-  const [allFormData, setFormData] = useState<any>([]);
+  const [allFormData, setAllFormData] = useState<any>([]);
 
   const handleCreateTemplate = (e: React.MouseEvent<HTMLDivElement>) => {
     setCreateTemplate((prev) => !prev);
-    setModeName("create");
+    setModeName(create);
   };
 
   const onCreateSingle = () => {
@@ -47,7 +48,7 @@ const TemplateWrapper = ({
         select: [],
       },
     });
-    setFormData(copyFormData);
+    setAllFormData(copyFormData);
   };
 
   const onCreatePlural = () => {
@@ -66,7 +67,7 @@ const TemplateWrapper = ({
         select: [],
       },
     });
-    setFormData(copyFormData);
+    setAllFormData(copyFormData);
   };
 
   const onCreateDescription = () => {
@@ -85,7 +86,7 @@ const TemplateWrapper = ({
         select: [],
       },
     });
-    setFormData(copyFormData);
+    setAllFormData(copyFormData);
   };
 
   return (
@@ -94,12 +95,19 @@ const TemplateWrapper = ({
         <>
           <div className="mx-auto min-h-[620px] max-w-[360px]">
             <TemplateDescriptionWrapper
+              modeName={modeName}
               setModeName={setModeName}
               setTemplateData={setTemplateData}
             />
             <div className="space-y-n-md">
               {allFormData?.map((form: any, i: any) => (
-                <FormWrapper key={i} form={form} />
+                <FormWrapper
+                  key={i}
+                  form={form}
+                  setModeName={setModeName}
+                  setAllFormData={setAllFormData}
+                  modeName={modeName}
+                />
               ))}
             </div>
           </div>
