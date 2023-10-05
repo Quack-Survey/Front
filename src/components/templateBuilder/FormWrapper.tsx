@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
 import FormTitle from "./FormTitle";
 import FormOption from "./FormOption";
-import FormContentSelect from "./FormContentSelect";
 import FormContentText from "./FormContentText";
-import ToolbarTypeCase from "../ToolbarTypingCase";
+import FormContentSelectWrapper from "./FormContentSelectWrapper";
 import Toast from "../Tost";
 
 interface IFormWrapperProps {
@@ -23,12 +23,20 @@ const FormWrapper = ({
   const [mode, setMode] = useState(read);
   const [updateActive, setUpdateActive] = useState(0);
   const [toastText, setToastText] = useState("");
+  const { register, handleSubmit } = useForm();
   const { title, type, plural, order, option } = form.formData;
   const { select } = form.formContentData;
   const editMode = mode === create || mode === update;
   const editModeName = modeName === create || modeName === update;
-  // 전체는 수정모드이고 해당폼은 읽기모드이면 editModeName && !editMode
+
   // Fn
+
+  const onValid = (data) => {
+    setMode(read);
+    setModeName(read);
+    console.log(data);
+  };
+
   const startPress = () => {
     if (editMode) return;
     setUpdateActive(Date.now());
@@ -61,6 +69,7 @@ const FormWrapper = ({
   return (
     <>
       <form
+        onSubmit={handleSubmit(onValid)}
         className={`h-full w-[360px] flex-col border-l-[8px] bg-white ${
           plural ? "border-dotted" : ""
         } ${editMode ? "border-n-light-blue" : "border-n-dark-gray"}`}
@@ -68,17 +77,18 @@ const FormWrapper = ({
         onMouseUp={endPress}
       >
         <div className="pb-n-xlg ml-n-sm pt-n-sm">
-          <FormTitle order={order} editMode={editMode} />
+          <FormTitle register={register} order={order} editMode={editMode} />
           <div className={`flex ${"옵션 및 로직이 있으면" ? "" : "ml-n-xl"}`}>
             {"옵션 및 로직이 있으면" ? <FormOption /> : null}
             {type === "select" ? (
-              <FormContentSelect
+              <FormContentSelectWrapper
                 editMode={editMode}
+                register={register}
                 select={select}
                 setAllFormData={setAllFormData}
               />
             ) : (
-              <FormContentText editMode={editMode} />
+              <FormContentText register={register} editMode={editMode} />
             )}
           </div>
         </div>

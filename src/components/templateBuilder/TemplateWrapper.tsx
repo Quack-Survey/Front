@@ -45,7 +45,7 @@ const TemplateWrapper = ({
       },
       formContentData: {
         text: "",
-        select: [],
+        select: [""],
       },
     });
     setAllFormData(copyFormData);
@@ -64,7 +64,7 @@ const TemplateWrapper = ({
       },
       formContentData: {
         text: "",
-        select: [],
+        select: [""],
       },
     });
     setAllFormData(copyFormData);

@@ -1,9 +1,16 @@
+import { FieldValues, UseFormRegister } from "react-hook-form";
+
 interface IFormTitleProps {
   order: number;
   editMode: boolean;
+  register: UseFormRegister<FieldValues>;
 }
 
-const FormTitle = ({ order, editMode }: IFormTitleProps): JSX.Element => {
+const FormTitle = ({
+  order,
+  editMode,
+  register,
+}: IFormTitleProps): JSX.Element => {
   const testValue = 50;
 
   return (
@@ -19,6 +26,9 @@ const FormTitle = ({ order, editMode }: IFormTitleProps): JSX.Element => {
         className={`ml-n-md w-[300px] resize-none self-end  bg-white pt-[5px] text-n-md text-black outline-none ${
           testValue < 21 ? "disabled:h-[36px] " : "disabled:text-xs"
         }`}
+        {...register("title", {
+          required: "제목을 작성해주세요.",
+        })}
         placeholder="제목을 작성해주세요."
         disabled={!editMode}
         maxLength={60}
