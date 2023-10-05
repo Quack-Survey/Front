@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { create } from "@/constants/mode";
+import { create, read } from "@/constants/mode";
 import InputModal from "@/components/InputModal";
 import TemplateDescriptionWrapper from "./TemplateDescriptionWrapper";
 import TemplateOption from "./TemplateOption";
@@ -93,7 +93,7 @@ const TemplateWrapper = ({
     <>
       {createTemplate ? (
         <>
-          <div className="mx-auto min-h-[620px] max-w-[360px]">
+          <div className="mx-auto min-h-[620px] max-w-[360px] ">
             <TemplateDescriptionWrapper
               modeName={modeName}
               setModeName={setModeName}
@@ -103,6 +103,7 @@ const TemplateWrapper = ({
               {allFormData?.map((form: any, i: any) => (
                 <FormWrapper
                   key={i}
+                  index={i}
                   form={form}
                   setModeName={setModeName}
                   setAllFormData={setAllFormData}
@@ -111,12 +112,15 @@ const TemplateWrapper = ({
               ))}
             </div>
           </div>
-          <FloatingFormButtonCollection
-            onCreateSingle={onCreateSingle}
-            onCreatePlural={onCreatePlural}
-            onCreateDescription={onCreateDescription}
-            isOpen={isOpen}
-          />
+          {modeName === read ? (
+            <FloatingFormButtonCollection
+              modeName={read}
+              onCreateSingle={onCreateSingle}
+              onCreatePlural={onCreatePlural}
+              onCreateDescription={onCreateDescription}
+              isOpen={isOpen}
+            />
+          ) : null}
           <InputModal isOpen={isOpen} onCancel={onOption} submitText="저장">
             {isOpen ? <TemplateOption /> : <></>}
           </InputModal>

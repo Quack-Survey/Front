@@ -26,7 +26,7 @@ const TemplateDescription = ({
   return (
     <div
       className={`mb-n-md mt-[60px] h-full w-[360px] rounded-t-n-md border-t-[16px] bg-white transition duration-100 ease-in-out ${
-        editMode ? "border-n-light-blue" : "border-n-dark-gray"
+        editMode ? "border-n-light-blue" : "cursor-pointer border-n-dark-gray"
       }`}
     >
       <form

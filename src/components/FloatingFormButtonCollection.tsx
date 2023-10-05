@@ -9,7 +9,7 @@ interface IFloatingFormButtonCollectionProps {
   onCreateLogic?: () => void;
   modeName: string; // initial | clicked
   isBlocked?: boolean;
-  isOpen: boolean;
+  isOpen?: boolean;
 }
 
 const FloatingFormButtonCollection = ({
@@ -29,7 +29,7 @@ const FloatingFormButtonCollection = ({
         isOpen ? "-z-10" : ""
       }`}
     >
-      {true ? (
+      {modeName === "read" ? (
         <div className="flex flex-col gap-n-md">
           <FloatingFormButton
             onClick={onCreateSingle}
@@ -49,31 +49,24 @@ const FloatingFormButtonCollection = ({
         </div>
       ) : (
         <div>
-          {modeName === "clicked" &&
-          onDuplicate &&
-          onDelete &&
-          onCreateLogic ? (
-            <div className="flex flex-col gap-n-md">
-              <FloatingFormButton
-                onClick={onDuplicate}
-                imageName={"duplicate_black"}
-                imageSize={18}
-              ></FloatingFormButton>
-              <FloatingFormButton
-                onClick={onDelete}
-                imageName={"trash"}
-                imageSize={24}
-              ></FloatingFormButton>
-              <FloatingFormButton
-                onClick={onCreateLogic}
-                isBlocked={isBlocked}
-                imageName={"logic"}
-                imageSize={24}
-              ></FloatingFormButton>
-            </div>
-          ) : (
-            ""
-          )}
+          <div className="flex flex-col gap-n-md">
+            <FloatingFormButton
+              onClick={onDuplicate}
+              imageName={"duplicate_black"}
+              imageSize={18}
+            ></FloatingFormButton>
+            <FloatingFormButton
+              onClick={onDelete}
+              imageName={"trash"}
+              imageSize={24}
+            ></FloatingFormButton>
+            <FloatingFormButton
+              onClick={onCreateLogic}
+              isBlocked={isBlocked}
+              imageName={"logic"}
+              imageSize={24}
+            ></FloatingFormButton>
+          </div>
         </div>
       )}
     </div>
@@ -81,8 +74,3 @@ const FloatingFormButtonCollection = ({
 };
 
 export default FloatingFormButtonCollection;
-
-// modeName === "initial" &&
-//       onCreateSingle &&
-//       onCreatePlural &&
-//       onCreateDescription

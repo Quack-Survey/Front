@@ -6,9 +6,11 @@ import FormOption from "./FormOption";
 import FormContentText from "./FormContentText";
 import FormContentSelectWrapper from "./FormContentSelectWrapper";
 import Toast from "../Tost";
+import FloatingFormButtonCollection from "../FloatingFormButtonCollection";
 
 interface IFormWrapperProps {
   form: any;
+  index: number;
   modeName: string;
   setModeName: any;
   setAllFormData: any;
@@ -16,6 +18,7 @@ interface IFormWrapperProps {
 
 const FormWrapper = ({
   form,
+  index,
   modeName,
   setModeName,
   setAllFormData,
@@ -66,13 +69,25 @@ const FormWrapper = ({
     setToastText("");
   };
 
+  const onDelete = () => {
+    setAllFormData((prev: any) => {
+      const copyAllFormData = [...prev];
+      copyAllFormData.splice(index, 1);
+      return copyAllFormData;
+    });
+    setMode(read);
+    setModeName(read);
+  };
+
   return (
     <>
       <form
         onSubmit={handleSubmit(onValid)}
         className={`h-full w-[360px] flex-col border-l-[8px] bg-white ${
           plural ? "border-dotted" : ""
-        } ${editMode ? "border-n-light-blue" : "border-n-dark-gray"}`}
+        } ${
+          editMode ? "border-n-light-blue" : "cursor-pointer border-n-dark-gray"
+        }`}
         onMouseDown={startPress}
         onMouseUp={endPress}
       >
@@ -95,6 +110,9 @@ const FormWrapper = ({
       </form>
       {toastText !== "" ? (
         <Toast toastText={toastText} onClose={onClose} editMode={editMode} />
+      ) : null}
+      {editMode ? (
+        <FloatingFormButtonCollection modeName={update} onDelete={onDelete} />
       ) : null}
     </>
   );
