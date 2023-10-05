@@ -27,7 +27,7 @@ const FormWrapper = ({
   const [updateActive, setUpdateActive] = useState(0);
   const [toastText, setToastText] = useState("");
   const { register, handleSubmit } = useForm();
-  const { title, type, plural, order, option } = form.formData;
+  const { title, type, plural, option } = form.formData;
   const { select } = form.formContentData;
   const editMode = mode === create || mode === update;
   const editModeName = modeName === create || modeName === update;
@@ -79,6 +79,17 @@ const FormWrapper = ({
     setModeName(read);
   };
 
+  const onDuplicate = () => {
+    setAllFormData((prev: any) => {
+      const copyAllFormData = [...prev];
+      copyAllFormData.push({
+        ...form,
+        formData: { ...form.formData, order: prev.length + 1 },
+      });
+      return copyAllFormData;
+    });
+  };
+
   return (
     <>
       <form
@@ -92,7 +103,7 @@ const FormWrapper = ({
         onMouseUp={endPress}
       >
         <div className="pb-n-xlg ml-n-sm pt-n-sm">
-          <FormTitle register={register} order={order} editMode={editMode} />
+          <FormTitle register={register} index={index} editMode={editMode} />
           <div className={`flex ${"옵션 및 로직이 있으면" ? "" : "ml-n-xl"}`}>
             {"옵션 및 로직이 있으면" ? <FormOption /> : null}
             {type === "select" ? (
@@ -112,7 +123,11 @@ const FormWrapper = ({
         <Toast toastText={toastText} onClose={onClose} editMode={editMode} />
       ) : null}
       {editMode ? (
-        <FloatingFormButtonCollection modeName={update} onDelete={onDelete} />
+        <FloatingFormButtonCollection
+          modeName={update}
+          onDelete={onDelete}
+          onDuplicate={onDuplicate}
+        />
       ) : null}
     </>
   );

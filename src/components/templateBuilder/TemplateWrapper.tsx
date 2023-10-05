@@ -93,13 +93,13 @@ const TemplateWrapper = ({
     <>
       {createTemplate ? (
         <>
-          <div className="mx-auto min-h-[620px] max-w-[360px] ">
+          <div className="mx-auto max-w-[360px] bg-n-light-gray">
             <TemplateDescriptionWrapper
               modeName={modeName}
               setModeName={setModeName}
               setTemplateData={setTemplateData}
             />
-            <div className="space-y-n-md">
+            <div className="mb-[60px] space-y-n-md">
               {allFormData?.map((form: any, i: any) => (
                 <FormWrapper
                   key={i}

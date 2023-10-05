@@ -1,13 +1,13 @@
 import { FieldValues, UseFormRegister } from "react-hook-form";
 
 interface IFormTitleProps {
-  order: number;
+  index: number;
   editMode: boolean;
   register: UseFormRegister<FieldValues>;
 }
 
 const FormTitle = ({
-  order,
+  index,
   editMode,
   register,
 }: IFormTitleProps): JSX.Element => {
@@ -20,7 +20,7 @@ const FormTitle = ({
           editMode ? "text-n-light-blue" : "text-n-dark-gray"
         }`}
       >
-        {order}
+        {index + 1}
       </span>
       <textarea
         className={`ml-n-md w-[300px] resize-none self-end  bg-white pt-[5px] text-n-md text-black outline-none ${
