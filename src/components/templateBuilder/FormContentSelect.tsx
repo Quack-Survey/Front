@@ -45,7 +45,7 @@ const FormContentSelect = ({
         />
       </div>
       {editMode && selectData.length > 1 ? (
-        <div onClick={deleteInputForm}>
+        <button type="button" onClick={deleteInputForm}>
           <Image
             className="mx-n-sm cursor-pointer"
             src="/images/delete.svg"
@@ -54,7 +54,7 @@ const FormContentSelect = ({
             alt=""
             priority
           />
-        </div>
+        </button>
       ) : null}
     </div>
   );

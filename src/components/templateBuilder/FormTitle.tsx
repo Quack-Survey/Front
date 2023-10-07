@@ -24,7 +24,9 @@ const FormTitle = ({
       </span>
       <textarea
         className={`ml-n-md w-[300px] resize-none self-end  bg-white pt-[5px] text-n-md text-black outline-none ${
-          testValue < 21 ? "disabled:h-[36px] " : "disabled:text-xs"
+          testValue < 21
+            ? "disabled:h-[36px] "
+            : "  disabled:h-[40px] disabled:text-xs"
         }`}
         {...register("title", {
           required: "제목을 작성해주세요.",

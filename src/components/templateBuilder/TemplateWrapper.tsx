@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { create, read } from "@/constants/mode";
 import InputModal from "@/components/InputModal";
 import TemplateDescriptionWrapper from "./TemplateDescriptionWrapper";
@@ -8,29 +8,31 @@ import FloatingFormButtonCollection from "@/components/FloatingFormButtonCollect
 import FormWrapper from "./FormWrapper";
 
 interface ITemplateWrapperProps {
+  templateBuilderId: string | string[];
+  rawTemplateData?: any;
   isOpen: boolean;
   modeName: string;
   setModeName: React.Dispatch<React.SetStateAction<string>>;
-  onOption: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
+  foldMode: boolean;
+  onOption: () => void;
 }
 
 const TemplateWrapper = ({
+  templateBuilderId,
+  rawTemplateData,
   isOpen,
   onOption,
   modeName,
+  foldMode,
   setModeName,
 }: ITemplateWrapperProps): JSX.Element => {
-  const [createTemplate, setCreateTemplate] = useState(false);
-  const [templateData, setTemplateData] = useState({
+  const { template, form, formContent, templateOption, logic } =
+    rawTemplateData;
+  const [templateStateData, setTemplateStateData] = useState({
     title: "",
     description: "",
   });
   const [allFormData, setAllFormData] = useState<any>([]);
-
-  const handleCreateTemplate = (e: React.MouseEvent<HTMLDivElement>) => {
-    setCreateTemplate((prev) => !prev);
-    setModeName(create);
-  };
 
   const onCreateSingle = () => {
     const copyFormData = [...allFormData];
@@ -89,48 +91,52 @@ const TemplateWrapper = ({
     setAllFormData(copyFormData);
   };
 
+  useEffect(() => {
+    setTemplateStateData((prev) => {
+      return {
+        ...prev,
+        title: template.title,
+        description: template.description,
+      };
+    });
+  }, []);
+
   return (
     <>
-      {createTemplate ? (
-        <>
-          <div className="mx-auto max-w-[360px] bg-n-light-gray">
-            <TemplateDescriptionWrapper
-              modeName={modeName}
-              setModeName={setModeName}
-              setTemplateData={setTemplateData}
-            />
-            <div className="mb-[60px] space-y-n-md">
-              {allFormData?.map((form: any, i: any) => (
-                <FormWrapper
-                  key={i}
-                  index={i}
-                  form={form}
-                  setModeName={setModeName}
-                  setAllFormData={setAllFormData}
-                  modeName={modeName}
-                />
-              ))}
-            </div>
-          </div>
-          {modeName === read ? (
-            <FloatingFormButtonCollection
-              modeName={read}
-              onCreateSingle={onCreateSingle}
-              onCreatePlural={onCreatePlural}
-              onCreateDescription={onCreateDescription}
-              isOpen={isOpen}
-            />
-          ) : null}
-          <InputModal isOpen={isOpen} onCancel={onOption} submitText="저장">
-            {isOpen ? <TemplateOption /> : <></>}
-          </InputModal>
-        </>
-      ) : (
-        <InitialModeScreen
-          createTemplate={handleCreateTemplate}
-          innerText="폼을 생성해주세요."
+      <div className="mx-auto max-w-[360px] bg-n-light-gray">
+        <TemplateDescriptionWrapper
+          templateBuilderId={templateBuilderId}
+          templateStateData={templateStateData}
+          modeName={modeName}
+          setModeName={setModeName}
+          setTemplateStateData={setTemplateStateData}
         />
-      )}
+        <div className="mb-[60px] space-y-n-md">
+          {allFormData?.map((form: any, i: any) => (
+            <FormWrapper
+              key={i}
+              index={i}
+              form={form}
+              foldMode={foldMode}
+              setModeName={setModeName}
+              setAllFormData={setAllFormData}
+              modeName={modeName}
+            />
+          ))}
+        </div>
+      </div>
+      {modeName === read ? (
+        <FloatingFormButtonCollection
+          modeName={read}
+          onCreateSingle={onCreateSingle}
+          onCreatePlural={onCreatePlural}
+          onCreateDescription={onCreateDescription}
+          isOpen={isOpen}
+        />
+      ) : null}
+      <InputModal isOpen={isOpen} onCancel={onOption} submitText="저장">
+        {isOpen ? <TemplateOption /> : <></>}
+      </InputModal>
     </>
   );
 };

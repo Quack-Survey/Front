@@ -24,6 +24,13 @@ const FormContentSelectWrapper = ({
     copySelectData.push("");
     setSelectData(copySelectData);
   };
+
+  const onDuplicate = () => {
+    const copySelectData = [...selectData];
+    copySelectData.push(selectData[selectData.length - 1]);
+    setSelectData(copySelectData);
+  };
+
   return (
     <>
       <div className="w-full space-y-n-sm pb-n-md ">
@@ -38,7 +45,8 @@ const FormContentSelectWrapper = ({
           />
         ))}
         {editMode ? (
-          <div
+          <button
+            type="button"
             className="h-n-xlg flex w-[85%] cursor-pointer items-center  justify-center rounded-n-sm bg-n-light-gray"
             onClick={createInputForm}
           >
@@ -49,10 +57,16 @@ const FormContentSelectWrapper = ({
               alt=""
               priority
             />
-          </div>
+          </button>
         ) : null}
       </div>
-      {editMode ? <ToolbarTypeCase modeName="form" /> : null}
+      {editMode ? (
+        <ToolbarTypeCase
+          onDuplicate={onDuplicate}
+          onEnter={createInputForm}
+          modeName="form"
+        />
+      ) : null}
     </>
   );
 };

@@ -12,6 +12,7 @@ interface IFormWrapperProps {
   form: any;
   index: number;
   modeName: string;
+  foldMode: boolean;
   setModeName: any;
   setAllFormData: any;
 }
@@ -20,6 +21,7 @@ const FormWrapper = ({
   form,
   index,
   modeName,
+  foldMode,
   setModeName,
   setAllFormData,
 }: IFormWrapperProps): JSX.Element => {
@@ -37,16 +39,19 @@ const FormWrapper = ({
   const onValid = (data) => {
     setMode(read);
     setModeName(read);
-    console.log(data);
   };
 
   const startPress = () => {
     if (editMode) return;
+    if (foldMode) {
+      return setToastText("접기를 풀어주세요.");
+    }
     setUpdateActive(Date.now());
   };
 
   const endPress = () => {
     if (editMode) return;
+    if (foldMode) return;
 
     const endTime = Date.now();
     const duration = endTime - updateActive;
@@ -94,9 +99,9 @@ const FormWrapper = ({
     <>
       <form
         onSubmit={handleSubmit(onValid)}
-        className={`h-full w-[360px] flex-col border-l-[8px] bg-white ${
-          plural ? "border-dotted" : ""
-        } ${
+        className={` w-[360px] flex-col border-l-[8px] bg-white ${
+          foldMode ? "h-[50px] overflow-hidden" : "h-full"
+        } ${plural ? "border-dotted" : ""} ${
           editMode ? "border-n-light-blue" : "cursor-pointer border-n-dark-gray"
         }`}
         onMouseDown={startPress}

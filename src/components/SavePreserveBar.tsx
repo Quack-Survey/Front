@@ -1,9 +1,9 @@
-import { create, update } from "@/constants/mode";
+import { read } from "@/constants/mode";
 import Image from "next/image";
 
 interface ISavePreserveProps {
-  modeName: string; //initial | type | preview
-  onOption?: (e: React.MouseEvent<HTMLButtonElement>) => void; //[initial Mode]
+  modeName?: string; //initial | type | preview
+  onOption?: () => void; //[initial Mode]
   onNavigateHome?: () => void;
   onSave?: () => void;
   onBackward?: () => void; //[type/preview Mode]
@@ -18,10 +18,10 @@ const SavePreserveBar = ({
 }: ISavePreserveProps): JSX.Element => {
   return (
     <div className="fixed top-0  h-[56px] w-full min-w-[360px] bg-n-light-black  p-n-md ">
-      {modeName === create || modeName === update ? (
+      {modeName === read ? (
         <div className="flex   justify-between   text-n-white">
           <div className="flex gap-n-md">
-            <button onClick={onOption}>
+            <button onClick={onOption} type="button">
               <Image
                 priority
                 src="/images/more.svg"

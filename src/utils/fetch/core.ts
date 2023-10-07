@@ -65,4 +65,14 @@ const postFetch: IPostFetch = async (url, body) => {
   }
 };
 
-export { getFetch, postFetch };
+const putFetch: IPostFetch = async (url, body) => {
+  try {
+    const data = await instance(url, "PUT", { body });
+
+    return data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export { getFetch, postFetch, putFetch };
