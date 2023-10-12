@@ -1,7 +1,11 @@
 import React from "react";
 
-const LoginForm = () => {
-  return <div className="flex bg-white"></div>;
+interface ILoginFormProps {
+  children: JSX.Element;
+}
+
+const LoginForm = ({ children }: ILoginFormProps): JSX.Element => {
+  return <div className="w-full">{children}</div>;
 };
 
 export default LoginForm;

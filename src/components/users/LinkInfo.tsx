@@ -7,7 +7,7 @@ interface ILinkInfoProps extends HTMLAttributes<HTMLSpanElement> {
 
 const LinkInfo = ({ isLogin }: ILinkInfoProps) => {
   return (
-    <div className="flex justify-end">
+    <div className="mt-[15px] flex justify-end">
       <span className="text-sm text-n-dark-gray">
         {isLogin ? "아이디가 없으시다면?" : "아이디가 있으시다면?"}
         <Link
