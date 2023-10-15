@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
+import { useMutation } from "@tanstack/react-query";
+import { deleteFetch, postFetch, putFetch } from "@/utils/fetch/core";
 import FormTitle from "./FormTitle";
 import FormOption from "./FormOption";
 import FormContentText from "./FormContentText";
@@ -8,37 +10,94 @@ import FormContentSelectWrapper from "./FormContentSelectWrapper";
 import Toast from "../Tost";
 import FloatingFormButtonCollection from "../FloatingFormButtonCollection";
 
+export interface IFormValues {
+  title: string;
+  select: string[];
+}
+
 interface IFormWrapperProps {
-  form: any;
+  formStateData: any;
+  templateOption: any;
+  templateBuilderId: string | string[];
   index: number;
+  newOrder: number;
+  formsStateData: any;
   modeName: string;
   foldMode: boolean;
   setModeName: any;
-  setAllFormData: any;
+  setFormsStateData: any;
 }
 
 const FormWrapper = ({
-  form,
+  formStateData,
+  templateOption,
   index,
+  newOrder,
+  templateBuilderId,
+  formsStateData,
   modeName,
   foldMode,
   setModeName,
-  setAllFormData,
+  setFormsStateData,
 }: IFormWrapperProps): JSX.Element => {
   const [mode, setMode] = useState(read);
   const [updateActive, setUpdateActive] = useState(0);
   const [toastText, setToastText] = useState("");
-  const { register, handleSubmit } = useForm();
-  const { title, type, plural, option } = form.formData;
-  const { select } = form.formContentData;
+  const [isQuater, setIsQuater] = useState(false);
+  const {
+    _id,
+    title,
+    type,
+    plural,
+    select,
+    isQuater: formIsQuater,
+  } = formStateData;
   const editMode = mode === create || mode === update;
   const editModeName = modeName === create || modeName === update;
 
-  // Fn
+  const { register, handleSubmit, getValues, control, setFocus } =
+    useForm<IFormValues>({
+      defaultValues: { title, select },
+    });
 
-  const onValid = (data) => {
-    setMode(read);
-    setModeName(read);
+  const { mutate: createMutate } = useMutation((formData: any) =>
+    postFetch("/form", JSON.stringify(formData)),
+  );
+
+  const { mutate: updateMutate } = useMutation((formData: any) =>
+    putFetch(`/form?formId=${_id}`, JSON.stringify(formData)),
+  );
+
+  const { mutate: deleteMutate } = useMutation((_id: any) =>
+    deleteFetch(`/form?formId=${_id}`),
+  );
+
+  // Fn
+  const onValid = (formData: any) => {
+    updateMutate(
+      {
+        title: formData.title,
+        isQuater,
+        select: [...formData.select],
+      },
+      {
+        onSuccess: () => {
+          setFormsStateData((prev: any) => {
+            const copyFormsStateData = JSON.parse(JSON.stringify(prev));
+            copyFormsStateData.splice(index, 1, {
+              ...prev[index],
+              title: formData.title,
+              select: [...formData.select],
+              isQuater: isQuater,
+              type: type,
+            });
+            return copyFormsStateData;
+          });
+          setMode(read);
+          setModeName(read);
+        },
+      },
+    );
   };
 
   const startPress = () => {
@@ -59,14 +118,23 @@ const FormWrapper = ({
     if (editModeName && duration > 500) {
       return setToastText("폼을 저장해주세요.");
     } else if (!editModeName && duration > 500) {
-      if (title === "") {
-        setMode(create);
-        setModeName(create);
-      } else {
-        setMode(update);
-        setModeName(update);
-      }
-      return;
+      setMode(update);
+      setModeName(update);
+    }
+  };
+
+  const onQuater = () => {
+    const existingIndex = formsStateData.findIndex(
+      (form: any) => form.isQuater === true,
+    );
+    if (existingIndex === -1 && isQuater === false) {
+      setIsQuater((prev: boolean) => !prev);
+    } else if (existingIndex !== -1 && isQuater === true) {
+      setIsQuater((prev: boolean) => !prev);
+    } else if (existingIndex === -1 && isQuater === true) {
+      setIsQuater((prev: boolean) => !prev);
+    } else if (existingIndex !== -1 && isQuater === false) {
+      setToastText("이미 지정된 폼의 쿼터를 취소해주세요.");
     }
   };
 
@@ -75,25 +143,48 @@ const FormWrapper = ({
   };
 
   const onDelete = () => {
-    setAllFormData((prev: any) => {
-      const copyAllFormData = [...prev];
-      copyAllFormData.splice(index, 1);
-      return copyAllFormData;
+    deleteMutate(_id, {
+      onSuccess: () => {
+        setFormsStateData((prev: any) => {
+          const copyFormData = [...prev];
+          copyFormData.splice(index, 1);
+          return copyFormData;
+        });
+        setMode(read);
+        setModeName(read);
+      },
     });
-    setMode(read);
-    setModeName(read);
   };
 
   const onDuplicate = () => {
-    setAllFormData((prev: any) => {
-      const copyAllFormData = [...prev];
-      copyAllFormData.push({
-        ...form,
-        formData: { ...form.formData, order: prev.length + 1 },
-      });
-      return copyAllFormData;
-    });
+    const copiedForm = getValues();
+
+    createMutate(
+      {
+        title: copiedForm.title,
+        select: [...copiedForm.select],
+        plural,
+        type,
+        order: newOrder,
+        templateId: templateBuilderId,
+      },
+      {
+        onSuccess: (data) => {
+          setFormsStateData((prev: any) => {
+            const copyFormData = [...prev];
+            copyFormData.push({ ...data });
+            return copyFormData;
+          });
+        },
+      },
+    );
   };
+
+  useEffect(() => {
+    if (formIsQuater) {
+      return setIsQuater(true);
+    }
+  }, []);
 
   return (
     <>
@@ -108,18 +199,29 @@ const FormWrapper = ({
         onMouseUp={endPress}
       >
         <div className="pb-n-xlg ml-n-sm pt-n-sm">
-          <FormTitle register={register} index={index} editMode={editMode} />
+          <FormTitle
+            title={title}
+            register={register}
+            index={index}
+            editMode={editMode}
+          />
           <div className={`flex ${"옵션 및 로직이 있으면" ? "" : "ml-n-xl"}`}>
             {"옵션 및 로직이 있으면" ? <FormOption /> : null}
             {type === "select" ? (
               <FormContentSelectWrapper
+                index={index}
+                isQuater={isQuater}
+                onQuater={onQuater}
                 editMode={editMode}
                 register={register}
+                setFocus={setFocus}
+                getValues={getValues}
+                control={control}
                 select={select}
-                setAllFormData={setAllFormData}
+                setFormsStateData={setFormsStateData}
               />
             ) : (
-              <FormContentText register={register} editMode={editMode} />
+              <FormContentText editMode={editMode} />
             )}
           </div>
         </div>

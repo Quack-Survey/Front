@@ -1,25 +1,41 @@
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldValues, UseFormRegister, useFormContext } from "react-hook-form";
+import { IFormValues } from "./FormWrapper";
 import Image from "next/image";
 
 interface IFormContentSelectProps {
   editMode: boolean;
+  formIndex: number;
   index: number;
-  selectData: any;
-  setSelectData: any;
-  register: UseFormRegister<FieldValues>;
+  fieldsLength: number;
+  field: any;
+  setFormsStateData: any;
+  setFocusNumber: any;
+  register: UseFormRegister<IFormValues>;
+  remove: (index?: number | number[]) => void;
 }
 
 const FormContentSelect = ({
   editMode,
+  formIndex,
   index,
-  selectData,
-  setSelectData,
+  fieldsLength,
+  field,
+  setFormsStateData,
+  setFocusNumber,
   register,
+  remove,
 }: IFormContentSelectProps): JSX.Element => {
   const deleteInputForm = () => {
-    const copySelectData = [...selectData];
-    copySelectData.splice(index, 1);
-    setSelectData(copySelectData);
+    remove(index);
+    setFormsStateData((prev: any) => {
+      const copyFormsStateData = JSON.parse(JSON.stringify(prev));
+      copyFormsStateData[formIndex].select.splice(index, 1);
+      return copyFormsStateData;
+    });
+  };
+
+  const handleFocusNumber = () => {
+    setFocusNumber(index);
   };
 
   return (
@@ -37,14 +53,15 @@ const FormContentSelect = ({
           className="mx-n-sm w-full shrink-0 bg-inherit text-n-sm outline-none"
           type="text"
           placeholder="보기를 작성해주세요"
-          {...register(`select_${index}`, {
+          {...register(`select.${index}`, {
             required: "보기를 작성해주세요.",
           })}
+          onFocus={handleFocusNumber}
           disabled={!editMode}
           maxLength={18}
         />
       </div>
-      {editMode && selectData.length > 1 ? (
+      {editMode && fieldsLength > 1 ? (
         <button type="button" onClick={deleteInputForm}>
           <Image
             className="mx-n-sm cursor-pointer"

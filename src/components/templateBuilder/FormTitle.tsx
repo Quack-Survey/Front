@@ -1,12 +1,15 @@
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
+import { IFormValues } from "./FormWrapper";
 
 interface IFormTitleProps {
+  title: string;
   index: number;
   editMode: boolean;
-  register: UseFormRegister<FieldValues>;
+  register: UseFormRegister<IFormValues>;
 }
 
 const FormTitle = ({
+  title,
   index,
   editMode,
   register,
@@ -31,6 +34,7 @@ const FormTitle = ({
         {...register("title", {
           required: "제목을 작성해주세요.",
         })}
+        defaultValue={title}
         placeholder="제목을 작성해주세요."
         disabled={!editMode}
         maxLength={60}

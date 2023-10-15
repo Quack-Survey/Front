@@ -1,15 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ToggleButton from "../ToggleButton";
 
-interface ITemplateTargetNumberProps {}
+interface ITemplateTargetNumberProps {
+  register: any;
+  errors: any;
+  resetField: any;
+  targetNumber: number;
+}
 
-const TemplateTargetNumber = ({}: ITemplateTargetNumberProps): JSX.Element => {
+const TemplateTargetNumber = ({
+  register,
+  errors,
+  resetField,
+  targetNumber,
+}: ITemplateTargetNumberProps): JSX.Element => {
   const [toggle, setToggle] = useState(false);
 
   const handleToggleButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // 만약 목표응답수의 데이터가 0이아니면 toggle 버튼은 on상태로
     e.preventDefault();
     setToggle((prev) => !prev);
+    resetField("targetNumber");
   };
+
+  const onlyNumbers = (value: string) => {
+    const regex = /^[0-9]+$/;
+    if (!regex.test(value)) {
+      return "숫자를 입력해주세요.";
+    }
+    return;
+  };
+
+  useEffect(() => {
+    if (targetNumber !== 0) {
+      setToggle((prev) => !prev);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -18,10 +44,23 @@ const TemplateTargetNumber = ({}: ITemplateTargetNumberProps): JSX.Element => {
         <ToggleButton toggle={toggle} handleToggleButton={handleToggleButton} />
       </div>
       <input
-        className="rounded-n-sm border border-n-gray px-[5px] py-[4px] outline-none disabled:bg-n-light-gray"
+        className="mb-[4px] rounded-n-sm border border-n-gray px-[5px] py-[4px] text-center outline-none disabled:bg-n-light-gray"
+        {...register("targetNumber", {
+          validate: (value: string) =>
+            toggle ? onlyNumbers(value) : undefined,
+        })}
         placeholder="내용을 입력해주세요."
+        defaultValue={toggle ? targetNumber : ""}
+        maxLength={3}
         disabled={!toggle}
       />
+      <span
+        className={`h-[12px] text-n-xs ${
+          errors?.targetNumber ? "text-n-red" : "text-black"
+        }`}
+      >
+        {errors.targetNumber?.message}
+      </span>
     </div>
   );
 };

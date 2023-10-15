@@ -2,6 +2,7 @@ import Image from "next/image";
 
 interface IToolbarTypeCaseProp {
   modeName: string; //type
+  isQuater: boolean;
   onFocusUp: () => void;
   onFocusDown: () => void;
   onDuplicate?: () => void;
@@ -11,13 +12,21 @@ interface IToolbarTypeCaseProp {
 
 const ToolbarTypeCase = ({
   modeName,
+  isQuater,
   onFocusUp,
   onFocusDown,
   onDuplicate,
   onQuater,
   onEnter,
 }: IToolbarTypeCaseProp): JSX.Element => {
-  const imageName = ["down", "up", "duplicate", "quater", "enter", "confirm"];
+  const imageName = [
+    "down",
+    "up",
+    "duplicate",
+    `${isQuater ? "quater_b" : "quater"}`,
+    "enter",
+    "confirm",
+  ];
   const toolPartLeft = [onFocusDown, onFocusUp, onDuplicate, onQuater];
   const toolPartRight = [onEnter];
 

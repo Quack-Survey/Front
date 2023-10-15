@@ -1,46 +1,90 @@
-import { useState } from "react";
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { Control, UseFormRegister, useFieldArray } from "react-hook-form";
+import { IFormValues } from "./FormWrapper";
 import Image from "next/image";
 import ToolbarTypeCase from "../ToolbarTypingCase";
 import FormContentSelect from "./FormContentSelect";
 
 interface IFormContentSelectWrapperProps {
+  index: number;
   select: string[];
   editMode: boolean;
-  setAllFormData: any;
-  register: UseFormRegister<FieldValues>;
+  isQuater: boolean;
+  setFormsStateData: any;
+  onQuater: any;
+  register: UseFormRegister<IFormValues>;
+  setFocus: any;
+  getValues: any;
+  control: Control<IFormValues | any>;
 }
 
 const FormContentSelectWrapper = ({
+  index,
   select,
   editMode,
-  setAllFormData,
+  isQuater,
+  setFormsStateData,
+  onQuater,
   register,
+  setFocus,
+  getValues,
+  control,
 }: IFormContentSelectWrapperProps): JSX.Element => {
-  const [selectData, setSelectData] = useState([...select]);
+  const [focusNumber, setFocusNumber] = useState(0);
+
+  const { fields, append, remove } = useFieldArray({
+    name: "select",
+    control: control,
+  });
 
   const createInputForm = () => {
-    const copySelectData = [...selectData];
-    copySelectData.push("");
-    setSelectData(copySelectData);
+    append("");
+    setFormsStateData((prev: any) => {
+      const copyAllFormsStateData = JSON.parse(JSON.stringify(prev));
+      copyAllFormsStateData[index].select.push("");
+      return copyAllFormsStateData;
+    });
   };
 
   const onDuplicate = () => {
-    const copySelectData = [...selectData];
-    copySelectData.push(selectData[selectData.length - 1]);
-    setSelectData(copySelectData);
+    const previousSelect = getValues().select;
+    const duplicateLastInput = previousSelect[previousSelect.length - 1];
+    append(duplicateLastInput);
+    setFormsStateData((prev: any) => {
+      const copyFormsStateData = JSON.parse(JSON.stringify(prev));
+      copyFormsStateData[index].select.push(select[select.length - 1]);
+      return copyFormsStateData;
+    });
   };
+
+  const onFocusUp = () => {
+    setFocus(`select.${focusNumber - 1}`, { shouldSelect: true });
+  };
+
+  const onFocusDown = () => {
+    setFocus(`select.${focusNumber + 1}`, { shouldSelect: true });
+  };
+
+  useEffect(() => {
+    if (fields.length === 0) {
+      append("");
+    }
+  }, []);
 
   return (
     <>
       <div className="w-full space-y-n-sm pb-n-md ">
-        {selectData?.map((a, i) => (
+        {fields?.map((field, i) => (
           <FormContentSelect
-            key={i}
-            selectData={selectData}
-            setSelectData={setSelectData}
+            key={field.id}
+            remove={remove}
+            field={field}
+            setFocusNumber={setFocusNumber}
+            fieldsLength={fields.length}
+            setFormsStateData={setFormsStateData}
             editMode={editMode}
             register={register}
+            formIndex={index}
             index={i}
           />
         ))}
@@ -62,8 +106,12 @@ const FormContentSelectWrapper = ({
       </div>
       {editMode ? (
         <ToolbarTypeCase
+          isQuater={isQuater}
+          onFocusUp={onFocusUp}
+          onFocusDown={onFocusDown}
           onDuplicate={onDuplicate}
           onEnter={createInputForm}
+          onQuater={onQuater}
           modeName="form"
         />
       ) : null}

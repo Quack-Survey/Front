@@ -15,8 +15,7 @@ const TemplateBuilder: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [foldMode, setFoldMode] = useState(false);
   const [modeName, setModeName] = useState(read);
-
-  const { data, isLoading, error } = useQuery([templateBuilderId], () =>
+  const { data, isLoading } = useQuery([templateBuilderId], () =>
     getFetch(`/template/properties?templateId=${templateBuilderId}`),
   );
 
@@ -44,6 +43,7 @@ const TemplateBuilder: NextPage = () => {
       )}
       {modeName === read ? (
         <ToolbarInitialClickedCase
+          isOpen={isOpen}
           modeName={modeName}
           foldMode={foldMode}
           onFoldingAll={onFoldingAll}

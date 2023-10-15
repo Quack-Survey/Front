@@ -75,4 +75,14 @@ const putFetch: IPostFetch = async (url, body) => {
   }
 };
 
-export { getFetch, postFetch, putFetch };
+const deleteFetch: any = async (url, options) => {
+  try {
+    const data = await instance(url, "DELETE", options);
+
+    return data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export { getFetch, postFetch, putFetch, deleteFetch };

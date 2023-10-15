@@ -1,6 +1,12 @@
-interface ITemplateDeadLineProps {}
+interface ITemplateDeadLineProps {
+  register: any;
+  deadLine: string;
+}
 
-const TemplateDeadLine = ({}: ITemplateDeadLineProps): JSX.Element => {
+const TemplateDeadLine = ({
+  register,
+  deadLine,
+}: ITemplateDeadLineProps): JSX.Element => {
   const today = new Date().toISOString().split("T")[0];
 
   return (
@@ -10,6 +16,8 @@ const TemplateDeadLine = ({}: ITemplateDeadLineProps): JSX.Element => {
       </label>
       <input
         className="rounded-n-sm border border-n-gray p-[2.5px] outline-none"
+        {...register("deadLine")}
+        defaultValue={deadLine ? deadLine.split("T")[0] : null}
         id="deadline"
         type="date"
         min={today}
