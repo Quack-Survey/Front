@@ -1,24 +1,44 @@
-interface IFormTitleProps {}
+import { UseFormRegister } from "react-hook-form";
+import { IFormValues } from "./FormWrapper";
 
-const FormTitle = ({}: IFormTitleProps): JSX.Element => {
+interface IFormTitleProps {
+  title: string;
+  index: number;
+  editMode: boolean;
+  register: UseFormRegister<IFormValues>;
+}
+
+const FormTitle = ({
+  title,
+  index,
+  editMode,
+  register,
+}: IFormTitleProps): JSX.Element => {
   const testValue = 50;
 
   return (
-    <div className="flex w-full h-auto mb-n-md">
+    <div className="mb-n-md flex h-auto w-full">
       <span
-        className={`text-n-xl text-n-dark-gray ${"수정모드 일때 border보라색으로"}`}
+        className={`text-n-xl  ${
+          editMode ? "text-n-light-blue" : "text-n-dark-gray"
+        }`}
       >
-        {"1"}
+        {index + 1}
       </span>
-      <form>
-        <textarea
-          className={`text-black w-[300px] text-n-md ml-n-md  self-end pt-[5px] bg-white outline-none resize-none ${
-            testValue < 21 ? "disabled:h-[36px] " : "disabled:text-xs"
-          }`}
-          placeholder='"하루에 몇번 정도 배가 고프십니까?"'
-          maxLength={60}
-        />
-      </form>
+      <textarea
+        className={`ml-n-md w-[300px] resize-none self-end  bg-white pt-[5px] text-n-md text-black outline-none ${
+          testValue < 21
+            ? "disabled:h-[36px] "
+            : "  disabled:h-[40px] disabled:text-xs"
+        }`}
+        {...register("title", {
+          required: "제목을 작성해주세요.",
+        })}
+        defaultValue={title}
+        placeholder="제목을 작성해주세요."
+        disabled={!editMode}
+        maxLength={60}
+      />
     </div>
   );
 };

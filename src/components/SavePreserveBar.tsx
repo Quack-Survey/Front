@@ -1,7 +1,8 @@
+import { read } from "@/constants/mode";
 import Image from "next/image";
 
 interface ISavePreserveProps {
-  modeName: string; //initial | type | preview
+  modeName?: string; //initial | type | preview
   onOption?: () => void; //[initial Mode]
   onNavigateHome?: () => void;
   onSave?: () => void;
@@ -16,11 +17,11 @@ const SavePreserveBar = ({
   onBackward,
 }: ISavePreserveProps): JSX.Element => {
   return (
-    <div>
-      {modeName === "initial" && onOption && onNavigateHome && onSave ? (
-        <div className="fixed top-0 flex h-[56px] w-full min-w-[360px] justify-between bg-n-light-black p-n-md text-n-white">
+    <div className="fixed top-0  h-[56px] w-full min-w-[360px] bg-n-light-black  p-n-md ">
+      {modeName === read ? (
+        <div className="flex   justify-between   text-n-white">
           <div className="flex gap-n-md">
-            <button onClick={onOption}>
+            <button onClick={onOption} type="button">
               <Image
                 priority
                 src="/images/more.svg"
@@ -49,9 +50,7 @@ const SavePreserveBar = ({
                 ></Image>
               </button>
             </div>
-          ) : (
-            ""
-          )}
+          ) : null}
         </div>
       )}
     </div>
@@ -59,3 +58,4 @@ const SavePreserveBar = ({
 };
 
 export default SavePreserveBar;
+// modeName === "initial" && onOption && onNavigateHome && onSave

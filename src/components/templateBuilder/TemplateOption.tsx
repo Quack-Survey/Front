@@ -4,15 +4,52 @@ import TemplateDeadLine from "./TemplateDeadLine";
 import TemplateQuater from "./TemplateQuater";
 import TemplateTargetNumber from "./TemplateTargetNumber";
 
-interface ITemplateOptionProps {}
+interface ITemplateOptionProps {
+  template: any;
+  templateOption: any;
+  formsStateData: any;
+  register: any;
+  setValue: any;
+  errors: any;
+  resetField: any;
+}
 
-const TemplateOption = ({}: ITemplateOptionProps): JSX.Element => {
+const TemplateOption = ({
+  template,
+  templateOption,
+  formsStateData,
+  register,
+  setValue,
+  errors,
+  resetField,
+}: ITemplateOptionProps): JSX.Element => {
+  const selectTypeForms = formsStateData?.filter(
+    (form: any) => form?.type === "select",
+  );
+
+  const existingIndex = selectTypeForms?.findIndex(
+    (form: any) => form?._id === templateOption?.formId,
+  );
+
   return (
-    <form className="flex flex-col w-[400px] space-y-n-lg">
-      <TemplateDeadLine />
-      <TemplateTargetNumber />
-      <TemplateQuater />
-    </form>
+    <div className="flex flex-col space-y-n-lg">
+      <TemplateDeadLine deadLine={template.deadLine} register={register} />
+      <TemplateTargetNumber
+        targetNumber={template.targetNumber}
+        register={register}
+        errors={errors}
+        resetField={resetField}
+      />
+      <TemplateQuater
+        existingIndex={existingIndex}
+        templateOption={templateOption}
+        register={register}
+        setValue={setValue}
+        resetField={resetField}
+        errors={errors}
+        selectTypeForms={selectTypeForms}
+      />
+    </div>
   );
 };
 
