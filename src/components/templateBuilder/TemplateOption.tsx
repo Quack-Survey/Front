@@ -6,25 +6,29 @@ import TemplateTargetNumber from "./TemplateTargetNumber";
 
 interface ITemplateOptionProps {
   template: any;
-  quater: any;
+  templateOption: any;
   formsStateData: any;
   register: any;
+  setValue: any;
   errors: any;
   resetField: any;
 }
 
 const TemplateOption = ({
   template,
-  quater,
+  templateOption,
   formsStateData,
   register,
+  setValue,
   errors,
   resetField,
 }: ITemplateOptionProps): JSX.Element => {
-  // 만약 데이터가 있으면 toggle on
+  const selectTypeForms = formsStateData?.filter(
+    (form: any) => form?.type === "select",
+  );
 
-  const isQuaterFormsStateData = formsStateData.filter(
-    (form: any) => form.isQuater === true,
+  const existingIndex = selectTypeForms?.findIndex(
+    (form: any) => form?._id === templateOption?.formId,
   );
 
   return (
@@ -37,11 +41,13 @@ const TemplateOption = ({
         resetField={resetField}
       />
       <TemplateQuater
-        quater={quater}
+        existingIndex={existingIndex}
+        templateOption={templateOption}
         register={register}
+        setValue={setValue}
         resetField={resetField}
         errors={errors}
-        isQuaterFormStateData={isQuaterFormsStateData[0]}
+        selectTypeForms={selectTypeForms}
       />
     </div>
   );

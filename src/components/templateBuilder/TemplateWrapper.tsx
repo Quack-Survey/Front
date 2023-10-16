@@ -45,7 +45,10 @@ const TemplateWrapper = ({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
+    setError,
+    clearErrors,
     reset,
     resetField,
   } = useForm({ mode: "onChange" });
@@ -81,18 +84,19 @@ const TemplateWrapper = ({
     deleteFetch(`/templateOption?templateOptionId=${_id}`),
   );
 
-  const onValid = ({ deadLine, targetNumber, quater }: any) => {
-    const isQuaterFormsStateData = formsStateData.filter(
-      (form: any) => form.isQuater === true,
-    );
-    // const sum = quater?.reduce((acc, value) => acc + parseInt(value, 10), 0);
+  const onValid = ({ deadLine, targetNumber, formId, title, quater }: any) => {
+    const sum = quater?.reduce((acc, value) => acc + parseInt(value, 10), 0);
 
-    // if (sum !== 100) {
-    //   const errorMessage = "합이 100이 되게 해주세요.";
-    //   setError("sum", { type: "manual", message: errorMessage });
-    //   return;
-    // }
-    console.log(targetNumber);
+    if (quater && sum !== 100) {
+      const errorMessage = "합이 100이 되게 해주세요.";
+      setError("sum", { type: "manual", message: errorMessage });
+      setTimeout(() => {
+        clearErrors("sum");
+      }, 3000);
+      return;
+    }
+
+    console.log({ deadLine, targetNumber, formId, title, quater });
 
     updateTemplateMutate(
       {
@@ -114,7 +118,7 @@ const TemplateWrapper = ({
       createTemplateOptionMutate(
         {
           quater: [...quater],
-          formId: isQuaterFormsStateData[0]._id,
+          formId,
         },
         {
           onSuccess: () => {
@@ -136,7 +140,7 @@ const TemplateWrapper = ({
       updateTemplateOptionMutate(
         {
           quater: [...quater],
-          formId: isQuaterFormsStateData[0]._id,
+          formId,
         },
         {
           onSuccess: () => {
@@ -205,7 +209,7 @@ const TemplateWrapper = ({
   };
 
   useEffect(() => {
-    setTemplateStateData((prev) => {
+    setTemplateStateData((prev: any) => {
       return {
         ...prev,
         ...template,
@@ -281,8 +285,9 @@ const TemplateWrapper = ({
         {isOpen ? (
           <TemplateOption
             template={template}
-            quater={templateOption[0]?.quater}
+            templateOption={templateOption[0]}
             register={register}
+            setValue={setValue}
             errors={errors}
             resetField={resetField}
             formsStateData={formsStateData}

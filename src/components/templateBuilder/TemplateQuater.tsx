@@ -1,35 +1,45 @@
 import { useState, useEffect } from "react";
+import { Controller } from "react-hook-form";
 import Image from "next/image";
 import ToggleButton from "../ToggleButton";
 
 interface ITemplateQuaterProps {
-  quater: any;
-  isQuaterFormStateData: any;
+  existingIndex: number;
+  templateOption: any;
   register: any;
+  setValue: any;
   errors: any;
   resetField: any;
+  selectTypeForms: any;
 }
 
 const TemplateQuater = ({
-  quater,
-  isQuaterFormStateData,
+  existingIndex,
+  templateOption,
   register,
+  setValue,
   errors,
   resetField,
+  selectTypeForms,
 }: ITemplateQuaterProps): JSX.Element => {
   const [toggle, setToggle] = useState(false);
+  const [index, setIndex] = useState(0);
 
   const errorMessage = errors?.quater?.filter(
     (error: any) => error !== undefined,
   );
 
-  const handleToggleButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // 만약 quater데이터 값이 들어와있으면 토글버튼 on상태로.
-    e.preventDefault();
-    if (!isQuaterFormStateData) return;
-    setToggle((prev) => !prev);
-
+  const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const numberSelectedValue = Number(e.target.value);
+    setIndex(numberSelectedValue);
+    setValue("formId", selectTypeForms[numberSelectedValue]._id);
     resetField("quater", { quater: [] });
+  };
+
+  const handleToggleButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setToggle((prev) => !prev);
+    resetField("quater");
   };
 
   const validateNumbers = (value: string) => {
@@ -40,8 +50,12 @@ const TemplateQuater = ({
   };
 
   useEffect(() => {
-    if (quater) {
+    if (templateOption?.quater) {
+      setIndex(existingIndex);
       setToggle((prev) => !prev);
+      register("formId", { value: templateOption?.formId });
+    } else {
+      register("formId", { value: selectTypeForms[index]._id });
     }
   }, []);
 
@@ -59,10 +73,21 @@ const TemplateQuater = ({
         {errors?.sum?.message}
       </span>
       <div className="border-x border-t border-n-gray bg-n-light-gray ">
-        <p className="border-b border-n-gray py-[5px] text-center">
-          {isQuaterFormStateData?.title}
-        </p>
-        {isQuaterFormStateData?.select.map((text: string, i: number) => {
+        <select
+          className="w-full border-b border-n-gray bg-n-light-gray py-[5px] text-center focus:outline-none"
+          {...register("title")}
+          onChange={handleChangeSelect}
+          defaultValue={existingIndex}
+        >
+          {selectTypeForms?.map((form: any, i: number) => {
+            return (
+              <option key={form._id} value={i}>
+                {form.title}
+              </option>
+            );
+          })}
+        </select>
+        {selectTypeForms[index]?.select.map((text: string, i: number) => {
           return (
             <div className="flex border-b border-n-gray" key={i}>
               <label
@@ -88,7 +113,11 @@ const TemplateQuater = ({
                     validate: (value: string) =>
                       toggle ? validateNumbers(value) : undefined,
                   })}
-                  defaultValue={toggle && quater ? quater[i] : ""}
+                  defaultValue={
+                    toggle && templateOption?.quater
+                      ? templateOption?.quater[i]
+                      : ""
+                  }
                   maxLength={2}
                   id={`select ${i}`}
                 />

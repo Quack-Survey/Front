@@ -9,9 +9,7 @@ interface IFormContentSelectWrapperProps {
   index: number;
   select: string[];
   editMode: boolean;
-  isQuater: boolean;
   setFormsStateData: any;
-  onQuater: any;
   register: UseFormRegister<IFormValues>;
   setFocus: any;
   getValues: any;
@@ -22,9 +20,7 @@ const FormContentSelectWrapper = ({
   index,
   select,
   editMode,
-  isQuater,
   setFormsStateData,
-  onQuater,
   register,
   setFocus,
   getValues,
@@ -106,12 +102,10 @@ const FormContentSelectWrapper = ({
       </div>
       {editMode ? (
         <ToolbarTypeCase
-          isQuater={isQuater}
           onFocusUp={onFocusUp}
           onFocusDown={onFocusDown}
           onDuplicate={onDuplicate}
           onEnter={createInputForm}
-          onQuater={onQuater}
           modeName="form"
         />
       ) : null}

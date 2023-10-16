@@ -43,7 +43,6 @@ const FormWrapper = ({
   const [mode, setMode] = useState(read);
   const [updateActive, setUpdateActive] = useState(0);
   const [toastText, setToastText] = useState("");
-  const [isQuater, setIsQuater] = useState(false);
   const {
     _id,
     title,
@@ -77,7 +76,6 @@ const FormWrapper = ({
     updateMutate(
       {
         title: formData.title,
-        isQuater,
         select: [...formData.select],
       },
       {
@@ -88,7 +86,6 @@ const FormWrapper = ({
               ...prev[index],
               title: formData.title,
               select: [...formData.select],
-              isQuater: isQuater,
               type: type,
             });
             return copyFormsStateData;
@@ -120,21 +117,6 @@ const FormWrapper = ({
     } else if (!editModeName && duration > 500) {
       setMode(update);
       setModeName(update);
-    }
-  };
-
-  const onQuater = () => {
-    const existingIndex = formsStateData.findIndex(
-      (form: any) => form.isQuater === true,
-    );
-    if (existingIndex === -1 && isQuater === false) {
-      setIsQuater((prev: boolean) => !prev);
-    } else if (existingIndex !== -1 && isQuater === true) {
-      setIsQuater((prev: boolean) => !prev);
-    } else if (existingIndex === -1 && isQuater === true) {
-      setIsQuater((prev: boolean) => !prev);
-    } else if (existingIndex !== -1 && isQuater === false) {
-      setToastText("이미 지정된 폼의 쿼터를 취소해주세요.");
     }
   };
 
@@ -180,12 +162,6 @@ const FormWrapper = ({
     );
   };
 
-  useEffect(() => {
-    if (formIsQuater) {
-      return setIsQuater(true);
-    }
-  }, []);
-
   return (
     <>
       <form
@@ -210,8 +186,6 @@ const FormWrapper = ({
             {type === "select" ? (
               <FormContentSelectWrapper
                 index={index}
-                isQuater={isQuater}
-                onQuater={onQuater}
                 editMode={editMode}
                 register={register}
                 setFocus={setFocus}

@@ -17,7 +17,6 @@ const TemplateTargetNumber = ({
   const [toggle, setToggle] = useState(false);
 
   const handleToggleButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // 만약 목표응답수의 데이터가 0이아니면 toggle 버튼은 on상태로
     e.preventDefault();
     setToggle((prev) => !prev);
     resetField("targetNumber");
