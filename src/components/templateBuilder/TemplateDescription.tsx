@@ -37,7 +37,6 @@ const TemplateDescription = ({
           className="bg-white text-n-lg outline-none"
           placeholder="제목을 작성해주세요."
           defaultValue={title}
-          // value={title !== "" ? title : null!}
           disabled={!editMode}
           maxLength={19}
           {...register("title", {
@@ -48,7 +47,6 @@ const TemplateDescription = ({
           className={` resize-none bg-white text-n-sm outline-none`}
           placeholder="해당 설문조사에 대한 설명을 작성해주세요."
           defaultValue={description}
-          // value={description !== "" ? description : null!}
           disabled={!editMode}
           {...register("description", {
             required: "설명란을 작성해주세요.",
