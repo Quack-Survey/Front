@@ -1,8 +1,10 @@
 "use client";
+
+import { NextPage } from "next";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import Image from "next/image";
 
-const LogicHome = (): JSX.Element => {
+const LogicManagement: NextPage = (): JSX.Element => {
   return (
     <div>
       <div className="fixed top-0 flex w-full min-w-[360px] flex-col items-center justify-center border-b border-solid border-n-light-gray bg-n-black p-n-md text-n-white">
@@ -118,4 +120,4 @@ const LogicHome = (): JSX.Element => {
   );
 };
 
-export default LogicHome;
+export default LogicManagement;
