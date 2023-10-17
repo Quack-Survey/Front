@@ -35,17 +35,17 @@ const FloatingFormButtonCollection = ({
             onClick={onCreateSingle}
             imageName={"single"}
             imageSize={18}
-          ></FloatingFormButton>
+          />
           <FloatingFormButton
             onClick={onCreatePlural}
             imageName={"plural"}
             imageSize={24}
-          ></FloatingFormButton>
+          />
           <FloatingFormButton
             onClick={onCreateDescription}
             imageName={"description"}
             imageSize={24}
-          ></FloatingFormButton>
+          />
         </div>
       ) : (
         <div>
@@ -54,18 +54,18 @@ const FloatingFormButtonCollection = ({
               onClick={onDuplicate}
               imageName={"duplicate_black"}
               imageSize={18}
-            ></FloatingFormButton>
+            />
             <FloatingFormButton
               onClick={onDelete}
               imageName={"trash"}
               imageSize={24}
-            ></FloatingFormButton>
+            />
             <FloatingFormButton
               onClick={onCreateLogic}
               isBlocked={isBlocked}
               imageName={"logic"}
               imageSize={24}
-            ></FloatingFormButton>
+            />
           </div>
         </div>
       )}

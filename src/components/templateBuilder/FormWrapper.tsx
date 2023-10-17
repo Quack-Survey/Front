@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
 import { useMutation } from "@tanstack/react-query";
 import { deleteFetch, postFetch, putFetch } from "@/utils/fetch/core";
+import { useRouter } from "next/navigation";
 import FormTitle from "./FormTitle";
 import FormOption from "./FormOption";
 import FormContentText from "./FormContentText";
@@ -21,7 +22,6 @@ interface IFormWrapperProps {
   templateBuilderId: string | string[];
   index: number;
   newOrder: number;
-  formsStateData: any;
   modeName: string;
   foldMode: boolean;
   setModeName: any;
@@ -34,12 +34,12 @@ const FormWrapper = ({
   index,
   newOrder,
   templateBuilderId,
-  formsStateData,
   modeName,
   foldMode,
   setModeName,
   setFormsStateData,
 }: IFormWrapperProps): JSX.Element => {
+  const router = useRouter();
   const [mode, setMode] = useState(read);
   const [updateActive, setUpdateActive] = useState(0);
   const [toastText, setToastText] = useState("");
@@ -162,6 +162,10 @@ const FormWrapper = ({
     );
   };
 
+  const onCreateLogic = () => {
+    router.push(`/logic/${templateBuilderId}`);
+  };
+
   return (
     <>
       <form
@@ -208,6 +212,7 @@ const FormWrapper = ({
           modeName={update}
           onDelete={onDelete}
           onDuplicate={onDuplicate}
+          onCreateLogic={onCreateLogic}
         />
       ) : null}
     </>

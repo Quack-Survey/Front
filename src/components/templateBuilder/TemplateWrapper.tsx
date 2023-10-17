@@ -96,8 +96,6 @@ const TemplateWrapper = ({
       return;
     }
 
-    console.log({ deadLine, targetNumber, formId, title, quater });
-
     updateTemplateMutate(
       {
         deadLine: deadLine !== "" ? deadLine : null,
@@ -254,7 +252,6 @@ const TemplateWrapper = ({
               key={formStateData._id}
               index={i}
               newOrder={newOrder}
-              formsStateData={formsStateData}
               templateOption={templateOption}
               templateBuilderId={templateBuilderId}
               formStateData={formStateData}

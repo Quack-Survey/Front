@@ -1,121 +1,53 @@
 "use client";
 
 import { NextPage } from "next";
+import { useQuery } from "@tanstack/react-query";
+import { getFetch } from "@/utils/fetch/core";
+import { useParams, useRouter } from "next/navigation";
 import NextPreviousButton from "@/components/NextPreviousButton";
-import Image from "next/image";
+import LogicList from "@/components/logic/LogicList";
 
 const LogicManagement: NextPage = (): JSX.Element => {
+  const { templateId } = useParams();
+  const router = useRouter();
+
+  const { data: forms, isLoading: formsLoading } = useQuery([templateId], () =>
+    getFetch(`/form/all?templateId=${templateId}`),
+  );
+
+  const { data: logics, isLoading: logicsLoading } = useQuery(
+    [templateId, "logics"],
+    () => getFetch(`/logic/?templateId=${templateId}`),
+  );
+
+  const onSingleClick = () => {
+    router.push(`/templateBuilder/${templateId}`);
+  };
+
   return (
     <div>
-      <div className="fixed top-0 flex w-full min-w-[360px] flex-col items-center justify-center border-b border-solid border-n-light-gray bg-n-black p-n-md text-n-white">
-        <div className="flex h-[48px] gap-n-sm">
-          본 세션의 팀 프로그램에 참여하시겠습니까?
-        </div>
-        <div className="flex w-full items-center justify-start gap-n-sm">
-          <div className=" h-[47px] w-[47px] rounded-md bg-n-blue">
-            <div className="flex justify-end pr-[3px] pt-[3px]">
-              <Image
-                src="/images/delete.svg"
-                alt=""
-                width={13}
-                height={13}
-              ></Image>
-            </div>
-            <div className="flex items-center justify-center">
-              <Image
-                src="/images/logic.svg"
-                alt=""
-                width={25}
-                height={25}
-              ></Image>
-            </div>
-          </div>
-          <div className=" h-[47px] w-[47px] rounded-md bg-n-gray">
-            <div className="flex justify-end pr-[3px] pt-[3px]">
-              <Image
-                src="/images/delete.svg"
-                alt=""
-                width={13}
-                height={13}
-              ></Image>
-            </div>
-            <div className="flex items-center justify-center">
-              <Image
-                src="/images/logic.svg"
-                alt=""
-                width={25}
-                height={25}
-              ></Image>
-            </div>
-          </div>
-        </div>
+      <div className="fixed top-0 flex w-full min-w-[360px] flex-col items-center justify-center border-n-light-gray bg-n-black p-n-md text-n-white">
+        <span className="text-n-lg">로직설정</span>
+      </div>
+      <div className="mt-[80px] space-y-n-md">
+        {!formsLoading && Array.isArray(forms)
+          ? forms?.map((form: any, i: number) => (
+              <LogicList
+                key={form._id}
+                index={i}
+                form={form}
+                logics={logics}
+                logicsLoading={logicsLoading}
+                templateId={templateId}
+              />
+            ))
+          : null}
       </div>
       <NextPreviousButton
-        modeName={"double"}
-        buttonText={["취소", "저장"]}
-        onLeftClick={() => {}}
-        onRightClick={() => {}}
-      ></NextPreviousButton>
-      <div className="mt-[128px] flex h-full min-h-[445px] flex-col gap-n-sm bg-n-light-gray">
-        <div className="flex h-[63px] w-full bg-n-white">
-          <div className="h-full w-[53px] text-center text-n-xl font-bold leading-[63px]">
-            1
-          </div>
-          <div className="flex w-full flex-col ">
-            <div className="h-[26px] w-auto text-n-xs leading-[26px]">예</div>
-            <div className="flex h-[37px] items-center gap-n-md">
-              <div className="flex gap-n-xs text-n-md text-n-blue">
-                <Image
-                  src="/images/link_blue.svg"
-                  alt=""
-                  height={20}
-                  width={20}
-                />
-                3
-              </div>
-              <div className="flex gap-n-xs text-n-md text-n-black">
-                <Image
-                  src="/images/link_black.svg"
-                  alt=""
-                  height={20}
-                  width={20}
-                />
-                -
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex h-[63px] w-full bg-n-white">
-          <div className="h-full w-[53px] text-center text-n-xl font-bold leading-[63px]">
-            2
-          </div>
-          <div className="flex w-full flex-col ">
-            <div className="h-[26px] w-auto text-n-xs leading-[26px]">
-              아니오
-            </div>
-            <div className="flex h-[37px] items-center gap-n-md">
-              <div className="flex gap-n-xs text-n-md text-n-blue">
-                <Image
-                  src="/images/link_blue.svg"
-                  alt=""
-                  height={20}
-                  width={20}
-                />
-                -
-              </div>
-              <div className="flex gap-n-xs text-n-md text-n-black">
-                <Image
-                  src="/images/link_black.svg"
-                  alt=""
-                  height={20}
-                  width={20}
-                />
-                5
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        modeName={"single"}
+        buttonText={["취소"]}
+        onSingleClick={onSingleClick}
+      />
     </div>
   );
 };
