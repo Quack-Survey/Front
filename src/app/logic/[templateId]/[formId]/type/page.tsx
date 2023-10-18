@@ -2,24 +2,19 @@
 
 import { useState } from "react";
 import { NextPage } from "next";
-import NextPreviousButton from "@/components/NextPreviousButton";
 import Image from "next/image";
+import Link from "next/link";
+import NextPreviousButton from "@/components/NextPreviousButton";
 
 const SettingLogicType: NextPage = (): JSX.Element => {
-  const [logicToggle, setLogicToggle] = useState({
-    moving: false,
-    filter: false,
-  });
+  const [logicType, setLogicType] = useState("");
+  const logicTypeList = ["moving", "filter"];
 
   const handleLogicToggle = (type: string) => {
     if (type === "moving") {
-      setLogicToggle((prev) => {
-        return { ...prev, moving: !prev.moving, filter: prev.moving };
-      });
+      setLogicType("moving");
     } else {
-      setLogicToggle((prev) => {
-        return { ...prev, filter: !prev.filter, moving: prev.filter };
-      });
+      setLogicType("filter");
     }
   };
 
@@ -53,50 +48,41 @@ const SettingLogicType: NextPage = (): JSX.Element => {
         적용할 로직 타입을 선택하세요
       </p>
       <div className="m-n-lg flex justify-center gap-n-md">
-        <button
-          className={`flex h-[145px] w-[145px] cursor-pointer items-center justify-center border border-n-gray ${
-            logicToggle.moving
-              ? "bg-n-light-gray text-n-gray"
-              : "bg-white text-black"
-          } `}
-          onClick={() => handleLogicToggle("moving")}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <Image
-              src={`/images/moving_${logicToggle.moving ? "g" : "b"}.svg`}
-              priority
-              width={45}
-              height={45}
-              alt=""
-            />
-            이동로직
-          </div>
-        </button>
-        <button
-          className={`flex h-[145px] w-[145px] cursor-pointer items-center justify-center border border-n-gray  ${
-            logicToggle.filter
-              ? "bg-n-light-gray text-n-gray"
-              : "bg-white text-black"
-          }`}
-          onClick={() => handleLogicToggle("filter")}
-        >
-          <div className="flex flex-col items-center justify-center ">
-            <Image
-              src={`/images/filter_${logicToggle.filter ? "g" : "b"}.svg`}
-              priority
-              width={45}
-              height={45}
-              alt=""
-            />
-            필터로직
-          </div>
-        </button>
+        {logicTypeList.map((type: string) => {
+          return (
+            <button
+              key={type}
+              className={`flex h-[145px] w-[145px] cursor-pointer items-center justify-center border border-n-gray ${
+                logicType === type
+                  ? "bg-n-light-gray text-n-gray"
+                  : "bg-white text-black"
+              } `}
+              onClick={() => handleLogicToggle(type)}
+            >
+              <div className="flex flex-col items-center justify-center">
+                <Image
+                  src={`/images/${type}_${logicType === type ? "g" : "b"}.svg`}
+                  priority
+                  width={45}
+                  height={45}
+                  alt=""
+                />
+                {type === "moving" ? "이동로직" : "필터로직"}
+              </div>
+            </button>
+          );
+        })}
       </div>
-      <NextPreviousButton
-        modeName={"single"}
-        buttonText={["다음"]}
-        onClick={() => {}}
-      />
+      {logicType !== "" ? (
+        <Link
+          href={{
+            pathname: "select",
+            query: { type: logicType },
+          }}
+        >
+          <NextPreviousButton modeName={"single"} buttonText={["다음"]} />
+        </Link>
+      ) : null}
     </div>
   );
 };

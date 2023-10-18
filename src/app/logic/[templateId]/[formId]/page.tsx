@@ -1,16 +1,23 @@
 "use client";
 
 import { NextPage } from "next";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getFetch } from "@/utils/fetch/core";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import Image from "next/image";
 
 const LogicFormManagement: NextPage = (): JSX.Element => {
+  const { formId } = useParams();
+
+  // const { data, isLoading, error } = useQuery([formId], () =>
+  //   getFetch(`/form?formId=${formId}`),
+  // );
+
   return (
     <div>
       <div className="fixed top-0 flex w-full min-w-[360px] flex-col items-center justify-center border-b border-solid border-n-light-gray bg-n-black p-n-md text-n-white">
-        <div className="flex h-[48px] gap-n-sm">
-          본 세션의 팀 프로그램에 참여하시겠습니까?
-        </div>
+        <div className="flex h-[48px] gap-n-sm">{"mock"}</div>
         <div className="flex w-full items-center justify-start gap-n-sm">
           <div className=" h-[47px] w-[47px] rounded-md bg-n-blue">
             <div className="flex justify-end pr-[3px] pt-[3px]">
@@ -55,7 +62,7 @@ const LogicFormManagement: NextPage = (): JSX.Element => {
         buttonText={["취소", "저장"]}
         onLeftClick={() => {}}
         onRightClick={() => {}}
-      ></NextPreviousButton>
+      />
       <div className="mt-[128px] flex h-full min-h-[445px] flex-col gap-n-sm bg-n-light-gray">
         <div className="flex h-[63px] w-full bg-n-white">
           <div className="h-full w-[53px] text-center text-n-xl font-bold leading-[63px]">

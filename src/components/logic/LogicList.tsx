@@ -33,7 +33,9 @@ const LogicList = ({
 
   return (
     <Link
-      href={`${templateId}/${form._id}/management`}
+      href={
+        isLogic ? `${templateId}/${form._id}` : `${templateId}/${form._id}/type`
+      }
       className="flex cursor-pointer justify-between  border bg-white hover:bg-n-light-gray"
     >
       <div className="flex items-center">

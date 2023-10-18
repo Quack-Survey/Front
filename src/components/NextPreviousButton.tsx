@@ -15,7 +15,7 @@ const NextPreviousButton = ({
 }: INextPreviousButtonProps): JSX.Element => {
   return (
     <div>
-      {modeName === "single" && onSingleClick ? (
+      {modeName === "single" ? (
         <div className="fixed bottom-0 flex h-[56px] w-full min-w-[360px] text-center leading-[56px] text-n-white">
           <button
             className={`h-full w-full min-w-[181px]  text-center text-n-xl leading-[56px]  ${
