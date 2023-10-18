@@ -1,13 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NextPage } from "next";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import NextPreviousButton from "@/components/NextPreviousButton";
 
 const SettingLogicType: NextPage = (): JSX.Element => {
+  const { templateId } = useParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [logicType, setLogicType] = useState("");
+  const [form, setForm] = useState<any>({});
+
   const logicTypeList = ["moving", "filter"];
 
   const handleLogicToggle = (type: string) => {
@@ -18,12 +25,20 @@ const SettingLogicType: NextPage = (): JSX.Element => {
     }
   };
 
+  useEffect(() => {
+    if (!searchParams.get("form")) {
+      router.replace(`/logic/${templateId}`);
+    } else {
+      setForm((prev: any) => {
+        return { ...prev, ...JSON.parse(searchParams.get("form") as string) };
+      });
+    }
+  }, []);
+
   return (
     <div>
       <div className="fixed top-0 flex h-[56px] w-full min-w-[360px] items-center justify-center border-b border-solid border-n-light-gray bg-n-white">
-        <div className="flex gap-n-sm">
-          본 세션의 팀 프로그램에 참여하시겠습니까?
-        </div>
+        <div className="flex gap-n-sm">{form.title}</div>
       </div>
       <div className="m-auto mt-[56px] flex h-[100px] w-[250px]">
         <div className="flex w-full items-center">
@@ -77,7 +92,7 @@ const SettingLogicType: NextPage = (): JSX.Element => {
         <Link
           href={{
             pathname: "select",
-            query: { type: logicType },
+            query: { type: logicType, form: searchParams.get("form") },
           }}
         >
           <NextPreviousButton modeName={"single"} buttonText={["다음"]} />

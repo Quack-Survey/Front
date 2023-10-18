@@ -33,9 +33,12 @@ const LogicList = ({
 
   return (
     <Link
-      href={
-        isLogic ? `${templateId}/${form._id}` : `${templateId}/${form._id}/type`
-      }
+      href={{
+        pathname: isLogic
+          ? `${templateId}/${form._id}`
+          : `${templateId}/${form._id}/type`,
+        query: { form: JSON.stringify(form) },
+      }}
       className="flex cursor-pointer justify-between  border bg-white hover:bg-n-light-gray"
     >
       <div className="flex items-center">
