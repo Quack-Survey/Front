@@ -5,7 +5,9 @@ import { NextPage } from "next";
 import { useRouter, useSearchParams, useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import LogicHeader from "@/components/logic/LogicHeader";
 import NextPreviousButton from "@/components/NextPreviousButton";
+import LogicProcess from "@/components/logic/LogicProcess";
 
 const SettingLogicType: NextPage = (): JSX.Element => {
   const { templateId } = useParams();
@@ -13,8 +15,8 @@ const SettingLogicType: NextPage = (): JSX.Element => {
   const searchParams = useSearchParams();
 
   const [logicType, setLogicType] = useState("");
-  const [form, setForm] = useState<any>({});
 
+  const form = JSON.parse(searchParams.get("selector") as string);
   const logicTypeList = ["moving", "filter"];
 
   const handleLogicToggle = (type: string) => {
@@ -28,40 +30,16 @@ const SettingLogicType: NextPage = (): JSX.Element => {
   useEffect(() => {
     if (!searchParams.get("form")) {
       router.replace(`/logic/${templateId}`);
-    } else {
-      setForm((prev: any) => {
-        return { ...prev, ...JSON.parse(searchParams.get("form") as string) };
-      });
     }
   }, []);
 
   return (
     <div>
-      <div className="fixed top-0 flex h-[56px] w-full min-w-[360px] items-center justify-center border-b border-solid border-n-light-gray bg-n-white">
-        <div className="flex gap-n-sm">{form.title}</div>
-      </div>
-      <div className="m-auto mt-[56px] flex h-[100px] w-[250px]">
-        <div className="flex w-full items-center">
-          <div className="flex h-[37px] w-[37px] shrink-0 items-center justify-center rounded-full bg-n-light-black p-1.5">
-            <Image src="/images/type.svg" alt="" height={18} width={18} />
-          </div>
-          <div className="h-1 w-full bg-n-light-gray"></div>
-        </div>
-        <div className="flex w-full items-center">
-          <div className="flex h-[37px] w-[37px] shrink-0 items-center justify-center rounded-full bg-n-light-gray p-1.5">
-            <Image src="/images/check.svg" alt="" height={18} width={18} />
-          </div>
-          <div className="h-1 w-full bg-n-light-gray"></div>
-        </div>
-        <div className="flex items-center">
-          <div className="flex h-[37px] w-[37px] shrink-0 items-center justify-center rounded-full bg-n-light-gray p-1.5">
-            <Image src="/images/link.svg" alt="" height={18} width={18} />
-          </div>
-        </div>
-      </div>
-      <p className="text-center text-n-xl font-bold">
-        적용할 로직 타입을 선택하세요
-      </p>
+      <LogicHeader title={form?.title} />
+      <LogicProcess
+        modeName={"type"}
+        createDescription={"적용할 로직 타입을 선택하세요"}
+      />
       <div className="m-n-lg flex justify-center gap-n-md">
         {logicTypeList.map((type: string) => {
           return (
