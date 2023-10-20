@@ -4,17 +4,26 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getFetch, postFetch } from "@/utils/fetch/core";
+import { Form, Logic } from "@/types/mongooseType";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import LogicHeader from "@/components/logic/LogicHeader";
 import LogicProcess from "@/components/logic/LogicProcess";
 import Toast from "@/components/Tost";
+
+interface ILogicData {
+  type: string | null;
+  selector: string[];
+  formId: string | string[];
+  templateId: string | string[];
+  appliedFormId: string;
+}
 
 const SettingLogicForm = (): JSX.Element => {
   const { templateId, formId } = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [forms, setForms] = useState<any>([]);
+  const [forms, setForms] = useState<Form[]>([]);
   const [isSelectedForm, setIsSelectedForm] = useState<boolean[]>([]);
   const [toastText, setToastText] = useState("");
 
@@ -26,7 +35,7 @@ const SettingLogicForm = (): JSX.Element => {
     getFetch(`/form/all?templateId=${templateId}`),
   );
 
-  const { mutate } = useMutation((logicData: any) =>
+  const { mutate } = useMutation((logicData: ILogicData) =>
     postFetch("/logic", JSON.stringify(logicData)),
   );
 
@@ -90,9 +99,9 @@ const SettingLogicForm = (): JSX.Element => {
   useEffect(() => {
     if (!isLoading) {
       const ascendingOrderForm = data.filter(
-        (rawForm: any) => rawForm.order > form?.order,
+        (rawForm: Form) => rawForm.order > form?.order,
       );
-      setForms((prev: any) => {
+      setForms((prev) => {
         const copyForms = [...prev];
         copyForms.push(...ascendingOrderForm);
         return copyForms;
@@ -115,7 +124,7 @@ const SettingLogicForm = (): JSX.Element => {
         createDescription={"링크될 문항을 설정하세요"}
       />
       <div className="mt-n-lg flex w-full flex-wrap justify-center gap-n-sm">
-        {forms?.map((formData: any, i: number) => {
+        {forms?.map((formData: Form, i: number) => {
           return (
             <div
               key={formData._id}

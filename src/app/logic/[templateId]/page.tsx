@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { useQuery } from "@tanstack/react-query";
 import { getFetch } from "@/utils/fetch/core";
 import { useParams, useRouter } from "next/navigation";
+import { Form } from "@/types/mongooseType";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import LogicList from "@/components/logic/LogicList";
 
@@ -30,7 +31,6 @@ const LogicManagement: NextPage = (): JSX.Element => {
   const onSingleClick = () => {
     router.push(`/templateBuilder/${templateId}`);
   };
-  console.log(forms);
 
   return (
     <div>
@@ -39,7 +39,7 @@ const LogicManagement: NextPage = (): JSX.Element => {
       </div>
       <div className="mt-[80px] space-y-n-md">
         {!formsLoading && Array.isArray(forms)
-          ? forms?.map((form: any, i: number) => (
+          ? forms?.map((form: Form, i: number) => (
               <LogicList
                 key={`${form._id} i`}
                 index={i}

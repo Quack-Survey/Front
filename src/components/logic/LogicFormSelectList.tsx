@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteFetch, getFetch, putFetch } from "@/utils/fetch/core";
+import { Form, Logic } from "@/types/mongooseType";
 import Image from "next/image";
 
 interface ISelector {
@@ -13,8 +14,8 @@ interface ILogicFormSelectListProps {
   order: number;
   select: string;
   selector: string[];
-  form: any;
-  logic: any;
+  form: Form;
+  logic: Logic;
   templateId: string | string[];
 }
 

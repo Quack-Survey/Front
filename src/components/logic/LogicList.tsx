@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { Form, Logic } from "@/types/mongooseType";
 import Image from "next/image";
 import Link from "next/link";
 
 interface ILogicListProps {
-  form: any;
-  logics: any;
+  form: Form;
+  logics: Logic[];
   templateId: string | string[];
   index: number;
   logicsLoading: boolean;
@@ -22,7 +23,7 @@ const LogicList = ({
   useEffect(() => {
     if (!logicsLoading) {
       const existingIndex = logics?.findIndex(
-        (logic: any) => logic.formId === form._id,
+        (logic: Logic) => logic.formId === form._id,
       );
       if (existingIndex !== -1) {
         setIsLogic(true);
