@@ -17,6 +17,7 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
   const [toastText, setToastText] = useState("");
 
   const form = JSON.parse(searchParams.get("form") as string);
+  const type = searchParams.get("type");
 
   const handleIsSelected = (index: number) => {
     setIsSelected((prev) => {
@@ -38,9 +39,9 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
         .filter((item) => item !== undefined);
 
       router.push(
-        `/logic/${templateId}/${
-          form._id
-        }/form?selector=${selector}&form=${JSON.stringify(form)}`,
+        `/logic/${templateId}/${form._id}/form?selector=${JSON.stringify(
+          selector,
+        )}&form=${searchParams.get("form")}&type=${type}`,
       );
     } else {
       setToastText("보기를 선택해주세요.");
@@ -52,7 +53,7 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!searchParams.get("type") || !searchParams.get("form")) {
+    if (!type || !form) {
       router.replace(`/logic/${templateId}`);
     } else {
       setIsSelected((prev) => {
@@ -64,6 +65,7 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
         return copyIsSelected;
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

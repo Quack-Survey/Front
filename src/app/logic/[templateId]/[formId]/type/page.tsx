@@ -31,6 +31,7 @@ const SettingLogicType: NextPage = (): JSX.Element => {
     if (!searchParams.get("form")) {
       router.replace(`/logic/${templateId}`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -1,128 +1,78 @@
 "use client";
 
 import { NextPage } from "next";
-import { useParams } from "next/navigation";
+import { useEffect } from "react";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getFetch } from "@/utils/fetch/core";
+import LogicFormSelectList from "@/components/logic/LogicFormSelectList";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import Image from "next/image";
 
 const LogicFormManagement: NextPage = (): JSX.Element => {
-  const { formId } = useParams();
+  const { templateId, formId } = useParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // const { data, isLoading, error } = useQuery([formId], () =>
-  //   getFetch(`/form?formId=${formId}`),
-  // );
+  const form = JSON.parse(searchParams.get("form") as string);
+
+  const { data: logic, isLoading } = useQuery([formId], () =>
+    getFetch(`/logic?formId=${formId}`),
+  );
+
+  const onLeftClick = () => {
+    router.push(`/logic/${templateId}?formId=${formId}`);
+  };
+
+  const onRightClick = () => {
+    router.push(`/logic/${templateId}?formId=${formId}`);
+  };
+
+  useEffect(() => {
+    if (!form) {
+      router.back();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div>
-      <div className="fixed top-0 flex w-full min-w-[360px] flex-col items-center justify-center border-b border-solid border-n-light-gray bg-n-black p-n-md text-n-white">
-        <div className="flex h-[48px] gap-n-sm">{"mock"}</div>
-        <div className="flex w-full items-center justify-start gap-n-sm">
-          <div className=" h-[47px] w-[47px] rounded-md bg-n-blue">
-            <div className="flex justify-end pr-[3px] pt-[3px]">
-              <Image
-                src="/images/delete.svg"
-                alt=""
-                width={13}
-                height={13}
-              ></Image>
-            </div>
-            <div className="flex items-center justify-center">
-              <Image
-                src="/images/logic.svg"
-                alt=""
-                width={25}
-                height={25}
-              ></Image>
-            </div>
-          </div>
-          <div className=" h-[47px] w-[47px] rounded-md bg-n-gray">
-            <div className="flex justify-end pr-[3px] pt-[3px]">
-              <Image
-                src="/images/delete.svg"
-                alt=""
-                width={13}
-                height={13}
-              ></Image>
-            </div>
-            <div className="flex items-center justify-center">
-              <Image
-                src="/images/logic.svg"
-                alt=""
-                width={25}
-                height={25}
-              ></Image>
-            </div>
-          </div>
+    <div className="h-screen bg-n-light-gray">
+      <div className="fixed top-0 z-50 flex w-full min-w-[360px] flex-col items-center justify-center border-b border-solid border-n-light-gray bg-n-black p-n-xs text-n-white">
+        <div className="my-n-md flex">
+          <Image src="/images/logo_black.png" alt="" width={50} height={32} />
+          <Image
+            src="/images/quack_survey_black.png"
+            alt=""
+            width={200}
+            height={32}
+          />
         </div>
+        <div className="flex h-[48px] gap-n-sm">{form?.title}</div>
       </div>
+      {!isLoading ? (
+        <div className="mt-[117px] flex h-full min-h-[445px] flex-col gap-n-sm bg-n-light-gray">
+          {form?.select.map((select: string, i: number) => {
+            return (
+              <LogicFormSelectList
+                key={i}
+                select={select}
+                form={form}
+                selector={logic?.selector}
+                order={i}
+                type={logic?.type!}
+                logic={logic}
+                templateId={templateId}
+              />
+            );
+          })}
+        </div>
+      ) : null}
       <NextPreviousButton
         modeName={"double"}
-        buttonText={["취소", "저장"]}
-        onLeftClick={() => {}}
-        onRightClick={() => {}}
+        buttonText={["취소", "확인"]}
+        onLeftClick={onLeftClick}
+        onRightClick={onRightClick}
       />
-      <div className="mt-[128px] flex h-full min-h-[445px] flex-col gap-n-sm bg-n-light-gray">
-        <div className="flex h-[63px] w-full bg-n-white">
-          <div className="h-full w-[53px] text-center text-n-xl font-bold leading-[63px]">
-            1
-          </div>
-          <div className="flex w-full flex-col ">
-            <div className="h-[26px] w-auto text-n-xs leading-[26px]">예</div>
-            <div className="flex h-[37px] items-center gap-n-md">
-              <div className="flex gap-n-xs text-n-md text-n-blue">
-                <Image
-                  src="/images/link_blue.svg"
-                  alt=""
-                  height={20}
-                  width={20}
-                />
-                3
-              </div>
-              <div className="flex gap-n-xs text-n-md text-n-black">
-                <Image
-                  src="/images/link_black.svg"
-                  alt=""
-                  height={20}
-                  width={20}
-                />
-                -
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex h-[63px] w-full bg-n-white">
-          <div className="h-full w-[53px] text-center text-n-xl font-bold leading-[63px]">
-            2
-          </div>
-          <div className="flex w-full flex-col ">
-            <div className="h-[26px] w-auto text-n-xs leading-[26px]">
-              아니오
-            </div>
-            <div className="flex h-[37px] items-center gap-n-md">
-              <div className="flex gap-n-xs text-n-md text-n-blue">
-                <Image
-                  src="/images/link_blue.svg"
-                  alt=""
-                  height={20}
-                  width={20}
-                />
-                -
-              </div>
-              <div className="flex gap-n-xs text-n-md text-n-black">
-                <Image
-                  src="/images/link_black.svg"
-                  alt=""
-                  height={20}
-                  width={20}
-                />
-                5
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

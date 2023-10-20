@@ -29,7 +29,9 @@ const Toast = ({ toastText, onClose, editMode }: IToastProps): JSX.Element => {
     <div
       className={
         visible
-          ? "z-100 fixed bottom-[65px] left-[16px] flex h-[43px] min-w-[150px] max-w-[240px] items-center gap-n-sm overflow-hidden bg-n-white p-n-md text-n-md text-n-red shadow-n-md transition-all"
+          ? `z-100 fixed bottom-[65px] left-[16px] flex h-[43px] min-w-[150px] max-w-[240px] items-center gap-n-sm overflow-hidden bg-n-white p-n-md text-n-md  ${
+              editMode ? "text-n-black" : "text-n-red"
+            } shadow-n-md transition-all`
           : "overflow-hiddenmin-w-[150px] z-100 shadow-n-base fixed bottom-[65px] left-[16px] flex h-[43px] max-w-[240px] items-center gap-n-sm bg-n-white p-n-md text-n-md opacity-0 transition-all"
       }
     >

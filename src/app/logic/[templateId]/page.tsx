@@ -11,18 +11,26 @@ const LogicManagement: NextPage = (): JSX.Element => {
   const { templateId } = useParams();
   const router = useRouter();
 
-  const { data: forms, isLoading: formsLoading } = useQuery([templateId], () =>
-    getFetch(`/form/all?templateId=${templateId}`),
+  const { data: forms, isLoading: formsLoading } = useQuery(
+    [templateId],
+    () => getFetch(`/form/all?templateId=${templateId}`),
+    {
+      cacheTime: 0,
+    },
   );
 
   const { data: logics, isLoading: logicsLoading } = useQuery(
     [templateId, "logics"],
-    () => getFetch(`/logic/?templateId=${templateId}`),
+    () => getFetch(`/logic/all?templateId=${templateId}`),
+    {
+      cacheTime: 0,
+    },
   );
 
   const onSingleClick = () => {
     router.push(`/templateBuilder/${templateId}`);
   };
+  console.log(forms);
 
   return (
     <div>
@@ -33,7 +41,7 @@ const LogicManagement: NextPage = (): JSX.Element => {
         {!formsLoading && Array.isArray(forms)
           ? forms?.map((form: any, i: number) => (
               <LogicList
-                key={form._id}
+                key={`${form._id} i`}
                 index={i}
                 form={form}
                 logics={logics}
