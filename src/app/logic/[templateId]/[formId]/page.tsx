@@ -3,8 +3,7 @@
 import { NextPage } from "next";
 import { useEffect } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { getFetch } from "@/utils/fetch/core";
+import { useGetLogics } from "@/hooks/queries/useGetLogics";
 import LogicFormSelectList from "@/components/logic/LogicFormSelectList";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import Image from "next/image";
@@ -16,8 +15,9 @@ const LogicFormManagement: NextPage = (): JSX.Element => {
 
   const form = JSON.parse(searchParams.get("form") as string);
 
-  const { data: logic, isLoading } = useQuery([formId], () =>
-    getFetch(`/logic?formId=${formId}`),
+  const { data: logic, isLoading } = useGetLogics(
+    `/logic?formId=${formId}`,
+    formId,
   );
 
   const onLeftClick = () => {

@@ -1,10 +1,10 @@
 "use client";
 
 import { NextPage } from "next";
-import { useQuery } from "@tanstack/react-query";
-import { getFetch } from "@/utils/fetch/core";
 import { useParams, useRouter } from "next/navigation";
 import { Form } from "@/types/mongooseType";
+import { useGetLogics } from "@/hooks/queries/useGetLogics";
+import { useGetForms } from "@/hooks/queries/useGetForms";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import LogicList from "@/components/logic/LogicList";
 
@@ -12,20 +12,16 @@ const LogicManagement: NextPage = (): JSX.Element => {
   const { templateId } = useParams();
   const router = useRouter();
 
-  const { data: forms, isLoading: formsLoading } = useQuery(
-    [templateId],
-    () => getFetch(`/form/all?templateId=${templateId}`),
-    {
-      cacheTime: 0,
-    },
+  const { data: forms, isLoading: formsLoading } = useGetForms(
+    `/form/all?templateId=${templateId}`,
+    templateId,
+    0,
   );
 
-  const { data: logics, isLoading: logicsLoading } = useQuery(
-    [templateId, "logics"],
-    () => getFetch(`/logic/all?templateId=${templateId}`),
-    {
-      cacheTime: 0,
-    },
+  const { data: logics, isLoading: logicsLoading } = useGetLogics(
+    `/logic/all?templateId=${templateId}`,
+    templateId,
+    0,
   );
 
   const onSingleClick = () => {

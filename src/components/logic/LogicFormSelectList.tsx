@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteFetch, getFetch, putFetch } from "@/utils/fetch/core";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteFetch, putFetch } from "@/utils/fetch/core";
 import { Form, Logic } from "@/types/mongooseType";
+import { useGetForms } from "@/hooks/queries/useGetForms";
 import Image from "next/image";
 
 interface ISelector {
@@ -36,20 +37,26 @@ const LogicFormSelectList = ({
   const existingIndex = selector?.findIndex((item: string) => item === select);
   const isLogic = existingIndex === -1 ? false : true;
 
-  const { data: appliedForm, isLoading } = useQuery([logic.appliedFormId], () =>
-    getFetch(`/form?formId=${logic.appliedFormId}`),
+  const { data: appliedForm, isLoading } = useGetForms(
+    `/form?formId=${logic.appliedFormId}`,
+    logic.appliedFormId,
   );
 
-  const { mutate } = useMutation((selectorData: ISelector) =>
-    putFetch(`/logic?logicId=${logic._id}`, JSON.stringify(selectorData)),
+  const { mutate: updateMutate } = useMutation(
+    (selectorData: ISelector) =>
+      putFetch(`/logic?logicId=${logic._id}`, JSON.stringify(selectorData)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([form._id, "logics"]);
+      },
+    },
   );
 
   const { mutate: deleteMutate } = useMutation(
     (logicId: string) => deleteFetch(`/logic?logicId=${logicId}`),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([templateId]);
-        queryClient.invalidateQueries([templateId, "logics"]);
+        router.push(`/logic/${templateId}?formId=${form._id}`);
       },
     },
   );
@@ -57,14 +64,7 @@ const LogicFormSelectList = ({
   const handleCreateLogic = () => {
     if (!isOpen) return;
     const copySelector = [...selector, select];
-    mutate(
-      { selector: copySelector },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries([form._id]);
-        },
-      },
-    );
+    updateMutate({ selector: copySelector });
   };
 
   const handleDeleteLogic = () => {
@@ -72,24 +72,12 @@ const LogicFormSelectList = ({
     const existingSelectorIndex = selector.findIndex((item) => item === select);
     const copySelector = [...selector];
     copySelector.splice(existingSelectorIndex, 1);
-
     const filterSelector = selector.filter((item) => item !== select);
 
     if (copySelector.length === 0) {
-      deleteMutate(logic._id, {
-        onSuccess: () => {
-          router.push(`/logic/${templateId}?formId=${form._id}`);
-        },
-      });
+      deleteMutate(logic._id);
     } else {
-      mutate(
-        { selector: filterSelector },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries([form._id]);
-          },
-        },
-      );
+      updateMutate({ selector: filterSelector });
     }
   };
 

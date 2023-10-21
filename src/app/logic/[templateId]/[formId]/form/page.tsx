@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { getFetch, postFetch } from "@/utils/fetch/core";
-import { Form, Logic } from "@/types/mongooseType";
+import { useMutation } from "@tanstack/react-query";
+import { postFetch } from "@/utils/fetch/core";
+import { Form } from "@/types/mongooseType";
+import { NextPage } from "next";
+import { useGetForms } from "@/hooks/queries/useGetForms";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import LogicHeader from "@/components/logic/LogicHeader";
 import LogicProcess from "@/components/logic/LogicProcess";
@@ -18,7 +20,7 @@ interface ILogicData {
   appliedFormId: string;
 }
 
-const SettingLogicForm = (): JSX.Element => {
+const SettingLogicForm: NextPage = (): JSX.Element => {
   const { templateId, formId } = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -31,8 +33,9 @@ const SettingLogicForm = (): JSX.Element => {
   const selector = JSON.parse(searchParams.get("selector") as string);
   const type = searchParams.get("type");
 
-  const { data, isLoading } = useQuery([templateId, "form"], () =>
-    getFetch(`/form/all?templateId=${templateId}`),
+  const { data, isLoading } = useGetForms(
+    `/form/all?templateId=${templateId}`,
+    templateId,
   );
 
   const { mutate } = useMutation((logicData: ILogicData) =>
