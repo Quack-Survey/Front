@@ -1,7 +1,7 @@
 interface INextPreviousButtonProps {
   modeName: string; //single | double
   buttonText: string[];
-  onClick?: () => void; //[single Mode]
+  onSingleClick?: () => void; //[single Mode]
   onLeftClick?: () => void; //[double Mode]
   onRightClick?: () => void;
 }
@@ -9,17 +9,21 @@ interface INextPreviousButtonProps {
 const NextPreviousButton = ({
   modeName,
   buttonText,
-  onClick,
+  onSingleClick,
   onLeftClick,
   onRightClick,
 }: INextPreviousButtonProps): JSX.Element => {
   return (
     <div>
-      {modeName === "single" && onClick ? (
+      {modeName === "single" ? (
         <div className="fixed bottom-0 flex h-[56px] w-full min-w-[360px] text-center leading-[56px] text-n-white">
           <button
-            className="h-full w-full min-w-[181px] bg-n-blue text-center text-n-xl leading-[56px] text-[white]"
-            onClick={onClick}
+            className={`h-full w-full min-w-[181px]  text-center text-n-xl leading-[56px]  ${
+              buttonText[0] === "취소"
+                ? " border border-n-gray bg-white text-n-dark-gray"
+                : "bg-n-blue text-[white]"
+            }`}
+            onClick={onSingleClick}
           >
             {buttonText[0]}
           </button>
