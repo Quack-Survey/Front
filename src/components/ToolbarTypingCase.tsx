@@ -4,9 +4,8 @@ interface IToolbarTypeCaseProp {
   modeName: string; //type
   onFocusUp: () => void;
   onFocusDown: () => void;
-  onDuplicate: () => void;
-  onConfirm: () => void;
-  onEnter: () => void;
+  onDuplicate?: () => void;
+  onEnter?: () => void;
 }
 
 const ToolbarTypeCase = ({
@@ -14,20 +13,21 @@ const ToolbarTypeCase = ({
   onFocusUp,
   onFocusDown,
   onDuplicate,
-  onConfirm,
   onEnter,
 }: IToolbarTypeCaseProp): JSX.Element => {
-  const imageName = ["duplicate_white", "down", "up", "enter", "confirm"];
-  const toolPartLeft = [onDuplicate, onFocusDown, onFocusUp];
-  const toolPartRight = [onEnter, onConfirm];
+  const imageName = ["down", "up", "duplicate", "enter", "confirm"];
+  const toolPartLeft = [onFocusDown, onFocusUp, onDuplicate];
+  const toolPartRight = [onEnter];
+
   return (
-    <div>
-      {modeName === "type" ? (
-        <div className="fixed bottom-[0px] flex h-[49px] w-full min-w-[360px] justify-between bg-n-light-black px-n-md py-n-sm">
+    <>
+      {modeName === "form" ? (
+        <div className="fixed bottom-[0px] left-0 flex h-[49px] w-full min-w-[360px] justify-between bg-n-light-black px-n-md py-n-sm">
           <div className="flex items-center gap-n-sm">
             {toolPartLeft.map((tool, index) => (
               <button
-                key={index}
+                key={imageName[index]}
+                type="button"
                 onClick={tool}
                 className="flex h-[34px] w-[34px] items-center justify-center rounded-[5px] bg-[#7f7f7f]"
               >
@@ -44,6 +44,7 @@ const ToolbarTypeCase = ({
           <div className="flex items-center gap-n-sm">
             <div className="mr-n-sm h-[30px] w-[1px] bg-n-dark-gray"></div>
             <button
+              type="button"
               onClick={toolPartRight[0]}
               className="flex h-[34px] w-[34px] items-center justify-center rounded-[5px] bg-n-blue"
             >
@@ -56,7 +57,7 @@ const ToolbarTypeCase = ({
               />
             </button>
             <button
-              onClick={toolPartRight[1]}
+              type="submit"
               className="flex h-[34px] w-[51px]  items-center justify-center rounded-[5px] bg-n-purple"
             >
               <Image
@@ -70,9 +71,25 @@ const ToolbarTypeCase = ({
           </div>
         </div>
       ) : (
-        ""
+        <div className="fixed bottom-[0px] left-0 flex h-[49px] w-full min-w-[360px] justify-end bg-n-light-black px-n-md py-n-sm">
+          <div className="flex items-center gap-n-sm">
+            <div className="mr-n-sm h-[30px] w-[1px] bg-n-dark-gray"></div>
+            <button
+              type="submit"
+              className="flex h-[34px] w-[51px]  items-center justify-center rounded-[5px] bg-n-purple"
+            >
+              <Image
+                priority
+                src={`/images/${imageName[4]}.svg`}
+                alt=""
+                width={24}
+                height={24}
+              />
+            </button>
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

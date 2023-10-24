@@ -1,13 +1,21 @@
-interface IFormContentTextProps {}
+import ToolbarTypeCase from "../ToolbarTypingCase";
 
-const FormContentText = ({}: IFormContentTextProps): JSX.Element => {
+interface IFormContentTextProps {
+  editMode: boolean;
+}
+
+const FormContentText = ({ editMode }: IFormContentTextProps): JSX.Element => {
   return (
-    <form className="w-full">
-      <textarea
-        className="w-[90%] bg-white resize-none outline-none"
-        placeholder="답변을 작성해주세요."
-      />
-    </form>
+    <>
+      <div className="w-full">
+        <textarea
+          className="w-[90%] resize-none bg-white outline-none"
+          placeholder="답변을 작성해주세요."
+          disabled={true}
+        />
+      </div>
+      {editMode ? <ToolbarTypeCase modeName="text" /> : null}
+    </>
   );
 };
 

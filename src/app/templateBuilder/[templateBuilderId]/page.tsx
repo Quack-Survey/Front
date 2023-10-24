@@ -1,14 +1,55 @@
+"use client";
+
 import { NextPage } from "next";
-// import TemplateDescription from "@/components/templateBuilder/TemplateDescription";
-// import FormWrapper from "@/components/templateBuilder/FormWrapper";
-import TemplateOption from "@/components/templateBuilder/TemplateOption";
+import { useParams } from "next/navigation";
+import { useState } from "react";
+import { read } from "@/constants/mode";
+import { useQuery } from "@tanstack/react-query";
+import { getFetch } from "@/utils/fetch/core";
+import TemplateWrapper from "@/components/templateBuilder/TemplateWrapper";
+import SavePreserveBar from "@/components/SavePreserveBar";
+import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";
+
 const TemplateBuilder: NextPage = () => {
+  const { templateBuilderId } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [foldMode, setFoldMode] = useState(false);
+  const [modeName, setModeName] = useState(read);
+  const { data, isLoading } = useQuery([templateBuilderId], () =>
+    getFetch(`/template/properties?templateId=${templateBuilderId}`),
+  );
+
+  const onOption = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const onFoldingAll = () => {
+    setFoldMode((prev) => !prev);
+  };
+
   return (
-    <div className="">
-      <TemplateOption />
-      {/* <TemplateDescription />
-      <FormWrapper /> */}
-    </div>
+    <>
+      <SavePreserveBar onOption={onOption} modeName={modeName} />
+      {isLoading ? null : (
+        <TemplateWrapper
+          templateBuilderId={templateBuilderId}
+          rawTemplateData={data}
+          isOpen={isOpen}
+          onOption={onOption}
+          modeName={modeName}
+          setModeName={setModeName}
+          foldMode={foldMode}
+        />
+      )}
+      {modeName === read ? (
+        <ToolbarInitialClickedCase
+          isOpen={isOpen}
+          modeName={modeName}
+          foldMode={foldMode}
+          onFoldingAll={onFoldingAll}
+        />
+      ) : null}
+    </>
   );
 };
 

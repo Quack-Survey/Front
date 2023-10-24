@@ -1,46 +1,78 @@
+import { FieldValues, UseFormRegister, useFormContext } from "react-hook-form";
+import { IFormValues } from "./FormWrapper";
 import Image from "next/image";
 
-interface IFormContentSelectProps {}
+interface IFormContentSelectProps {
+  editMode: boolean;
+  formIndex: number;
+  index: number;
+  fieldsLength: number;
+  field: any;
+  setFormsStateData: any;
+  setFocusNumber: any;
+  register: UseFormRegister<IFormValues>;
+  remove: (index?: number | number[]) => void;
+}
 
-const FormContentSelect = ({}: IFormContentSelectProps): JSX.Element => {
+const FormContentSelect = ({
+  editMode,
+  formIndex,
+  index,
+  fieldsLength,
+  field,
+  setFormsStateData,
+  setFocusNumber,
+  register,
+  remove,
+}: IFormContentSelectProps): JSX.Element => {
+  const deleteInputForm = () => {
+    remove(index);
+    setFormsStateData((prev: any) => {
+      const copyFormsStateData = JSON.parse(JSON.stringify(prev));
+      copyFormsStateData[formIndex].select.splice(index, 1);
+      return copyFormsStateData;
+    });
+  };
+
+  const handleFocusNumber = () => {
+    setFocusNumber(index);
+  };
+
   return (
-    <div className="space-y-n-sm w-full ">
-      {[1, 2, 4, 5].map((a, i) => {
-        return (
-          <div
-            className="flex w-[85%] bg-n-light-gray rounded-n-sm  h-n-xlg items-center "
-            key={i}
-          >
-            <Image
-              className="cursor-pointer"
-              src="/images/dragging.svg"
-              width={20}
-              height={24}
-              alt=""
-              priority
-            />
-            <form className="w-[90%]">
-              <input
-                className="shrink-0 mx-n-sm w-full outline-none bg-inherit text-n-sm"
-                type="text"
-                placeholder="보기를 작성해주세요"
-                maxLength={18}
-              />
-            </form>
-            <Image
-              className="mx-n-sm cursor-pointer"
-              src="/images/delete.svg"
-              width={20}
-              height={24}
-              alt=""
-              priority
-            />
-          </div>
-        );
-      })}
-      <div className="flex w-[85%] cursor-pointer bg-n-light-gray rounded-n-sm  h-n-xlg items-center justify-center">
-        <Image src="/images/plus.svg" width={24} height={24} alt="" priority />
+    <div className="h-n-xlg flex w-[85%] items-center  rounded-n-sm bg-n-light-gray ">
+      <Image
+        className="cursor-pointer"
+        src="/images/dragging.svg"
+        width={20}
+        height={24}
+        alt=""
+        priority
+      />
+      <div className="w-[90%]">
+        <input
+          className="mx-n-sm w-full shrink-0 bg-inherit text-n-sm outline-none"
+          type="text"
+          placeholder="보기를 작성해주세요"
+          {...register(`select.${index}`, {
+            required: "보기를 작성해주세요.",
+          })}
+          onFocus={handleFocusNumber}
+          disabled={!editMode}
+          maxLength={18}
+        />
       </div>
+      {editMode && fieldsLength > 1 ? (
+        <button type="button" onClick={deleteInputForm}>
+          <Image
+            className="mx-n-sm cursor-pointer"
+            src="/images/delete.svg"
+            width={20}
+            height={24}
+            alt=""
+            priority
+          />
+        </button>
+      ) : null}
     </div>
   );
 };
