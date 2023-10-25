@@ -16,7 +16,7 @@ const SettingLogicType: NextPage = (): JSX.Element => {
 
   const [logicType, setLogicType] = useState("");
 
-  const form = JSON.parse(searchParams.get("selector") as string);
+  const form = JSON.parse(searchParams.get("form") as string);
   const logicTypeList = ["moving", "filter"];
 
   const handleLogicToggle = (type: string) => {
@@ -35,7 +35,7 @@ const SettingLogicType: NextPage = (): JSX.Element => {
   }, []);
 
   return (
-    <div>
+    <div className="min-w-[360px]">
       <LogicHeader title={form?.title} />
       <LogicProcess
         modeName={"type"}

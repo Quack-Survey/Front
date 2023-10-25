@@ -69,7 +69,7 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
   }, []);
 
   return (
-    <div>
+    <div className="min-w-[360px]">
       <LogicHeader title={form?.title} />
       <LogicProcess
         modeName="select"

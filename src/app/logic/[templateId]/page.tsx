@@ -29,8 +29,8 @@ const LogicManagement: NextPage = (): JSX.Element => {
   };
 
   return (
-    <div>
-      <div className="fixed top-0 flex w-full min-w-[360px] flex-col items-center justify-center border-n-light-gray bg-n-black p-n-md text-n-white">
+    <div className="min-w-[360px]">
+      <div className="mb-[60px]flex fixed top-0 w-full min-w-[360px] flex-col items-center justify-center border-n-light-gray bg-n-black p-n-md text-n-white">
         <span className="text-n-lg">로직설정</span>
       </div>
       <div className="mt-[80px] space-y-n-md">

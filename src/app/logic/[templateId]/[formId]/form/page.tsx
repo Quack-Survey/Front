@@ -120,30 +120,34 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
   }, [isLoading]);
 
   return (
-    <div>
-      <LogicHeader title={form?.title} />
-      <LogicProcess
-        modeName={"form"}
-        createDescription={"링크될 문항을 설정하세요"}
-      />
-      <div className="mt-n-lg flex w-full flex-wrap justify-center gap-n-sm">
-        {forms?.map((formData: Form, i: number) => {
-          return (
-            <div
-              key={formData._id}
-              className={`flex h-[56px] w-[56px]  cursor-pointer items-center justify-center border border-n-gray ${
-                isSelectedForm[i]
-                  ? "bg-n-light-gray text-n-gray"
-                  : "bg-n-white text-black"
-              }`}
-              onClick={() => handleIsSelectedForm(i)}
-            >
-              <div className="flex flex-col items-center justify-center text-n-xl">
-                {form?.order + i + 1}
-              </div>
-            </div>
-          );
-        })}
+    <>
+      <div className="flex min-w-[360px] flex-col items-center">
+        <LogicHeader title={form?.title} />
+        <LogicProcess
+          modeName={"form"}
+          createDescription={"링크될 문항을 설정하세요"}
+        />
+        <div className="flex items-center justify-center">
+          <div className="mt-n-lg flex w-full flex-wrap justify-start gap-n-sm">
+            {forms?.map((formData: Form, i: number) => {
+              return (
+                <div
+                  key={formData._id}
+                  className={`flex h-[56px] w-[56px]  cursor-pointer items-center justify-center border border-n-gray ${
+                    isSelectedForm[i]
+                      ? "bg-n-light-gray text-n-gray"
+                      : "bg-n-white text-black"
+                  }`}
+                  onClick={() => handleIsSelectedForm(i)}
+                >
+                  <div className="flex flex-col items-center justify-center text-n-xl">
+                    {form?.order + i + 1}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
       <NextPreviousButton
         modeName={"double"}
@@ -158,7 +162,7 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
           onClose={onClose}
         />
       ) : null}
-    </div>
+    </>
   );
 };
 

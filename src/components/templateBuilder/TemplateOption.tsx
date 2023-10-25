@@ -33,7 +33,7 @@ const TemplateOption = ({
 
   return (
     <div className="flex flex-col space-y-n-lg">
-      <TemplateDeadLine deadLine={template.deadLine} register={register} />
+      <TemplateDeadLine deadline={template.deadline} register={register} />
       <TemplateTargetNumber
         targetNumber={template.targetNumber}
         register={register}

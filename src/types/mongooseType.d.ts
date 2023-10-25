@@ -4,8 +4,9 @@ export interface Template {
   description: string;
   targetNumber: number;
   userId: string;
+  required: boolean;
   bookMark: boolean;
-  deadLine: Date;
+  deadline: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }

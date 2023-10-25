@@ -84,7 +84,7 @@ const TemplateWrapper = ({
     deleteFetch(`/templateOption?templateOptionId=${_id}`),
   );
 
-  const onValid = ({ deadLine, targetNumber, formId, title, quater }: any) => {
+  const onValid = ({ deadline, targetNumber, formId, title, quater }: any) => {
     const sum = quater?.reduce((acc, value) => acc + parseInt(value, 10), 0);
 
     if (quater && sum !== 100) {
@@ -98,7 +98,7 @@ const TemplateWrapper = ({
 
     updateTemplateMutate(
       {
-        deadLine: deadLine !== "" ? deadLine : null,
+        deadline: deadline !== "" ? deadline : null,
         targetNumber: targetNumber ? targetNumber : 0,
       },
       {
