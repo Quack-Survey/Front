@@ -7,7 +7,7 @@ import TemplateTargetNumber from "./TemplateTargetNumber";
 interface ITemplateOptionProps {
   template: any;
   templateOption: any;
-  formsStateData: any;
+  forms: any;
   register: any;
   setValue: any;
   errors: any;
@@ -17,15 +17,13 @@ interface ITemplateOptionProps {
 const TemplateOption = ({
   template,
   templateOption,
-  formsStateData,
+  forms,
   register,
   setValue,
   errors,
   resetField,
 }: ITemplateOptionProps): JSX.Element => {
-  const selectTypeForms = formsStateData?.filter(
-    (form: any) => form?.type === "select",
-  );
+  const selectTypeForms = forms?.filter((form: any) => form?.type === "select");
 
   const existingIndex = selectTypeForms?.findIndex(
     (form: any) => form?._id === templateOption?.formId,
@@ -33,7 +31,7 @@ const TemplateOption = ({
 
   return (
     <div className="flex flex-col space-y-n-lg">
-      <TemplateDeadLine deadLine={template.deadLine} register={register} />
+      <TemplateDeadLine deadline={template.deadline} register={register} />
       <TemplateTargetNumber
         targetNumber={template.targetNumber}
         register={register}

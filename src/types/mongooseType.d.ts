@@ -4,8 +4,9 @@ export interface Template {
   description: string;
   targetNumber: number;
   userId: string;
+  required: boolean;
   bookMark: boolean;
-  deadLine: Date;
+  deadline: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,6 +25,7 @@ export interface Form {
 }
 
 export interface templateOption {
+  length: number;
   _id: string;
   quater: string[];
   formId: string;

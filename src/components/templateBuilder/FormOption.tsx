@@ -2,21 +2,35 @@ import Image from "next/image";
 
 interface IFormOptionProps {
   editMode: boolean;
+  isLogic: boolean;
+  isTemplateOption: boolean;
 }
 
-const FormOption = ({ editMode }: IFormOptionProps): JSX.Element => {
+const FormOption = ({
+  editMode,
+  isLogic,
+  isTemplateOption,
+}: IFormOptionProps): JSX.Element => {
   return (
     <div className="mr-n-sm w-n-xl space-y-n-lg self-center">
-      {[1, 2].map((a, i) => (
+      {isLogic ? (
         <Image
-          key={i}
-          src={editMode ? "/images/quater_b.svg" : "/images/logic_g.svg"}
+          src={editMode ? "/images/logic_b.svg" : "/images/logic_g.svg"}
           width={24}
           height={24}
           alt=""
           priority
         />
-      ))}
+      ) : null}
+      {isTemplateOption ? (
+        <Image
+          src={editMode ? "/images/quater_b.svg" : "/images/quater_g.svg"}
+          width={24}
+          height={24}
+          alt=""
+          priority
+        />
+      ) : null}
     </div>
   );
 };

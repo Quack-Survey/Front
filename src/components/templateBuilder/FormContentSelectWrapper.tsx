@@ -9,7 +9,6 @@ interface IFormContentSelectWrapperProps {
   index: number;
   select: string[];
   editMode: boolean;
-  setFormsStateData: any;
   register: UseFormRegister<IFormValues>;
   setFocus: any;
   getValues: any;
@@ -18,9 +17,7 @@ interface IFormContentSelectWrapperProps {
 
 const FormContentSelectWrapper = ({
   index,
-  select,
   editMode,
-  setFormsStateData,
   register,
   setFocus,
   getValues,
@@ -35,22 +32,12 @@ const FormContentSelectWrapper = ({
 
   const createInputForm = () => {
     append("");
-    setFormsStateData((prev: any) => {
-      const copyAllFormsStateData = JSON.parse(JSON.stringify(prev));
-      copyAllFormsStateData[index].select.push("");
-      return copyAllFormsStateData;
-    });
   };
 
   const onDuplicate = () => {
     const previousSelect = getValues().select;
     const duplicateLastInput = previousSelect[previousSelect.length - 1];
     append(duplicateLastInput);
-    setFormsStateData((prev: any) => {
-      const copyFormsStateData = JSON.parse(JSON.stringify(prev));
-      copyFormsStateData[index].select.push(select[select.length - 1]);
-      return copyFormsStateData;
-    });
   };
 
   const onFocusUp = () => {
@@ -77,7 +64,6 @@ const FormContentSelectWrapper = ({
             field={field}
             setFocusNumber={setFocusNumber}
             fieldsLength={fields.length}
-            setFormsStateData={setFormsStateData}
             editMode={editMode}
             register={register}
             formIndex={index}

@@ -9,7 +9,7 @@ import SavePreserveBar from "@/components/SavePreserveBar";
 import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";
 import InitialModeScreen from "@/components/InitialModeScreen";
 
-const Template: NextPage = () => {
+const Template: NextPage = (): JSX.Element => {
   const router = useRouter();
 
   const { mutate } = useMutation((body: ITemplateData) =>

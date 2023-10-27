@@ -28,7 +28,7 @@ const SavePreserveBar = ({
                 alt=""
                 width={24}
                 height={24}
-              ></Image>
+              />
             </button>
           </div>
           <div className="flex gap-n-md">
@@ -47,7 +47,7 @@ const SavePreserveBar = ({
                   alt=""
                   width={24}
                   height={24}
-                ></Image>
+                />
               </button>
             </div>
           ) : null}

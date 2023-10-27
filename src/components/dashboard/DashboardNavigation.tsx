@@ -9,8 +9,8 @@ const DashboardNavigation = (): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onCancel = () => setIsOpen(false);
   const onSubmit = (events: any) => {
-    events.preventDefault();
-    setIsOpen(false);
+    // events.preventDefault();
+    // setIsOpen(false);
   };
 
   return (
@@ -34,7 +34,7 @@ const DashboardNavigation = (): JSX.Element => {
             isOpen={isOpen}
             submitText={"확인"}
             onCancel={onCancel}
-            onSubmit={onSubmit}
+            handleSubmit={onSubmit}
           >
             <div className="flex max-h-[150px] flex-col items-start gap-n-sm overflow-scroll text-n-sm text-n-black">
               {/* 데이터 매핑필요 */}
