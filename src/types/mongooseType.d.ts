@@ -25,6 +25,7 @@ export interface Form {
 }
 
 export interface templateOption {
+  length: number;
   _id: string;
   quater: string[];
   formId: string;

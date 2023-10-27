@@ -12,7 +12,7 @@ const LogoBar = ({ modeName }: ILogoBarProps): JSX.Element => {
           <div className="flex gap-n-sm">
             <Image src="/images/logo.png" width={43} height={20} alt="" />
             <Image
-              src="/images/quack survey.png"
+              src="/images/quack_survey.png"
               width={136}
               height={29}
               alt=""
@@ -31,7 +31,7 @@ const LogoBar = ({ modeName }: ILogoBarProps): JSX.Element => {
             />
             <Image
               priority
-              src="/images/quack survey_black.png"
+              src="/images/quack_survey_black.png"
               width={136}
               height={29}
               alt=""
