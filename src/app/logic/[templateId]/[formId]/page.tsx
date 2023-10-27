@@ -30,7 +30,11 @@ const LogicFormManagement: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     if (!form) {
-      router.back();
+      return router.back();
+    }
+
+    if (!(form._id === formId && form.templateId === templateId)) {
+      router.replace("/home");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

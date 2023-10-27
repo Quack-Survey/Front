@@ -9,7 +9,7 @@ import LogicHeader from "@/components/logic/LogicHeader";
 import LogicProcess from "@/components/logic/LogicProcess";
 
 const SettingLogicSelect: NextPage = (): JSX.Element => {
-  const { templateId } = useParams();
+  const { templateId, formId } = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -54,7 +54,7 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     if (!type || !form) {
-      router.replace(`/logic/${templateId}`);
+      return router.replace(`/logic/${templateId}`);
     } else {
       setIsSelected((prev) => {
         const copyIsSelected = [...prev];
@@ -64,6 +64,10 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
         copyIsSelected.push(...newIsSelected);
         return copyIsSelected;
       });
+    }
+
+    if (!(form._id === formId && form.templateId === templateId)) {
+      router.replace("/home");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -10,7 +10,7 @@ import NextPreviousButton from "@/components/NextPreviousButton";
 import LogicProcess from "@/components/logic/LogicProcess";
 
 const SettingLogicType: NextPage = (): JSX.Element => {
-  const { templateId } = useParams();
+  const { templateId, formId } = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -29,8 +29,13 @@ const SettingLogicType: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     if (!searchParams.get("form")) {
-      router.replace(`/logic/${templateId}`);
+      return router.replace(`/logic/${templateId}`);
     }
+
+    if (!(form._id === formId && form.templateId === templateId)) {
+      router.replace("/home");
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

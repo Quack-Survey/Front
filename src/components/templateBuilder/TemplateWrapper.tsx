@@ -6,6 +6,7 @@ import {
   defaultTextFormData,
 } from "@/constants/defaultValue";
 import { deleteFetch, getFetch, postFetch, putFetch } from "@/utils/fetch/core";
+import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { Form } from "@/types/mongooseType";
@@ -38,6 +39,7 @@ const TemplateWrapper = ({
 }: ITemplateWrapperProps): JSX.Element => {
   const queryClient = useQueryClient();
   const [newOrder, setNewOrder] = useState(0);
+  const router = useRouter();
 
   const {
     register,
@@ -195,7 +197,7 @@ const TemplateWrapper = ({
 
   // Effect
   useEffect(() => {
-    if (!isLoadingForm) {
+    if (!isLoadingForm && Array.isArray(forms)) {
       const order =
         forms?.length === 0 ? 1 : forms[forms?.length - 1].order + 1;
       setNewOrder(order);
@@ -208,6 +210,14 @@ const TemplateWrapper = ({
     }
   }, [isOpen, reset]);
 
+  useEffect(() => {
+    if (!isLoadingTemplate) {
+      if (!(template._id === templateBuilderId)) {
+        router.replace("/home");
+      }
+    }
+  }, [isLoadingTemplate]);
+
   return (
     <>
       <div className="mx-auto max-w-[360px] bg-n-light-gray">
@@ -219,7 +229,7 @@ const TemplateWrapper = ({
             setModeName={setModeName}
           />
         ) : null}
-        {!isLoadingForm ? (
+        {!isLoadingForm && Array.isArray(forms) ? (
           <div className="mb-[60px] space-y-n-md">
             {forms?.map((form: Form, i: number) => (
               <FormWrapper
