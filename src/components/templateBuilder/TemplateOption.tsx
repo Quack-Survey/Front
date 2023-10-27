@@ -7,7 +7,7 @@ import TemplateTargetNumber from "./TemplateTargetNumber";
 interface ITemplateOptionProps {
   template: any;
   templateOption: any;
-  formsStateData: any;
+  forms: any;
   register: any;
   setValue: any;
   errors: any;
@@ -17,15 +17,13 @@ interface ITemplateOptionProps {
 const TemplateOption = ({
   template,
   templateOption,
-  formsStateData,
+  forms,
   register,
   setValue,
   errors,
   resetField,
 }: ITemplateOptionProps): JSX.Element => {
-  const selectTypeForms = formsStateData?.filter(
-    (form: any) => form?.type === "select",
-  );
+  const selectTypeForms = forms?.filter((form: any) => form?.type === "select");
 
   const existingIndex = selectTypeForms?.findIndex(
     (form: any) => form?._id === templateOption?.formId,

@@ -3,14 +3,14 @@ import Image from "next/image";
 
 interface IToolbarInitialClickedCaseProp {
   modeName?: string;
-  foldMode?: boolean;
+  isFold?: boolean;
   isOpen?: boolean;
   onFoldingAll?: () => void;
 }
 
 const ToolbarInitialClickedCase = ({
   modeName,
-  foldMode,
+  isFold,
   onFoldingAll,
   isOpen,
 }: IToolbarInitialClickedCaseProp): JSX.Element => {
@@ -30,7 +30,7 @@ const ToolbarInitialClickedCase = ({
                 <Image
                   priority
                   src={
-                    foldMode
+                    isFold
                       ? `/images/${imageNameInitial[index]}_b.svg`
                       : `/images/${imageNameInitial[index]}.svg`
                   }

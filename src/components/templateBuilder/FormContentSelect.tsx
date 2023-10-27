@@ -8,7 +8,6 @@ interface IFormContentSelectProps {
   index: number;
   fieldsLength: number;
   field: any;
-  setFormsStateData: any;
   setFocusNumber: any;
   register: UseFormRegister<IFormValues>;
   remove: (index?: number | number[]) => void;
@@ -20,18 +19,12 @@ const FormContentSelect = ({
   index,
   fieldsLength,
   field,
-  setFormsStateData,
   setFocusNumber,
   register,
   remove,
 }: IFormContentSelectProps): JSX.Element => {
   const deleteInputForm = () => {
     remove(index);
-    setFormsStateData((prev: any) => {
-      const copyFormsStateData = JSON.parse(JSON.stringify(prev));
-      copyFormsStateData[formIndex].select.splice(index, 1);
-      return copyFormsStateData;
-    });
   };
 
   const handleFocusNumber = () => {

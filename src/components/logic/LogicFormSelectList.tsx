@@ -119,7 +119,7 @@ const LogicFormSelectList = ({
               />
             )}
             {!isLoading ? (
-              <span>{isLogic ? `: ${appliedForm[0].title}` : null}</span>
+              <span>{isLogic ? `: ${appliedForm[0]?.title}` : null}</span>
             ) : null}
           </div>
         </div>

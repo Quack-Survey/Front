@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
-import { useMutation } from "@tanstack/react-query";
-import { deleteFetch, postFetch, putFetch } from "@/utils/fetch/core";
 import { useRouter } from "next/navigation";
+import { useDeleteForm } from "@/hooks/mutation/useDeleteForm";
+import { useUpdateForm } from "@/hooks/mutation/useUpdateForm";
+import { Form, Logic, templateOption } from "@/types/mongooseType";
 import FormTitle from "./FormTitle";
 import FormOption from "./FormOption";
 import FormContentText from "./FormContentText";
@@ -17,40 +18,40 @@ export interface IFormValues {
 }
 
 interface IFormWrapperProps {
-  formStateData: any;
-  templateOption: any;
+  form: Form;
+  templateOption: templateOption;
+  logics: Logic[];
   templateBuilderId: string | string[];
   index: number;
   newOrder: number;
   modeName: string;
-  foldMode: boolean;
+  isFold: boolean;
   setModeName: any;
-  setFormsStateData: any;
+  createMutate: any;
 }
 
 const FormWrapper = ({
-  formStateData,
+  form,
   templateOption,
+  logics,
   index,
   newOrder,
   templateBuilderId,
   modeName,
-  foldMode,
+  isFold,
   setModeName,
-  setFormsStateData,
+  createMutate,
 }: IFormWrapperProps): JSX.Element => {
   const router = useRouter();
   const [mode, setMode] = useState(read);
   const [updateActive, setUpdateActive] = useState(0);
   const [toastText, setToastText] = useState("");
-  const {
-    _id,
-    title,
-    type,
-    plural,
-    select,
-    isQuater: formIsQuater,
-  } = formStateData;
+  const { _id, title, type, plural, select } = form;
+
+  const isTemplateOption = templateOption?.formId === _id;
+  const isLogic =
+    logics.findIndex((logic) => logic.formId === _id) === -1 ? false : true;
+
   const editMode = mode === create || mode === update;
   const editModeName = modeName === create || modeName === update;
 
@@ -59,47 +60,31 @@ const FormWrapper = ({
       defaultValues: { title, select },
     });
 
-  const { mutate: createMutate } = useMutation((formData: any) =>
-    postFetch("/form", JSON.stringify(formData)),
+  const { mutate: updateMutate } = useUpdateForm(
+    `/form?formId=${_id}`,
+    templateBuilderId,
+    "forms",
   );
 
-  const { mutate: updateMutate } = useMutation((formData: any) =>
-    putFetch(`/form?formId=${_id}`, JSON.stringify(formData)),
-  );
-
-  const { mutate: deleteMutate } = useMutation((_id: any) =>
-    deleteFetch(`/form?formId=${_id}`),
+  const { mutate: deleteMutate } = useDeleteForm(
+    `/form?formId=${_id}`,
+    templateBuilderId,
+    "forms",
   );
 
   // Fn
   const onValid = (formData: any) => {
-    updateMutate(
-      {
-        title: formData.title,
-        select: [...formData.select],
-      },
-      {
-        onSuccess: () => {
-          setFormsStateData((prev: any) => {
-            const copyFormsStateData = JSON.parse(JSON.stringify(prev));
-            copyFormsStateData.splice(index, 1, {
-              ...prev[index],
-              title: formData.title,
-              select: [...formData.select],
-              type: type,
-            });
-            return copyFormsStateData;
-          });
-          setMode(read);
-          setModeName(read);
-        },
-      },
-    );
+    updateMutate({
+      title: formData.title,
+      select: [...formData.select],
+    });
+    setMode(read);
+    setModeName(read);
   };
 
   const startPress = () => {
     if (editMode) return;
-    if (foldMode) {
+    if (isFold) {
       return setToastText("접기를 풀어주세요.");
     }
     setUpdateActive(Date.now());
@@ -107,7 +92,7 @@ const FormWrapper = ({
 
   const endPress = () => {
     if (editMode) return;
-    if (foldMode) return;
+    if (isFold) return;
 
     const endTime = Date.now();
     const duration = endTime - updateActive;
@@ -125,41 +110,26 @@ const FormWrapper = ({
   };
 
   const onDelete = () => {
-    deleteMutate(_id, {
-      onSuccess: () => {
-        setFormsStateData((prev: any) => {
-          const copyFormData = [...prev];
-          copyFormData.splice(index, 1);
-          return copyFormData;
-        });
-        setMode(read);
-        setModeName(read);
-      },
-    });
+    if (isLogic || isTemplateOption) {
+      setMode(read);
+      setModeName(read);
+      return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
+    }
+    deleteMutate(_id);
+    setMode(read);
+    setModeName(read);
   };
 
   const onDuplicate = () => {
     const copiedForm = getValues();
-
-    createMutate(
-      {
-        title: copiedForm.title,
-        select: [...copiedForm.select],
-        plural,
-        type,
-        order: newOrder,
-        templateId: templateBuilderId,
-      },
-      {
-        onSuccess: (data) => {
-          setFormsStateData((prev: any) => {
-            const copyFormData = [...prev];
-            copyFormData.push({ ...data });
-            return copyFormData;
-          });
-        },
-      },
-    );
+    createMutate({
+      title: copiedForm.title,
+      select: [...copiedForm.select],
+      plural,
+      type,
+      order: newOrder,
+      templateId: templateBuilderId,
+    });
   };
 
   const onCreateLogic = () => {
@@ -171,7 +141,7 @@ const FormWrapper = ({
       <form
         onSubmit={handleSubmit(onValid)}
         className={` w-[360px] flex-col border-l-[8px] bg-white ${
-          foldMode ? "h-[50px] overflow-hidden" : "h-full"
+          isFold ? "h-[50px] overflow-hidden" : "h-full"
         } ${plural ? "border-dotted" : ""} ${
           editMode ? "border-n-light-blue" : "cursor-pointer border-n-dark-gray"
         }`}
@@ -185,8 +155,16 @@ const FormWrapper = ({
             index={index}
             editMode={editMode}
           />
-          <div className={`flex ${"옵션 및 로직이 있으면" ? "" : "ml-n-xl"}`}>
-            {"옵션 및 로직이 있으면" ? <FormOption /> : null}
+          <div
+            className={`flex ${isTemplateOption || isLogic ? "" : "ml-n-xl"}`}
+          >
+            {isTemplateOption || isLogic ? (
+              <FormOption
+                editMode={editMode}
+                isLogic={isLogic}
+                isTemplateOption={isTemplateOption}
+              />
+            ) : null}
             {type === "select" ? (
               <FormContentSelectWrapper
                 index={index}
@@ -196,7 +174,6 @@ const FormWrapper = ({
                 getValues={getValues}
                 control={control}
                 select={select}
-                setFormsStateData={setFormsStateData}
               />
             ) : (
               <FormContentText editMode={editMode} />

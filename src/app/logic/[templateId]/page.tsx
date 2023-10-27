@@ -35,16 +35,18 @@ const LogicManagement: NextPage = (): JSX.Element => {
       </div>
       <div className="mt-[80px] space-y-n-md">
         {!formsLoading && Array.isArray(forms)
-          ? forms?.map((form: Form, i: number) => (
-              <LogicList
-                key={`${form._id} i`}
-                index={i}
-                form={form}
-                logics={logics}
-                logicsLoading={logicsLoading}
-                templateId={templateId}
-              />
-            ))
+          ? forms
+              ?.filter((form) => form.type === "select")
+              .map((form: Form, i: number) => (
+                <LogicList
+                  key={`${form._id} i`}
+                  index={i}
+                  form={form}
+                  logics={logics}
+                  logicsLoading={logicsLoading}
+                  templateId={templateId}
+                />
+              ))
           : null}
       </div>
       <NextPreviousButton
