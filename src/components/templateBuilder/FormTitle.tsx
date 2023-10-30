@@ -1,6 +1,6 @@
 import { UseFormRegister } from "react-hook-form";
 import { IFormValues } from "./FormWrapper";
-
+import { useEffect, useState } from "react";
 interface IFormTitleProps {
   title: string;
   index: number;
@@ -19,7 +19,7 @@ const FormTitle = ({
   return (
     <div className="mb-n-md flex h-auto w-full">
       <span
-        className={`text-n-xl  ${
+        className={`tr text-n-xl ${
           editMode ? "text-n-light-blue" : "text-n-dark-gray"
         }`}
       >

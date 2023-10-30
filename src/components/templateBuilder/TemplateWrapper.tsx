@@ -4,7 +4,6 @@ import { deleteFetch, getFetch, postFetch, putFetch } from "@/utils/fetch/core";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { Form } from "@/types/mongooseType";
 import { useCreateForm } from "@/hooks/mutation/useCreateForm";
 import { useUpdateTemplate } from "@/hooks/mutation/useUpdateTemplate";
 import { useGetForms } from "@/hooks/queries/useGetForms";
@@ -12,7 +11,7 @@ import InputModal from "@/components/InputModal";
 import TemplateDescriptionWrapper from "./TemplateDescriptionWrapper";
 import TemplateOption from "./TemplateOption";
 import FloatingFormButtonCollection from "@/components/FloatingFormButtonCollection";
-import FormWrapper from "./FormWrapper";
+import FormsBoard from "./FormsBoard";
 
 interface ITemplateWrapperProps {
   templateBuilderId: string | string[];
@@ -189,6 +188,7 @@ const TemplateWrapper = ({
         forms?.length === 0 ? 1 : forms[forms?.length - 1].order + 1;
       setNewOrder(order);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingForm]);
 
   useEffect(() => {
@@ -203,6 +203,7 @@ const TemplateWrapper = ({
         router.replace("/home");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingTemplate]);
 
   return (
@@ -217,25 +218,17 @@ const TemplateWrapper = ({
           />
         ) : null}
         {!isLoadingForm && Array.isArray(forms) ? (
-          <div className="mb-[60px] space-y-n-md">
-            {forms?.map((form: Form, i: number) => (
-              <FormWrapper
-                key={form._id}
-                index={i}
-                newOrder={newOrder}
-                logics={logics}
-                templateOption={
-                  !isLoadingTemplateOption ? templateOption[0] : null
-                }
-                templateBuilderId={templateBuilderId}
-                form={form}
-                isFold={isFold}
-                setModeName={setModeName}
-                modeName={modeName}
-                createMutate={createFormMutate}
-              />
-            ))}
-          </div>
+          <FormsBoard
+            forms={forms}
+            newOrder={newOrder}
+            logics={logics}
+            templateOption={!isLoadingTemplateOption ? templateOption[0] : null}
+            templateBuilderId={templateBuilderId}
+            isFold={isFold}
+            setModeName={setModeName}
+            modeName={modeName}
+            createMutate={createFormMutate}
+          />
         ) : null}
       </div>
       {modeName === read ? (
