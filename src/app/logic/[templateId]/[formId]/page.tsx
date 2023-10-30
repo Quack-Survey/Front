@@ -34,6 +34,7 @@ const LogicFormManagement: NextPage = (): JSX.Element => {
     }
 
     if (!(form._id === formId && form.templateId === templateId)) {
+      alert("유효하지 않은 주소입니다.");
       router.replace("/home");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -11,6 +11,8 @@ interface IFormContentSelectProps {
   setFocusNumber: any;
   register: UseFormRegister<IFormValues>;
   remove: (index?: number | number[]) => void;
+  setToastText: any;
+  isLogicAndTemplateOption: boolean;
 }
 
 const FormContentSelect = ({
@@ -19,11 +21,16 @@ const FormContentSelect = ({
   index,
   fieldsLength,
   field,
+  setToastText,
+  isLogicAndTemplateOption,
   setFocusNumber,
   register,
   remove,
 }: IFormContentSelectProps): JSX.Element => {
   const deleteInputForm = () => {
+    if (isLogicAndTemplateOption) {
+      return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
+    }
     remove(index);
   };
 
@@ -50,7 +57,7 @@ const FormContentSelect = ({
             required: "보기를 작성해주세요.",
           })}
           onFocus={handleFocusNumber}
-          disabled={!editMode}
+          disabled={!editMode || isLogicAndTemplateOption}
           maxLength={18}
         />
       </div>

@@ -11,10 +11,12 @@ import FormContentText from "./FormContentText";
 import FormContentSelectWrapper from "./FormContentSelectWrapper";
 import Toast from "../Tost";
 import FloatingFormButtonCollection from "../FloatingFormButtonCollection";
+import FormRequiredCheckBox from "./FormRequiredCheckBox";
 
 export interface IFormValues {
   title: string;
   select: string[];
+  required: boolean;
 }
 
 interface IFormWrapperProps {
@@ -46,18 +48,18 @@ const FormWrapper = ({
   const [mode, setMode] = useState(read);
   const [updateActive, setUpdateActive] = useState(0);
   const [toastText, setToastText] = useState("");
-  const { _id, title, type, plural, select } = form;
+  const { _id, title, type, plural, select, required } = form;
 
   const isTemplateOption = templateOption?.formId === _id;
   const isLogic =
-    logics.findIndex((logic) => logic.formId === _id) === -1 ? false : true;
+    logics?.findIndex((logic) => logic?.formId === _id) === -1 ? false : true;
 
   const editMode = mode === create || mode === update;
   const editModeName = modeName === create || modeName === update;
 
   const { register, handleSubmit, getValues, control, setFocus } =
     useForm<IFormValues>({
-      defaultValues: { title, select },
+      defaultValues: { title, select, required },
     });
 
   const { mutate: updateMutate } = useUpdateForm(
@@ -77,6 +79,7 @@ const FormWrapper = ({
     updateMutate({
       title: formData.title,
       select: [...formData.select],
+      required: formData.required,
     });
     setMode(read);
     setModeName(read);
@@ -140,14 +143,19 @@ const FormWrapper = ({
     <>
       <form
         onSubmit={handleSubmit(onValid)}
-        className={` w-[360px] flex-col border-l-[8px] bg-white ${
-          isFold ? "h-[50px] overflow-hidden" : "h-full"
+        className={`w-[360px] flex-col border-l-[8px] bg-white ${
+          isFold ? "h-[70px] overflow-hidden" : "h-full"
         } ${plural ? "border-dotted" : ""} ${
           editMode ? "border-n-light-blue" : "cursor-pointer border-n-dark-gray"
         }`}
         onMouseDown={startPress}
         onMouseUp={endPress}
       >
+        <FormRequiredCheckBox
+          register={register}
+          editMode={editMode}
+          formId={form._id}
+        />
         <div className="pb-n-xlg ml-n-sm pt-n-sm">
           <FormTitle
             title={title}
@@ -167,6 +175,8 @@ const FormWrapper = ({
             ) : null}
             {type === "select" ? (
               <FormContentSelectWrapper
+                isLogicAndTemplateOption={isLogic || isTemplateOption}
+                setToastText={setToastText}
                 index={index}
                 editMode={editMode}
                 register={register}
@@ -182,7 +192,7 @@ const FormWrapper = ({
         </div>
       </form>
       {toastText !== "" ? (
-        <Toast toastText={toastText} onClose={onClose} editMode={editMode} />
+        <Toast toastText={toastText} onClose={onClose} editMode={false} />
       ) : null}
       {editMode ? (
         <FloatingFormButtonCollection

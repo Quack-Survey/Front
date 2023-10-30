@@ -4,7 +4,6 @@ import Image from "next/image";
 interface IToolbarInitialClickedCaseProp {
   modeName?: string;
   isFold?: boolean;
-  isOpen?: boolean;
   onFoldingAll?: () => void;
 }
 
@@ -12,16 +11,13 @@ const ToolbarInitialClickedCase = ({
   modeName,
   isFold,
   onFoldingAll,
-  isOpen,
 }: IToolbarInitialClickedCaseProp): JSX.Element => {
   const imageNameInitial = ["fold"];
   const toolPartInitial = [onFoldingAll];
 
   return (
     <div
-      className={`fixed bottom-[0px] flex h-[49px] w-full min-w-[360px] items-center justify-end gap-n-md bg-n-light-black p-n-md ${
-        isOpen ? "-z-10" : ""
-      }`}
+      className={`fixed bottom-[0px] flex h-[49px] w-full min-w-[360px] items-center justify-end gap-n-md bg-n-light-black p-n-md `}
     >
       <div className="flex items-center justify-end gap-n-md">
         {modeName === read

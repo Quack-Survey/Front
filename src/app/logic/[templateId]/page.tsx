@@ -30,8 +30,9 @@ const LogicManagement: NextPage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!isLoadingForms && Array.isArray(forms)) {
-      if (!(forms[0].templateId === templateId)) {
+    if (!isLoadingForms) {
+      if (forms?.error) {
+        alert("유효하지 않은 주소입니다.");
         router.replace("/home");
       }
     }

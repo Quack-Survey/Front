@@ -9,6 +9,8 @@ interface IFormContentSelectWrapperProps {
   index: number;
   select: string[];
   editMode: boolean;
+  isLogicAndTemplateOption: boolean;
+  setToastText: any;
   register: UseFormRegister<IFormValues>;
   setFocus: any;
   getValues: any;
@@ -19,6 +21,8 @@ const FormContentSelectWrapper = ({
   index,
   editMode,
   register,
+  isLogicAndTemplateOption,
+  setToastText,
   setFocus,
   getValues,
   control,
@@ -31,10 +35,16 @@ const FormContentSelectWrapper = ({
   });
 
   const createInputForm = () => {
+    if (isLogicAndTemplateOption) {
+      return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
+    }
     append("");
   };
 
   const onDuplicate = () => {
+    if (isLogicAndTemplateOption) {
+      return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
+    }
     const previousSelect = getValues().select;
     const duplicateLastInput = previousSelect[previousSelect.length - 1];
     append(duplicateLastInput);
@@ -61,6 +71,8 @@ const FormContentSelectWrapper = ({
           <FormContentSelect
             key={field.id}
             remove={remove}
+            isLogicAndTemplateOption={isLogicAndTemplateOption}
+            setToastText={setToastText}
             field={field}
             setFocusNumber={setFocusNumber}
             fieldsLength={fields.length}

@@ -19,8 +19,8 @@ const InputModal = ({
     <div
       className={
         isOpen
-          ? "z-100 fixed left-0 top-0 flex h-screen w-screen items-center justify-center opacity-100 transition-opacity"
-          : "z-100 pointer-events-none fixed left-0 top-0 flex h-screen w-screen items-center justify-center opacity-0"
+          ? "fixed left-0 top-0 z-50 flex h-screen w-screen items-center justify-center opacity-100 transition-opacity"
+          : "pointer-events-none fixed left-0 top-0 z-50 flex h-screen w-screen items-center justify-center opacity-0"
       }
     >
       <div

@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
 import { read } from "@/constants/mode";
-import {
-  defaultFormData,
-  defaultPluralFormData,
-  defaultTextFormData,
-} from "@/constants/defaultValue";
 import { deleteFetch, getFetch, postFetch, putFetch } from "@/utils/fetch/core";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -12,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { Form } from "@/types/mongooseType";
 import { useCreateForm } from "@/hooks/mutation/useCreateForm";
 import { useUpdateTemplate } from "@/hooks/mutation/useUpdateTemplate";
-import { useGetLogics } from "@/hooks/queries/useGetLogics";
 import { useGetForms } from "@/hooks/queries/useGetForms";
 import InputModal from "@/components/InputModal";
 import TemplateDescriptionWrapper from "./TemplateDescriptionWrapper";
@@ -61,9 +55,9 @@ const TemplateWrapper = ({
     [templateBuilderId, "templateOption"],
     () => getFetch(`/templateOption?templateId=${templateBuilderId}`),
   );
-  const { data: logics, isLoading: logicsLoading } = useGetLogics(
-    `/logic/all?templateId=${templateBuilderId}`,
-    templateBuilderId,
+  const { data: logics, isLoading: logicsLoading } = useQuery(
+    [templateBuilderId, "templateLogics"],
+    () => getFetch(`/logic/all?templateId=${templateBuilderId}`),
   );
 
   const { data: forms, isLoading: isLoadingForm } = useGetForms(
@@ -171,28 +165,21 @@ const TemplateWrapper = ({
     }
   };
 
-  const onCreateSingle = () => {
-    createFormMutate({
-      ...defaultFormData,
-      order: newOrder,
-      templateId: templateBuilderId,
-    });
-  };
-
-  const onCreatePlural = () => {
-    createFormMutate({
-      ...defaultPluralFormData,
-      order: newOrder,
-      templateId: templateBuilderId,
-    });
-  };
-
-  const onCreateDescription = () => {
-    createFormMutate({
-      ...defaultTextFormData,
-      order: newOrder,
-      templateId: templateBuilderId,
-    });
+  const onCreateForm = (type: string, plural: boolean) => {
+    createFormMutate(
+      {
+        title: "",
+        order: newOrder,
+        templateId: templateBuilderId,
+        type,
+        plural,
+      },
+      {
+        onSuccess: (res) => {
+          if (res?.title === "") return setNewOrder(res?.order + 1);
+        },
+      },
+    );
   };
 
   // Effect
@@ -220,7 +207,7 @@ const TemplateWrapper = ({
 
   return (
     <>
-      <div className="mx-auto max-w-[360px] bg-n-light-gray">
+      <div className="mx-auto max-w-[360px]">
         {!isLoadingTemplate ? (
           <TemplateDescriptionWrapper
             template={template}
@@ -254,10 +241,7 @@ const TemplateWrapper = ({
       {modeName === read ? (
         <FloatingFormButtonCollection
           modeName={read}
-          onCreateSingle={onCreateSingle}
-          onCreatePlural={onCreatePlural}
-          onCreateDescription={onCreateDescription}
-          isOpen={isOpen}
+          onCreateForm={onCreateForm}
         />
       ) : null}
       <InputModal
@@ -281,6 +265,7 @@ const TemplateWrapper = ({
           <></>
         )}
       </InputModal>
+      <div className="fixed left-0 top-0 -z-50 h-screen w-full bg-n-light-gray"></div>
     </>
   );
 };

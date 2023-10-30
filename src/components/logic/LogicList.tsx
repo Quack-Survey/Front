@@ -38,7 +38,7 @@ const LogicList = ({
         pathname: isLogic
           ? `${templateId}/${form._id}`
           : `${templateId}/${form._id}/type`,
-        query: { form: JSON.stringify(form) },
+        query: { form: JSON.stringify(form), index },
       }}
       className="flex cursor-pointer justify-between  border bg-white hover:bg-n-light-gray"
     >
