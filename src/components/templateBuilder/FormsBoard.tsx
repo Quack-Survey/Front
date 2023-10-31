@@ -58,7 +58,12 @@ const FormsBoard = ({
             {...provided.droppableProps}
           >
             {forms?.map((form: Form, i: number) => (
-              <Draggable key={form._id} draggableId={form._id} index={i}>
+              <Draggable
+                key={form._id}
+                draggableId={form._id}
+                index={i}
+                isDragDisabled={modeName === read ? false : true}
+              >
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
