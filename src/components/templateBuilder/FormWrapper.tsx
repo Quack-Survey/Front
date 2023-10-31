@@ -9,7 +9,6 @@ import FormTitle from "./FormTitle";
 import FormOption from "./FormOption";
 import FormContentText from "./FormContentText";
 import FormContentSelectWrapper from "./FormContentSelectWrapper";
-import Toast from "../Tost";
 import FloatingFormButtonCollection from "../FloatingFormButtonCollection";
 import FormRequiredCheckBox from "./FormRequiredCheckBox";
 
@@ -30,6 +29,7 @@ interface IFormWrapperProps {
   isFold: boolean;
   setModeName: any;
   createMutate: any;
+  setToastText: any;
 }
 
 const FormWrapper = ({
@@ -43,11 +43,11 @@ const FormWrapper = ({
   isFold,
   setModeName,
   createMutate,
+  setToastText,
 }: IFormWrapperProps): JSX.Element => {
   const router = useRouter();
   const [mode, setMode] = useState(read);
   const [updateActive, setUpdateActive] = useState(0);
-  const [toastText, setToastText] = useState("");
   const { _id, title, type, plural, select, required } = form;
 
   const isTemplateOption = templateOption?.formId === _id;
@@ -88,7 +88,7 @@ const FormWrapper = ({
   const startPress = () => {
     if (editMode) return;
     if (isFold) {
-      return setToastText("접기를 풀어주세요.");
+      return setToastText("접기를 풀고 수정해주세요.");
     }
     setUpdateActive(Date.now());
   };
@@ -106,10 +106,6 @@ const FormWrapper = ({
       setMode(update);
       setModeName(update);
     }
-  };
-
-  const onClose = () => {
-    setToastText("");
   };
 
   const onDelete = () => {
@@ -191,9 +187,6 @@ const FormWrapper = ({
           </div>
         </div>
       </form>
-      {toastText !== "" ? (
-        <Toast toastText={toastText} onClose={onClose} editMode={false} />
-      ) : null}
       {editMode ? (
         <FloatingFormButtonCollection
           modeName={update}
