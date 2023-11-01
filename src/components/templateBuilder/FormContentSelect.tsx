@@ -1,26 +1,24 @@
-import { FieldValues, UseFormRegister, useFormContext } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 import { IFormValues } from "./FormWrapper";
 import Image from "next/image";
 
 interface IFormContentSelectProps {
   editMode: boolean;
+  isLogicAndTemplateOption: boolean;
   formIndex: number;
   index: number;
   fieldsLength: number;
-  field: any;
-  setFocusNumber: any;
+  field: Record<"id", string>;
   register: UseFormRegister<IFormValues>;
+  setToastText: React.Dispatch<React.SetStateAction<string>>;
+  setFocusNumber: React.Dispatch<React.SetStateAction<number>>;
   remove: (index?: number | number[]) => void;
-  setToastText: any;
-  isLogicAndTemplateOption: boolean;
 }
 
 const FormContentSelect = ({
   editMode,
-  formIndex,
   index,
   fieldsLength,
-  field,
   setToastText,
   isLogicAndTemplateOption,
   setFocusNumber,

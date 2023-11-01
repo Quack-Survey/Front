@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { read } from "@/constants/mode";
 import { useRouter } from "next/navigation";
+import Toast from "@/components/Tost";
 import TemplateWrapper from "@/components/templateBuilder/TemplateWrapper";
 import SavePreserveBar from "@/components/SavePreserveBar";
 import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";
@@ -12,6 +13,7 @@ import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";
 const TemplateBuilder: NextPage = (): JSX.Element => {
   const router = useRouter();
   const { templateBuilderId } = useParams();
+  const [toastMsg, setToastMsg] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isFold, setIsFold] = useState(false);
   const [modeName, setModeName] = useState(read);
@@ -28,11 +30,26 @@ const TemplateBuilder: NextPage = (): JSX.Element => {
     setIsFold((prev) => !prev);
   };
 
+  const onSave = () => {
+    setToastMsg("템플릿 저장이 완료되었습니다.");
+  };
+
+  const onClose = () => {
+    setToastMsg("");
+
+    if (toastMsg === "옵션 저장이 완료되었습니다") {
+      setIsOpen((prev) => !prev);
+    } else {
+      router.push("/home");
+    }
+  };
+
   return (
     <>
       <SavePreserveBar
         onOption={onOption}
         modeName={modeName}
+        onSave={onSave}
         onNavigateHome={onNavigateHome}
       />
       <TemplateWrapper
@@ -42,6 +59,7 @@ const TemplateBuilder: NextPage = (): JSX.Element => {
         modeName={modeName}
         setModeName={setModeName}
         isFold={isFold}
+        setToastMsg={setToastMsg}
       />
       {modeName === read ? (
         <ToolbarInitialClickedCase
@@ -49,6 +67,9 @@ const TemplateBuilder: NextPage = (): JSX.Element => {
           isFold={isFold}
           onFoldingAll={onFoldingAll}
         />
+      ) : null}
+      {toastMsg !== "" ? (
+        <Toast editMode={true} toastText={toastMsg} onClose={onClose} />
       ) : null}
     </>
   );

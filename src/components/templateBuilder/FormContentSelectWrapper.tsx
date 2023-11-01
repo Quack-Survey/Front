@@ -1,5 +1,11 @@
-import { useState, useEffect } from "react";
-import { Control, UseFormRegister, useFieldArray } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import {
+  Control,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetFocus,
+  useFieldArray,
+} from "react-hook-form";
 import { IFormValues } from "./FormWrapper";
 import Image from "next/image";
 import ToolbarTypeCase from "../ToolbarTypingCase";
@@ -10,10 +16,10 @@ interface IFormContentSelectWrapperProps {
   select: string[];
   editMode: boolean;
   isLogicAndTemplateOption: boolean;
-  setToastText: any;
   register: UseFormRegister<IFormValues>;
-  setFocus: any;
-  getValues: any;
+  setFocus: UseFormSetFocus<IFormValues>;
+  getValues: UseFormGetValues<IFormValues>;
+  setToastText: React.Dispatch<React.SetStateAction<string>>;
   control: Control<IFormValues | any>;
 }
 
@@ -62,6 +68,7 @@ const FormContentSelectWrapper = ({
     if (fields.length === 0) {
       append("");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -111,4 +118,4 @@ const FormContentSelectWrapper = ({
   );
 };
 
-export default FormContentSelectWrapper;
+export default React.memo(FormContentSelectWrapper);

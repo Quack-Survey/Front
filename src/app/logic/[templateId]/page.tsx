@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Form } from "@/types/mongooseType";
 import { useGetLogics } from "@/hooks/queries/useGetLogics";
 import { useGetForms } from "@/hooks/queries/useGetForms";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import LogicList from "@/components/logic/LogicList";
 
@@ -44,20 +45,22 @@ const LogicManagement: NextPage = (): JSX.Element => {
         <span className="text-n-lg">로직설정</span>
       </div>
       <div className="mt-[80px] space-y-n-md">
-        {!isLoadingForms && Array.isArray(forms)
-          ? forms
-              ?.filter((form) => form.type === "select")
-              .map((form: Form, i: number) => (
-                <LogicList
-                  key={`${form._id} i`}
-                  index={i}
-                  form={form}
-                  logics={logics}
-                  isLoadingLogics={isLoadingLogics}
-                  templateId={templateId}
-                />
-              ))
-          : null}
+        {!isLoadingForms && Array.isArray(forms) ? (
+          forms
+            ?.filter((form) => form.type === "select")
+            .map((form: Form, i: number) => (
+              <LogicList
+                key={`${form._id} i`}
+                index={i}
+                form={form}
+                logics={logics}
+                isLoadingLogics={isLoadingLogics}
+                templateId={templateId}
+              />
+            ))
+        ) : (
+          <LoadingSpinner />
+        )}
       </div>
       <NextPreviousButton
         modeName={"single"}

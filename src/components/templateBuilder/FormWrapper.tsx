@@ -1,10 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
 import { useRouter } from "next/navigation";
 import { useDeleteForm } from "@/hooks/mutation/useDeleteForm";
 import { useUpdateForm } from "@/hooks/mutation/useUpdateForm";
-import { Form, Logic, templateOption } from "@/types/mongooseType";
+import { Form, Logic, TemplateOption } from "@/types/mongooseType";
 import FormTitle from "./FormTitle";
 import FormOption from "./FormOption";
 import FormContentText from "./FormContentText";
@@ -19,30 +19,30 @@ export interface IFormValues {
 }
 
 interface IFormWrapperProps {
-  form: Form;
-  templateOption: templateOption;
-  logics: Logic[];
-  templateBuilderId: string | string[];
+  isFold: boolean;
   index: number;
   newOrder: number;
   modeName: string;
-  isFold: boolean;
-  setModeName: any;
   createMutate: any;
-  setToastText: any;
+  templateBuilderId: string | string[];
+  form: Form;
+  templateOption: TemplateOption;
+  logics: Logic[];
+  setModeName: React.Dispatch<React.SetStateAction<string>>;
+  setToastText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FormWrapper = ({
+  isFold,
+  index,
+  newOrder,
+  modeName,
+  createMutate,
+  templateBuilderId,
   form,
   templateOption,
   logics,
-  index,
-  newOrder,
-  templateBuilderId,
-  modeName,
-  isFold,
   setModeName,
-  createMutate,
   setToastText,
 }: IFormWrapperProps): JSX.Element => {
   const router = useRouter();
@@ -75,11 +75,11 @@ const FormWrapper = ({
   );
 
   // Fn
-  const onValid = (formData: any) => {
+  const onValid = ({ title, select, required }: IFormValues) => {
     updateMutate({
-      title: formData.title,
-      select: [...formData.select],
-      required: formData.required,
+      title: title,
+      select: [...select],
+      required: required,
     });
     setMode(read);
     setModeName(read);
@@ -199,4 +199,4 @@ const FormWrapper = ({
   );
 };
 
-export default FormWrapper;
+export default React.memo(FormWrapper);

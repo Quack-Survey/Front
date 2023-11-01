@@ -7,28 +7,45 @@ import { useForm } from "react-hook-form";
 import { useCreateForm } from "@/hooks/mutation/useCreateForm";
 import { useUpdateTemplate } from "@/hooks/mutation/useUpdateTemplate";
 import { useGetForms } from "@/hooks/queries/useGetForms";
+import LoadingSpinner from "../LoadingSpinner";
 import InputModal from "@/components/InputModal";
 import TemplateDescriptionWrapper from "./TemplateDescriptionWrapper";
 import TemplateOption from "./TemplateOption";
 import FloatingFormButtonCollection from "@/components/FloatingFormButtonCollection";
 import FormsBoard from "./FormsBoard";
 
+export interface IOptionForm {
+  deadline?: string;
+  targetNumber?: string;
+  formId: string;
+  title?: string;
+  quater?: string[];
+  sum?: string;
+}
+
+interface ITemplateOptionData {
+  quater: string[];
+  formId: string;
+}
+
 interface ITemplateWrapperProps {
-  templateBuilderId: string | string[];
   isOpen: boolean;
+  isFold: boolean;
+  templateBuilderId: string | string[];
   modeName: string;
   setModeName: React.Dispatch<React.SetStateAction<string>>;
-  isFold: boolean;
+  setToastMsg: React.Dispatch<React.SetStateAction<string>>;
   onOption: () => void;
 }
 
 const TemplateWrapper = ({
-  templateBuilderId,
   isOpen,
-  onOption,
-  modeName,
   isFold,
+  templateBuilderId,
+  modeName,
+  setToastMsg,
   setModeName,
+  onOption,
 }: ITemplateWrapperProps): JSX.Element => {
   const queryClient = useQueryClient();
   const [newOrder, setNewOrder] = useState(0);
@@ -43,7 +60,7 @@ const TemplateWrapper = ({
     clearErrors,
     reset,
     resetField,
-  } = useForm({ mode: "onChange" });
+  } = useForm<IOptionForm>({ mode: "onChange" });
 
   const { data: template, isLoading: isLoadingTemplate } = useQuery(
     [templateBuilderId],
@@ -71,7 +88,7 @@ const TemplateWrapper = ({
   );
 
   const { mutate: createTemplateOptionMutate } = useMutation(
-    (tempalteOptionData: any) =>
+    (tempalteOptionData: ITemplateOptionData) =>
       postFetch(
         `/templateOption?templateId=${templateBuilderId}`,
         JSON.stringify(tempalteOptionData),
@@ -84,7 +101,7 @@ const TemplateWrapper = ({
   );
 
   const { mutate: updateTemplateOptionMutate } = useMutation(
-    (tempalteOptionData: any) =>
+    (tempalteOptionData: ITemplateOptionData) =>
       putFetch(
         `/templateOption?templateOptionId=${templateOption[0]._id}`,
         JSON.stringify(tempalteOptionData),
@@ -96,8 +113,13 @@ const TemplateWrapper = ({
   );
 
   // Fn
-  const onValid = ({ deadline, targetNumber, formId, title, quater }: any) => {
-    // onOption();
+  const onValid = ({
+    deadline,
+    targetNumber,
+    formId,
+    title,
+    quater,
+  }: IOptionForm) => {
     const sum = quater?.reduce((acc, value) => acc + parseInt(value, 10), 0);
 
     if (quater && sum !== 100) {
@@ -108,6 +130,7 @@ const TemplateWrapper = ({
       }, 3000);
       return;
     }
+    setToastMsg("옵션 저장이 완료되었습니다");
 
     updateTemplateMutate({
       deadline: deadline !== "" ? deadline : null,
@@ -216,7 +239,9 @@ const TemplateWrapper = ({
             modeName={modeName}
             setModeName={setModeName}
           />
-        ) : null}
+        ) : (
+          <LoadingSpinner />
+        )}
         {!isLoadingForm && Array.isArray(forms) ? (
           <FormsBoard
             forms={forms}
@@ -229,7 +254,9 @@ const TemplateWrapper = ({
             modeName={modeName}
             createMutate={createFormMutate}
           />
-        ) : null}
+        ) : (
+          <LoadingSpinner />
+        )}
       </div>
       {modeName === read ? (
         <FloatingFormButtonCollection

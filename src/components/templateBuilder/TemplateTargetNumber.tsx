@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormResetField,
+  Validate,
+} from "react-hook-form";
+import { IOptionForm } from "./TemplateWrapper";
 import ToggleButton from "../ToggleButton";
 
 interface ITemplateTargetNumberProps {
-  register: any;
-  errors: any;
-  resetField: any;
   targetNumber: number;
+  register: any;
+  errors: FieldErrors<IOptionForm>;
+  resetField: UseFormResetField<IOptionForm>;
 }
 
 const TemplateTargetNumber = ({
@@ -34,6 +41,7 @@ const TemplateTargetNumber = ({
     if (targetNumber !== 0) {
       setToggle((prev) => !prev);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

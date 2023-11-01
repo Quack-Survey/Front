@@ -1,14 +1,9 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { getFetch, putFetch } from "@/utils/fetch/core";
+import { Template } from "@/types/mongooseType";
 import TemplateDescription from "./TemplateDescription";
 import Toast from "../Tost";
-import { useUpdateTemplate } from "@/hooks/mutation/useUpdateTemplate";
-import { Template } from "@/types/mongooseType";
 
 export interface ITemplateData {
   title: string;
@@ -16,17 +11,17 @@ export interface ITemplateData {
 }
 
 interface ITemplateDescriptionWrapperProps {
-  template: Template;
   modeName: string;
-  setModeName: React.Dispatch<React.SetStateAction<string>>;
   updateTemplateMutate: any;
+  template: Template;
+  setModeName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const TemplateDescriptionWrapper = ({
   template,
+  updateTemplateMutate,
   modeName,
   setModeName,
-  updateTemplateMutate,
 }: ITemplateDescriptionWrapperProps): JSX.Element => {
   const [mode, setMode] = useState("");
   const [toastText, setToastText] = useState("");

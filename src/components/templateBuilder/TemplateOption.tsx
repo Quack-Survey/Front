@@ -1,17 +1,23 @@
-"use client";
-
+import { Form, Template, TemplateOption } from "@/types/mongooseType";
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormResetField,
+  UseFormSetValue,
+} from "react-hook-form";
+import { IOptionForm } from "./TemplateWrapper";
 import TemplateDeadLine from "./TemplateDeadLine";
 import TemplateQuater from "./TemplateQuater";
 import TemplateTargetNumber from "./TemplateTargetNumber";
 
 interface ITemplateOptionProps {
-  template: any;
-  templateOption: any;
-  forms: any;
-  register: any;
-  setValue: any;
-  errors: any;
-  resetField: any;
+  template: Template;
+  templateOption: TemplateOption;
+  forms: Form[];
+  errors: FieldErrors<IOptionForm>;
+  register: UseFormRegister<IOptionForm>;
+  setValue: UseFormSetValue<IOptionForm>;
+  resetField: UseFormResetField<IOptionForm>;
 }
 
 const TemplateOption = ({
@@ -23,10 +29,12 @@ const TemplateOption = ({
   errors,
   resetField,
 }: ITemplateOptionProps): JSX.Element => {
-  const selectTypeForms = forms?.filter((form: any) => form?.type === "select");
+  const selectTypeForms = forms?.filter(
+    (form: Form) => form?.type === "select",
+  );
 
   const existingIndex = selectTypeForms?.findIndex(
-    (form: any) => form?._id === templateOption?.formId,
+    (form: Form) => form?._id === templateOption?.formId,
   );
 
   return (

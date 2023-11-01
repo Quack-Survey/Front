@@ -22,17 +22,17 @@ const FloatingFormButtonCollection = ({
       {modeName === "read" ? (
         <div className="flex flex-col gap-n-md">
           <FloatingFormButton
-            onClick={() => onCreateForm("select", false)}
+            onClick={() => onCreateForm!("select", false)}
             imageName={"single"}
             imageSize={18}
           />
           <FloatingFormButton
-            onClick={() => onCreateForm("select", true)}
+            onClick={() => onCreateForm!("select", true)}
             imageName={"plural"}
             imageSize={24}
           />
           <FloatingFormButton
-            onClick={() => onCreateForm("text", false)}
+            onClick={() => onCreateForm!("text", false)}
             imageName={"description"}
             imageSize={24}
           />
@@ -41,17 +41,17 @@ const FloatingFormButtonCollection = ({
         <div>
           <div className="flex flex-col gap-n-md">
             <FloatingFormButton
-              onClick={onDuplicate}
+              onClick={onDuplicate!}
               imageName={"duplicate_black"}
               imageSize={18}
             />
             <FloatingFormButton
-              onClick={onDelete}
+              onClick={onDelete!}
               imageName={"trash"}
               imageSize={24}
             />
             <FloatingFormButton
-              onClick={onCreateLogic}
+              onClick={onCreateLogic!}
               isBlocked={isBlocked}
               imageName={"logic"}
               imageSize={24}

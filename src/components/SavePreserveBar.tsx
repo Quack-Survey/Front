@@ -2,10 +2,10 @@ import { read } from "@/constants/mode";
 import Image from "next/image";
 
 interface ISavePreserveProps {
-  modeName?: string;
-  onOption?: () => void;
-  onNavigateHome?: () => void;
-  onSave?: () => void;
+  modeName: string;
+  onOption: () => void;
+  onNavigateHome: () => void;
+  onSave: () => void;
 }
 
 const SavePreserveBar = ({

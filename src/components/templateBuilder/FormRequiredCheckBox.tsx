@@ -1,13 +1,16 @@
+import { UseFormRegister } from "react-hook-form";
+import { IFormValues } from "./FormWrapper";
+
 interface IFormRequiredCheckBoxProps {
-  register: any;
   editMode: boolean;
   formId: string;
+  register: UseFormRegister<IFormValues>;
 }
 
 const FormRequiredCheckBox = ({
-  register,
   editMode,
   formId,
+  register,
 }: IFormRequiredCheckBoxProps): JSX.Element => {
   return (
     <div className="ml-n-sm flex items-center pt-[5px]">

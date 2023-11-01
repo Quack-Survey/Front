@@ -24,7 +24,7 @@ export interface Form {
   updatedAt: Date;
 }
 
-export interface templateOption {
+export interface TemplateOption {
   length: number;
   _id: string;
   quater: string[];
