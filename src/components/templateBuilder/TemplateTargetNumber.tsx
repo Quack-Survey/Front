@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  FieldErrors,
-  UseFormRegister,
-  UseFormResetField,
-  Validate,
-} from "react-hook-form";
+import { FieldErrors, UseFormResetField } from "react-hook-form";
 import { IOptionForm } from "./TemplateWrapper";
 import ToggleButton from "../ToggleButton";
 

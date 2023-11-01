@@ -37,6 +37,7 @@ const LogicManagement: NextPage = (): JSX.Element => {
         router.replace("/home");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingForms, forms]);
 
   return (
