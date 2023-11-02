@@ -71,6 +71,7 @@ const TemplateWrapper = ({
     [templateBuilderId, "templateOption"],
     () => getFetch(`/templateOption?templateId=${templateBuilderId}`),
   );
+
   const { data: logics, isLoading: logicsLoading } = useQuery(
     [templateBuilderId, "templateLogics"],
     () => getFetch(`/logic/all?templateId=${templateBuilderId}`),
@@ -87,17 +88,21 @@ const TemplateWrapper = ({
     "forms",
   );
 
+  const { mutate: updateTemplateMutate } = useUpdateTemplate(
+    `/template?templateId=${templateBuilderId}`,
+    templateBuilderId,
+  );
+
   const { mutate: createTemplateOptionMutate } = useMutation(
     (tempalteOptionData: ITemplateOptionData) =>
       postFetch(
         `/templateOption?templateId=${templateBuilderId}`,
         JSON.stringify(tempalteOptionData),
       ),
-  );
-
-  const { mutate: updateTemplateMutate } = useUpdateTemplate(
-    `/template?templateId=${templateBuilderId}`,
-    templateBuilderId,
+    {
+      onSuccess: () =>
+        queryClient.invalidateQueries([templateBuilderId, "templateOption"]),
+    },
   );
 
   const { mutate: updateTemplateOptionMutate } = useMutation(
@@ -106,10 +111,18 @@ const TemplateWrapper = ({
         `/templateOption?templateOptionId=${templateOption[0]._id}`,
         JSON.stringify(tempalteOptionData),
       ),
+    {
+      onSuccess: () =>
+        queryClient.invalidateQueries([templateBuilderId, "templateOption"]),
+    },
   );
 
-  const { mutate: deleteTemplateOptionMutate } = useMutation((_id) =>
-    deleteFetch(`/templateOption?templateOptionId=${_id}`),
+  const { mutate: deleteTemplateOptionMutate } = useMutation(
+    (_id) => deleteFetch(`/templateOption?templateOptionId=${_id}`),
+    {
+      onSuccess: () =>
+        queryClient.invalidateQueries([templateBuilderId, "templateOption"]),
+    },
   );
 
   // Fn
@@ -137,53 +150,21 @@ const TemplateWrapper = ({
       targetNumber: targetNumber ? targetNumber : 0,
     });
 
-    if (!quater && templateOption.length === 0) {
-      return;
-    }
-
+    if (!quater && templateOption.length === 0) return;
     if (quater && templateOption.length === 0) {
-      createTemplateOptionMutate(
-        {
-          quater: [...quater],
-          formId,
-        },
-        {
-          onSuccess: () => {
-            return queryClient.invalidateQueries([
-              templateBuilderId,
-              "templateOption",
-            ]);
-          },
-        },
-      );
-    }
-
-    if (templateOption.length !== 0 && !quater) {
-      return deleteTemplateOptionMutate(templateOption[0]._id, {
-        onSuccess: () => {
-          return queryClient.invalidateQueries([
-            templateBuilderId,
-            "templateOption",
-          ]);
-        },
+      createTemplateOptionMutate({
+        quater: [...quater],
+        formId,
       });
     }
-
+    if (templateOption.length !== 0 && !quater) {
+      return deleteTemplateOptionMutate(templateOption[0]._id);
+    }
     if (templateOption.length !== 0 && quater) {
-      updateTemplateOptionMutate(
-        {
-          quater: [...quater],
-          formId,
-        },
-        {
-          onSuccess: () => {
-            return queryClient.invalidateQueries([
-              templateBuilderId,
-              "templateOption",
-            ]);
-          },
-        },
-      );
+      updateTemplateOptionMutate({
+        quater: [...quater],
+        formId,
+      });
     }
   };
 

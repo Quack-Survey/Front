@@ -5,7 +5,6 @@ import Image from "next/image";
 interface IFormContentSelectProps {
   editMode: boolean;
   isLogicAndTemplateOption: boolean;
-  formIndex: number;
   index: number;
   fieldsLength: number;
   field: Record<"id", string>;
@@ -17,12 +16,13 @@ interface IFormContentSelectProps {
 
 const FormContentSelect = ({
   editMode,
+  isLogicAndTemplateOption,
   index,
   fieldsLength,
-  setToastText,
-  isLogicAndTemplateOption,
-  setFocusNumber,
+  field,
   register,
+  setToastText,
+  setFocusNumber,
   remove,
 }: IFormContentSelectProps): JSX.Element => {
   const deleteInputForm = () => {

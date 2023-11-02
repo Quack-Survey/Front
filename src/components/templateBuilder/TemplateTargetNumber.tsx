@@ -52,9 +52,9 @@ const TemplateTargetNumber = ({
             toggle ? onlyNumbers(value) : undefined,
         })}
         placeholder="내용을 입력해주세요."
-        defaultValue={toggle ? targetNumber : ""}
         maxLength={3}
         disabled={!toggle}
+        defaultValue={toggle ? targetNumber : ""}
       />
       <span
         className={`h-[12px] text-n-xs ${
