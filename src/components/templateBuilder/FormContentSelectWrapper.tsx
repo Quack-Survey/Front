@@ -42,7 +42,7 @@ const FormContentSelectWrapper = ({
     if (isLogicAndTemplateOption) {
       return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
     }
-    append({ value: "" });
+    append("");
   };
 
   const onDuplicate = () => {
