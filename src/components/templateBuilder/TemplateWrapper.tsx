@@ -125,7 +125,6 @@ const TemplateWrapper = ({
     },
   );
 
-  // Fn
   const onValid = ({
     deadline,
     targetNumber,
@@ -185,14 +184,12 @@ const TemplateWrapper = ({
     );
   };
 
-  // Effect
   useEffect(() => {
     if (!isLoadingForm && Array.isArray(forms)) {
       const order =
         forms?.length === 0 ? 1 : forms[forms?.length - 1].order + 1;
       setNewOrder(order);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingForm]);
 
   useEffect(() => {
@@ -207,7 +204,6 @@ const TemplateWrapper = ({
         router.replace("/home");
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingTemplate]);
 
   return (

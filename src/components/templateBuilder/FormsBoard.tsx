@@ -9,7 +9,7 @@ import { useUpdateForm } from "@/hooks/mutation/useUpdateForm";
 import { read } from "@/constants/mode";
 import React, { useState } from "react";
 import FormWrapper from "./FormWrapper";
-import Toast from "../Tost";
+import Toast from "../Toast";
 
 interface IFormsBoardProps {
   isFold: boolean;

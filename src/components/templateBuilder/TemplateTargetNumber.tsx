@@ -36,7 +36,6 @@ const TemplateTargetNumber = ({
     if (targetNumber !== 0) {
       setToggle((prev) => !prev);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

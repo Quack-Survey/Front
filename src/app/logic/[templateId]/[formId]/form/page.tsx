@@ -10,7 +10,7 @@ import { useGetForms } from "@/hooks/queries/useGetForms";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import LogicHeader from "@/components/logic/LogicHeader";
 import LogicProcess from "@/components/logic/LogicProcess";
-import Toast from "@/components/Tost";
+import Toast from "@/components/Toast";
 
 interface ILogicData {
   type: string | null;
@@ -100,7 +100,6 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
     if (!searchParams.get("form") || !selector || !type || !index) {
       return router.replace(`/logic/${templateId}`);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -126,7 +125,6 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
         return copyIsSelectedForm;
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   return (

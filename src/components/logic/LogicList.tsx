@@ -29,7 +29,6 @@ const LogicList = ({
         setIsLogic(true);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingLogics]);
 
   return (

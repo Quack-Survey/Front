@@ -74,7 +74,6 @@ const FormWrapper = ({
     "forms",
   );
 
-  // Fn
   const onValid = ({ title, select, required }: IFormValues) => {
     updateMutate({
       title: title,
@@ -173,7 +172,6 @@ const FormWrapper = ({
               <FormContentSelectWrapper
                 isLogicAndTemplateOption={isLogic || isTemplateOption}
                 setToastText={setToastText}
-                index={index}
                 editMode={editMode}
                 register={register}
                 setFocus={setFocus}

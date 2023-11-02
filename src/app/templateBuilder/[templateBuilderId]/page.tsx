@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { read } from "@/constants/mode";
 import { useRouter } from "next/navigation";
-import Toast from "@/components/Tost";
+import Toast from "@/components/Toast";
 import TemplateWrapper from "@/components/templateBuilder/TemplateWrapper";
 import SavePreserveBar from "@/components/SavePreserveBar";
 import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";

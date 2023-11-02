@@ -12,7 +12,6 @@ import ToolbarTypeCase from "../ToolbarTypingCase";
 import FormContentSelect from "./FormContentSelect";
 
 interface IFormContentSelectWrapperProps {
-  index: number;
   select: string[];
   editMode: boolean;
   isLogicAndTemplateOption: boolean;
@@ -24,7 +23,6 @@ interface IFormContentSelectWrapperProps {
 }
 
 const FormContentSelectWrapper = ({
-  index,
   editMode,
   register,
   isLogicAndTemplateOption,
@@ -68,7 +66,6 @@ const FormContentSelectWrapper = ({
     if (fields.length === 0) {
       append("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -80,7 +77,6 @@ const FormContentSelectWrapper = ({
             remove={remove}
             isLogicAndTemplateOption={isLogicAndTemplateOption}
             setToastText={setToastText}
-            field={field}
             setFocusNumber={setFocusNumber}
             fieldsLength={fields.length}
             editMode={editMode}

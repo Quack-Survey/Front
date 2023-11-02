@@ -38,8 +38,6 @@ const SettingLogicType: NextPage = (): JSX.Element => {
       alert("유효하지 않은 주소입니다.");
       router.replace("/home");
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -64,7 +64,6 @@ const TemplateQuater = ({
     } else {
       register("formId", { value: selectTypeForms[index]._id });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

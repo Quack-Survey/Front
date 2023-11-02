@@ -7,7 +7,6 @@ interface IFormContentSelectProps {
   isLogicAndTemplateOption: boolean;
   index: number;
   fieldsLength: number;
-  field: Record<"id", string>;
   register: UseFormRegister<IFormValues>;
   setToastText: React.Dispatch<React.SetStateAction<string>>;
   setFocusNumber: React.Dispatch<React.SetStateAction<number>>;
@@ -19,7 +18,6 @@ const FormContentSelect = ({
   isLogicAndTemplateOption,
   index,
   fieldsLength,
-  field,
   register,
   setToastText,
   setFocusNumber,

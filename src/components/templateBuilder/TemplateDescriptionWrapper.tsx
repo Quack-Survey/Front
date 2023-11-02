@@ -3,7 +3,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
 import { Template } from "@/types/mongooseType";
 import TemplateDescription from "./TemplateDescription";
-import Toast from "../Tost";
+import Toast from "../Toast";
 
 export interface ITemplateData {
   title: string;
@@ -32,7 +32,6 @@ const TemplateDescriptionWrapper = ({
 
   const { register, handleSubmit } = useForm();
 
-  // Fn
   const onValid: SubmitHandler<FieldValues> = ({ title, description }) => {
     updateTemplateMutate({ title, description });
     setMode(read);
@@ -62,7 +61,6 @@ const TemplateDescriptionWrapper = ({
     setToastText("");
   };
 
-  // Effect
   useEffect(() => {
     if (template?.title === "") {
       setMode(update);
@@ -71,8 +69,6 @@ const TemplateDescriptionWrapper = ({
       setMode(read);
       setModeName(read);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [template.title]);
 
   return (
