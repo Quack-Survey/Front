@@ -69,7 +69,7 @@ const checkErros: ICehckErros = (message, setError) => {
 const handleSignup: IHandleUserAction = async (data, router, setError) => {
   const res = await postFetch("/users/signup", JSON.stringify(data));
 
-  if (res.state) router.replace("/login");
+  if (res.state) router.replace(`/verify?email=${data.email}`);
   else checkErros(res.message, setError);
 };
 
@@ -79,6 +79,8 @@ const handleLogin: IHandleUserAction = async (data, router, setError) => {
   if (res.state) {
     setCookie("username", res.data.username);
     router.replace("/");
+  } else if (res.message === "Email not verified.") {
+    router.replace(`/verify?email=${data.email}`);
   } else {
     checkErros(res.message, setError);
   }
