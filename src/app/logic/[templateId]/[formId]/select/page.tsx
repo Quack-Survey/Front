@@ -4,12 +4,12 @@ import { NextPage } from "next";
 import { useState, useEffect } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import NextPreviousButton from "@/components/NextPreviousButton";
-import Toast from "@/components/Tost";
+import Toast from "@/components/Toast";
 import LogicHeader from "@/components/logic/LogicHeader";
 import LogicProcess from "@/components/logic/LogicProcess";
 
 const SettingLogicSelect: NextPage = (): JSX.Element => {
-  const { templateId } = useParams();
+  const { templateId, formId } = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -17,6 +17,7 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
   const [toastText, setToastText] = useState("");
 
   const form = JSON.parse(searchParams.get("form") as string);
+  const index = searchParams.get("index");
   const type = searchParams.get("type");
 
   const handleIsSelected = (index: number) => {
@@ -41,7 +42,7 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
       router.push(
         `/logic/${templateId}/${form._id}/form?selector=${JSON.stringify(
           selector,
-        )}&form=${searchParams.get("form")}&type=${type}`,
+        )}&form=${searchParams.get("form")}&type=${type}&index=${index}`,
       );
     } else {
       setToastText("보기를 선택해주세요.");
@@ -53,8 +54,8 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!type || !form) {
-      router.replace(`/logic/${templateId}`);
+    if (!type || !form || !index) {
+      return router.replace(`/logic/${templateId}`);
     } else {
       setIsSelected((prev) => {
         const copyIsSelected = [...prev];
@@ -65,7 +66,11 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
         return copyIsSelected;
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    if (!(form._id === formId && form.templateId === templateId)) {
+      alert("유효하지 않은 주소입니다.");
+      router.replace("/home");
+    }
   }, []);
 
   return (
@@ -78,16 +83,19 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
       <div className="m-n-lg flex flex-col gap-n-sm">
         {form?.select?.map((item: string, i: number) => {
           return (
-            <div
-              key={i}
-              className={`h-[42px] w-full cursor-pointer rounded-n-md border border-n-gray p-n-sm ${
-                isSelected[i]
-                  ? "bg-n-light-gray text-n-gray"
-                  : "bg-white text-black"
-              }`}
-              onClick={() => handleIsSelected(i)}
-            >
-              {item}
+            <div key={i}>
+              {item === "" ? null : (
+                <div
+                  className={`h-[42px] w-full cursor-pointer rounded-n-md border border-n-gray p-n-sm ${
+                    isSelected[i]
+                      ? "bg-n-light-gray text-n-gray"
+                      : "bg-white text-black"
+                  }`}
+                  onClick={() => handleIsSelected(i)}
+                >
+                  {item}
+                </div>
+              )}
             </div>
           );
         })}

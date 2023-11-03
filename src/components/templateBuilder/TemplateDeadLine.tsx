@@ -1,6 +1,9 @@
+import { UseFormRegister } from "react-hook-form";
+import { IOptionForm } from "./TemplateWrapper";
+
 interface ITemplateDeadLineProps {
-  register: any;
-  deadline: string;
+  deadline: any;
+  register: UseFormRegister<IOptionForm>;
 }
 
 const TemplateDeadLine = ({

@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
-import { Controller } from "react-hook-form";
+import { Form, TemplateOption } from "@/types/mongooseType";
+import {
+  FieldError,
+  FieldErrors,
+  UseFormResetField,
+  UseFormSetValue,
+} from "react-hook-form";
+import { IOptionForm } from "./TemplateWrapper";
 import Image from "next/image";
 import ToggleButton from "../ToggleButton";
 
 interface ITemplateQuaterProps {
   existingIndex: number;
-  templateOption: any;
+  templateOption: TemplateOption;
+  selectTypeForms: Form[];
   register: any;
-  setValue: any;
-  errors: any;
-  resetField: any;
-  selectTypeForms: any;
+  resetField: UseFormResetField<IOptionForm>;
+  errors: FieldErrors<IOptionForm> | any;
+  setValue: UseFormSetValue<IOptionForm>;
 }
 
 const TemplateQuater = ({
@@ -26,14 +33,14 @@ const TemplateQuater = ({
   const [index, setIndex] = useState(0);
 
   const errorMessage = errors?.quater?.filter(
-    (error: any) => error !== undefined,
+    (error: FieldError) => error !== undefined,
   );
 
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const numberSelectedValue = Number(e.target.value);
     setIndex(numberSelectedValue);
     setValue("formId", selectTypeForms[numberSelectedValue]._id);
-    resetField("quater", { quater: [] });
+    resetField("quater", { quater: [] } as Object);
   };
 
   const handleToggleButton = (e: React.MouseEvent<HTMLButtonElement>) => {

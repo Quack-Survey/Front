@@ -1,63 +1,65 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
 import { useRouter } from "next/navigation";
 import { useDeleteForm } from "@/hooks/mutation/useDeleteForm";
 import { useUpdateForm } from "@/hooks/mutation/useUpdateForm";
-import { Form, Logic, templateOption } from "@/types/mongooseType";
+import { Form, Logic, TemplateOption } from "@/types/mongooseType";
 import FormTitle from "./FormTitle";
 import FormOption from "./FormOption";
 import FormContentText from "./FormContentText";
 import FormContentSelectWrapper from "./FormContentSelectWrapper";
-import Toast from "../Tost";
 import FloatingFormButtonCollection from "../FloatingFormButtonCollection";
+import FormRequiredCheckBox from "./FormRequiredCheckBox";
 
 export interface IFormValues {
   title: string;
   select: string[];
+  required: boolean;
 }
 
 interface IFormWrapperProps {
-  form: Form;
-  templateOption: templateOption;
-  logics: Logic[];
-  templateBuilderId: string | string[];
+  isFold: boolean;
   index: number;
   newOrder: number;
   modeName: string;
-  isFold: boolean;
-  setModeName: any;
   createMutate: any;
+  templateBuilderId: string | string[];
+  form: Form;
+  templateOption: TemplateOption;
+  logics: Logic[];
+  setModeName: React.Dispatch<React.SetStateAction<string>>;
+  setToastText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FormWrapper = ({
+  isFold,
+  index,
+  newOrder,
+  modeName,
+  createMutate,
+  templateBuilderId,
   form,
   templateOption,
   logics,
-  index,
-  newOrder,
-  templateBuilderId,
-  modeName,
-  isFold,
   setModeName,
-  createMutate,
+  setToastText,
 }: IFormWrapperProps): JSX.Element => {
   const router = useRouter();
   const [mode, setMode] = useState(read);
   const [updateActive, setUpdateActive] = useState(0);
-  const [toastText, setToastText] = useState("");
-  const { _id, title, type, plural, select } = form;
+  const { _id, title, type, plural, select, required } = form;
 
   const isTemplateOption = templateOption?.formId === _id;
   const isLogic =
-    logics.findIndex((logic) => logic.formId === _id) === -1 ? false : true;
+    logics?.findIndex((logic) => logic?.formId === _id) === -1 ? false : true;
 
   const editMode = mode === create || mode === update;
   const editModeName = modeName === create || modeName === update;
 
   const { register, handleSubmit, getValues, control, setFocus } =
     useForm<IFormValues>({
-      defaultValues: { title, select },
+      defaultValues: { title, select, required },
     });
 
   const { mutate: updateMutate } = useUpdateForm(
@@ -72,11 +74,11 @@ const FormWrapper = ({
     "forms",
   );
 
-  // Fn
-  const onValid = (formData: any) => {
+  const onValid = ({ title, select, required }: IFormValues) => {
     updateMutate({
-      title: formData.title,
-      select: [...formData.select],
+      title: title,
+      select: [...select],
+      required: required,
     });
     setMode(read);
     setModeName(read);
@@ -85,7 +87,7 @@ const FormWrapper = ({
   const startPress = () => {
     if (editMode) return;
     if (isFold) {
-      return setToastText("접기를 풀어주세요.");
+      return setToastText("접기를 풀고 수정해주세요.");
     }
     setUpdateActive(Date.now());
   };
@@ -103,10 +105,6 @@ const FormWrapper = ({
       setMode(update);
       setModeName(update);
     }
-  };
-
-  const onClose = () => {
-    setToastText("");
   };
 
   const onDelete = () => {
@@ -140,14 +138,19 @@ const FormWrapper = ({
     <>
       <form
         onSubmit={handleSubmit(onValid)}
-        className={` w-[360px] flex-col border-l-[8px] bg-white ${
-          isFold ? "h-[50px] overflow-hidden" : "h-full"
+        className={`w-[360px] flex-col border-l-[8px] bg-white ${
+          isFold ? "h-[70px] overflow-hidden" : "h-full"
         } ${plural ? "border-dotted" : ""} ${
           editMode ? "border-n-light-blue" : "cursor-pointer border-n-dark-gray"
         }`}
         onMouseDown={startPress}
         onMouseUp={endPress}
       >
+        <FormRequiredCheckBox
+          register={register}
+          editMode={editMode}
+          formId={form._id}
+        />
         <div className="pb-n-xlg ml-n-sm pt-n-sm">
           <FormTitle
             title={title}
@@ -167,7 +170,8 @@ const FormWrapper = ({
             ) : null}
             {type === "select" ? (
               <FormContentSelectWrapper
-                index={index}
+                isLogicAndTemplateOption={isLogic || isTemplateOption}
+                setToastText={setToastText}
                 editMode={editMode}
                 register={register}
                 setFocus={setFocus}
@@ -181,9 +185,6 @@ const FormWrapper = ({
           </div>
         </div>
       </form>
-      {toastText !== "" ? (
-        <Toast toastText={toastText} onClose={onClose} editMode={editMode} />
-      ) : null}
       {editMode ? (
         <FloatingFormButtonCollection
           modeName={update}
@@ -196,4 +197,4 @@ const FormWrapper = ({
   );
 };
 
-export default FormWrapper;
+export default React.memo(FormWrapper);

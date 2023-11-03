@@ -4,7 +4,6 @@ export interface Template {
   description: string;
   targetNumber: number;
   userId: string;
-  required: boolean;
   bookMark: boolean;
   deadline: Date | null;
   createdAt: Date;
@@ -18,13 +17,14 @@ export interface Form {
   select: string[];
   order: number;
   plural: boolean;
+  required: boolean;
   bookMark: boolean;
   templateId: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface templateOption {
+export interface TemplateOption {
   length: number;
   _id: string;
   quater: string[];

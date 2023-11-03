@@ -10,13 +10,15 @@ import NextPreviousButton from "@/components/NextPreviousButton";
 import LogicProcess from "@/components/logic/LogicProcess";
 
 const SettingLogicType: NextPage = (): JSX.Element => {
-  const { templateId } = useParams();
+  const { templateId, formId } = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [logicType, setLogicType] = useState("");
 
   const form = JSON.parse(searchParams.get("form") as string);
+  const index = searchParams.get("index");
+
   const logicTypeList = ["moving", "filter"];
 
   const handleLogicToggle = (type: string) => {
@@ -28,10 +30,14 @@ const SettingLogicType: NextPage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!searchParams.get("form")) {
-      router.replace(`/logic/${templateId}`);
+    if (!searchParams.get("form") || !index) {
+      return router.replace(`/logic/${templateId}`);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    if (!(form._id === formId && form.templateId === templateId)) {
+      alert("유효하지 않은 주소입니다.");
+      router.replace("/home");
+    }
   }, []);
 
   return (
@@ -71,7 +77,7 @@ const SettingLogicType: NextPage = (): JSX.Element => {
         <Link
           href={{
             pathname: "select",
-            query: { type: logicType, form: searchParams.get("form") },
+            query: { type: logicType, form: searchParams.get("form"), index },
           }}
         >
           <NextPreviousButton modeName={"single"} buttonText={["다음"]} />

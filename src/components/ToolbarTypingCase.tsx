@@ -1,9 +1,9 @@
 import Image from "next/image";
 
 interface IToolbarTypeCaseProp {
-  modeName: string; //type
-  onFocusUp: () => void;
-  onFocusDown: () => void;
+  modeName: string;
+  onFocusUp?: () => void;
+  onFocusDown?: () => void;
   onDuplicate?: () => void;
   onEnter?: () => void;
 }

@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { useEffect } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useGetLogics } from "@/hooks/queries/useGetLogics";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import LogicFormSelectList from "@/components/logic/LogicFormSelectList";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import Image from "next/image";
@@ -30,9 +31,13 @@ const LogicFormManagement: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     if (!form) {
-      router.back();
+      return router.back();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    if (!(form._id === formId && form.templateId === templateId)) {
+      alert("유효하지 않은 주소입니다.");
+      router.replace("/home");
+    }
   }, []);
 
   return (
@@ -66,7 +71,9 @@ const LogicFormManagement: NextPage = (): JSX.Element => {
             );
           })}
         </div>
-      ) : null}
+      ) : (
+        <LoadingSpinner />
+      )}
       <NextPreviousButton
         modeName={"double"}
         buttonText={["취소", "확인"]}

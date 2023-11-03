@@ -1,14 +1,9 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { getFetch, putFetch } from "@/utils/fetch/core";
-import TemplateDescription from "./TemplateDescription";
-import Toast from "../Tost";
-import { useUpdateTemplate } from "@/hooks/mutation/useUpdateTemplate";
 import { Template } from "@/types/mongooseType";
+import TemplateDescription from "./TemplateDescription";
+import Toast from "../Toast";
 
 export interface ITemplateData {
   title: string;
@@ -16,17 +11,17 @@ export interface ITemplateData {
 }
 
 interface ITemplateDescriptionWrapperProps {
-  template: Template;
   modeName: string;
-  setModeName: React.Dispatch<React.SetStateAction<string>>;
   updateTemplateMutate: any;
+  template: Template;
+  setModeName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const TemplateDescriptionWrapper = ({
   template,
+  updateTemplateMutate,
   modeName,
   setModeName,
-  updateTemplateMutate,
 }: ITemplateDescriptionWrapperProps): JSX.Element => {
   const [mode, setMode] = useState("");
   const [toastText, setToastText] = useState("");
@@ -37,7 +32,6 @@ const TemplateDescriptionWrapper = ({
 
   const { register, handleSubmit } = useForm();
 
-  // Fn
   const onValid: SubmitHandler<FieldValues> = ({ title, description }) => {
     updateTemplateMutate({ title, description });
     setMode(read);
@@ -67,7 +61,6 @@ const TemplateDescriptionWrapper = ({
     setToastText("");
   };
 
-  // Effect
   useEffect(() => {
     if (template?.title === "") {
       setMode(update);
@@ -76,8 +69,6 @@ const TemplateDescriptionWrapper = ({
       setMode(read);
       setModeName(read);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [template.title]);
 
   return (

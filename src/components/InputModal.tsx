@@ -1,26 +1,29 @@
+import { SubmitHandler, UseFormHandleSubmit } from "react-hook-form";
+import { IOptionForm } from "./templateBuilder/TemplateWrapper";
+
 interface IInputModalProps {
   isOpen: boolean;
-  children: JSX.Element;
   submitText: string;
-  handleSubmit: any;
+  children: JSX.Element;
+  handleSubmit: UseFormHandleSubmit<IOptionForm>;
+  onValid: SubmitHandler<IOptionForm>;
   onCancel: (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
-  onValid: () => void;
 }
 
 const InputModal = ({
   isOpen,
-  children,
   submitText,
+  children,
   handleSubmit,
-  onCancel,
   onValid,
+  onCancel,
 }: IInputModalProps): JSX.Element => {
   return (
     <div
       className={
         isOpen
-          ? "z-100 fixed left-0 top-0 flex h-screen w-screen items-center justify-center opacity-100 transition-opacity"
-          : "z-100 pointer-events-none fixed left-0 top-0 flex h-screen w-screen items-center justify-center opacity-0"
+          ? "fixed left-0 top-0 z-50 flex h-screen w-screen items-center justify-center opacity-100 transition-opacity"
+          : "pointer-events-none fixed left-0 top-0 z-50 flex h-screen w-screen items-center justify-center opacity-0"
       }
     >
       <div

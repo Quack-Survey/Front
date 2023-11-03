@@ -1,5 +1,6 @@
 import { UseFormRegister } from "react-hook-form";
 import { IFormValues } from "./FormWrapper";
+import React from "react";
 
 interface IFormTitleProps {
   title: string;
@@ -14,12 +15,10 @@ const FormTitle = ({
   editMode,
   register,
 }: IFormTitleProps): JSX.Element => {
-  const testValue = 50;
-
   return (
     <div className="mb-n-md flex h-auto w-full">
       <span
-        className={`text-n-xl  ${
+        className={`tr text-n-xl ${
           editMode ? "text-n-light-blue" : "text-n-dark-gray"
         }`}
       >
@@ -27,7 +26,7 @@ const FormTitle = ({
       </span>
       <textarea
         className={`ml-n-md w-[300px] resize-none self-end  bg-white pt-[5px] text-n-md text-black outline-none ${
-          testValue < 21
+          title.length < 21
             ? "disabled:h-[36px] "
             : "  disabled:h-[40px] disabled:text-xs"
         }`}
@@ -43,4 +42,4 @@ const FormTitle = ({
   );
 };
 
-export default FormTitle;
+export default React.memo(FormTitle);

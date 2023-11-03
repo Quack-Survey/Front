@@ -13,11 +13,11 @@ const Toast = ({ toastText, onClose, editMode }: IToastProps): JSX.Element => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 3000);
+    }, 1500);
 
     const closeTimer = setTimeout(() => {
       onClose();
-    }, 3300);
+    }, 1800);
 
     return () => {
       clearTimeout(timer);
