@@ -1,11 +1,7 @@
 <div align="center">
-  <img width=700 src="https://github.com/Quack-Survey/Front/assets/52587871/04188969-cc1e-4d26-a4bd-8a36dd63db54"/>
-   <h3>Quack Survey</h3> 
-  <span>설문개설 및 대쉬보드 시스템</span>
+    <h1>Quack Survey</h1>
+  <img width=700 src="https://github.com/Quack-Survey/Front/assets/52587871/fe1bc5b3-286e-4fcf-8647-d851c83356c6"/>
 </div>
-
-
- <br/>
 
   <br/>
 
@@ -22,31 +18,36 @@
 <br/>
 
 # 목차
-- [개요](#1-개요)
-- [기술 스택](#2-기술-스택)
-- [기능 소개](#3-기능-소개)
-- [팀 소개](#4-팀-소개)
+1. [개요](#1-개요)
+2. [기술 스택](#2-기술-스택)
+3. [기능 소개](#3-기능-소개)
+4. [팀 소개](#4-팀-소개)
 
 <br/>
 
 # 1. 개요
-> 가나
+> 일반인들도 전문적으로 설문을 운영할 수 있다!
 
-가나
+편리하게 설문을 기획하고, 응답현황을 관리하고 응답결과를 시각화할 수 있는 서비스입니다.
+세미나/모임 관련 설문조사를 진행하려는 대학생/일반인, 구상 아이템에 대한 수요조사를 사전에 진행해보려는 예비 창업자를 타겟으로 합니다.
+주요 기능은 아래와 같습니다.
+
+|기능|설명|
+|-|-|
+|모바일 설문 에디터|모바일에 최적화된 설문개설/편집 에디터|
+|설문 로직 커스텀|문항에 적용할 로직을 간편하고 직관적으로 설정가능|
+|응답현황 모니터링|응답현황을 한 눈에 파악할 수 있도록 시각화|
+|조사결과 시각화|조사결과를 다방면으로 분석할 수 있도록 쿼리필터 기능 지원|
+
+
 
 <br/>
 
 # 2. 기술 스택
-<br/>
+<h3>Tech Stack</h3>
 
-<h5>Tech Stack</h5>
-<div align="middle">
-  
-|<img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=Next.js&logoColor=white"/>|<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>|<img src="https://img.shields.io/badge/react-hook-form"/>|<img src="https://img.shields.io/badge/ReactQuery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white"/>|
-|:-:|:-:|:-:|:-:|
-|<img src="https://img.shields.io/badge/redux-toolkit"/>|<img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=flat-square&logo=Tailwind CSS&logoColor=white"/>|<img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=Vercel&logoColor=white"/>|<img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black"/>|
-</div>
-<br/>
+![기술스택](https://github.com/Quack-Survey/Front/assets/52587871/a62f1191-79b7-4845-95f4-afb9d5295091)
+
 
 
 <h5>System Architecture</h5>
