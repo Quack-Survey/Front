@@ -8,7 +8,7 @@ const LogoBar = ({ modeName }: ILogoBarProps): JSX.Element => {
   return (
     <div>
       {modeName === "light" ? (
-        <div className="fixed top-0 flex h-[56px] w-full min-w-[360px] items-center justify-center border-b border-solid border-n-light-gray bg-n-white">
+        <div className="fixed top-0 z-50 flex h-[56px] w-full min-w-[360px] items-center justify-center border-b border-solid border-n-light-gray bg-n-white">
           <div className="flex gap-n-sm">
             <Image src="/images/logo.png" width={43} height={20} alt="" />
             <Image
