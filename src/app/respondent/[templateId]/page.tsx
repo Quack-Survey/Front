@@ -13,6 +13,10 @@ import RespondentFormWrapper from "@/components/respondent/RespondentFormWrapper
 import SubmitResponseButton from "@/components/SubmitResponseButton";
 import Toast from "@/components/Toast";
 
+interface IRespondentData {
+  [key: string]: string | (string | boolean)[];
+}
+
 const Respondent: NextPage = (): JSX.Element => {
   const router = useRouter();
   const { templateId } = useParams();
@@ -32,43 +36,37 @@ const Respondent: NextPage = (): JSX.Element => {
     },
   );
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-  } = useForm({ mode: "onChange" });
+  const { register, handleSubmit, getValues, setValue } = useForm({
+    mode: "onChange",
+  });
 
-  const onValid = (respondentData: any) => {
-    const respondentForms: any = Object.values(respondentData);
-    const filterDisabledResponse = respondentForms.map(
-      (response: string[] | string, i: number) => {
-        if (isDisabled[i]) {
-          return typeof response === "string" ? "" : [""];
-        }
+  const onValid = (responsesData: IRespondentData) => {
+    const arrResponsesData: ((string | boolean)[] | string)[] =
+      Object.values(responsesData);
+    const filterDisabledResponses = arrResponsesData.map((response, i) => {
+      if (isDisabled[i]) {
+        return typeof response === "string" ? "" : [""];
+      }
+      return response;
+    });
+    const mutationResponseForms = filterDisabledResponses.map((response) => {
+      if (Array.isArray(response)) {
+        const filterResponse = response.filter(
+          (item) => typeof item === "string",
+        );
+        return filterResponse.length === 0 ? [""] : filterResponse;
+      } else {
         return response;
-      },
-    );
-    const mutationResponseForms = filterDisabledResponse.map(
-      (response: string[] | string, i: number) => {
-        if (Array.isArray(response)) {
-          const filterResponse = response.filter(
-            (item) => typeof item === "string",
-          );
-          return filterResponse.length === 0 ? [""] : filterResponse;
-        } else {
-          return response;
-        }
-      },
-    );
-    const mutationResponse = data?.form?.map((formData: Form, i: number) => {
+      }
+    });
+    const mutationResponses = data?.form?.map((formData: Form, i: number) => {
       return {
         formId: formData._id,
         response: mutationResponseForms[i],
       };
     });
 
-    mutate(mutationResponse);
+    mutate(mutationResponses);
   };
 
   const onInValid = () => {
@@ -81,7 +79,10 @@ const Respondent: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     if (!isLoading) {
-      if (data?.template.deadline) {
+      if (data?.error === "Failed to get template") {
+        return router.replace("/respondent/notfound");
+      }
+      if (data?.template?.deadline) {
         const deadlineDate = new Date(data?.template.deadline);
         const todayDate = new Date();
         if (deadlineDate < todayDate) {
@@ -116,6 +117,7 @@ const Respondent: NextPage = (): JSX.Element => {
                 isDisabled={isDisabled[i]}
                 setIsDisabled={setIsDisabled}
                 getValues={getValues}
+                setValue={setValue}
                 register={register}
               />
             ))}

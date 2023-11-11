@@ -1,9 +1,15 @@
+import {
+  FieldValues,
+  UseFormGetValues,
+  UseFormRegister,
+} from "react-hook-form";
+
 interface IRespondentFormTextBoxProps {
   formIndex: number;
   required: boolean;
   isDisabled: boolean;
-  getValues: any;
-  register: any;
+  getValues: UseFormGetValues<FieldValues>;
+  register: UseFormRegister<FieldValues>;
 }
 
 const RespondentFormTextBox = ({
@@ -16,7 +22,9 @@ const RespondentFormTextBox = ({
   const handleValidate = () => {
     if (isDisabled) return;
     if (!required) return;
-    const respondentForms: any = Object.values(getValues());
+    const respondentForms: ((string | boolean)[] | string)[] = Object.values(
+      getValues(),
+    );
     const checkRespondentForms = respondentForms[formIndex];
 
     if (checkRespondentForms === "") {

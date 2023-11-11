@@ -23,18 +23,20 @@ const LogoBar = ({ modeName }: ILogoBarProps): JSX.Element => {
         <div className="fixed top-0 flex h-[56px] w-full min-w-[360px] items-center  justify-center border-b border-solid border-n-light-gray bg-n-black">
           <div className="flex gap-n-sm">
             <Image
-              priority
+              className="h-auto w-auto"
               src="/images/logo_black.png"
+              alt=""
               width={43}
               height={20}
-              alt=""
+              priority
             />
             <Image
-              priority
+              className="h-auto w-auto"
               src="/images/quack_survey_black.png"
               width={136}
               height={29}
               alt=""
+              priority
             />
           </div>
         </div>

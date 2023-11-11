@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 import { Form, Logic } from "@/types/mongooseType";
+import {
+  FieldValues,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 import RespondentFormTitle from "./RespondentFormTitle";
 import RespondentFormSelectBox from "./RespondentFormSelectBox";
 import RespondentFormTextBox from "./RespondentFormTextBox";
@@ -11,8 +17,9 @@ interface IRespondentFormWrapperProps {
   index: number;
   isDisabled: boolean;
   setIsDisabled: React.Dispatch<React.SetStateAction<boolean[]>>;
-  getValues: any;
-  register: any;
+  getValues: UseFormGetValues<FieldValues>;
+  setValue: UseFormSetValue<FieldValues>;
+  register: UseFormRegister<FieldValues>;
 }
 const RespondentFormWrapper = ({
   form,
@@ -22,9 +29,10 @@ const RespondentFormWrapper = ({
   isDisabled,
   setIsDisabled,
   getValues,
+  setValue,
   register,
 }: IRespondentFormWrapperProps): JSX.Element => {
-  const { title, plural, required, select, type } = form;
+  const { _id, title, plural, required, select, type } = form;
 
   const logicIndex = logics.findIndex(
     (logic: Logic) => logic.formId === form._id,
@@ -66,7 +74,7 @@ const RespondentFormWrapper = ({
             <div className="space-y-n-sm">
               {select?.map((text: string, i) => (
                 <RespondentFormSelectBox
-                  key={i}
+                  key={`${_id}_${i}`}
                   logic={logicIndex === -1 ? undefined : logics[logicIndex]}
                   form={form}
                   forms={forms}
@@ -78,6 +86,7 @@ const RespondentFormWrapper = ({
                   setIsDisabled={setIsDisabled}
                   setIsChecked={setIsChecked}
                   getValues={getValues}
+                  setValue={setValue}
                   register={register}
                 />
               ))}

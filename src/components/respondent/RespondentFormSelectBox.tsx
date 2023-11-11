@@ -1,5 +1,10 @@
 import { Form, Logic } from "@/types/mongooseType";
-import { useEffect } from "react";
+import {
+  FieldValues,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 
 interface IRespondentFormSelectBoxProps {
   form: Form;
@@ -12,8 +17,9 @@ interface IRespondentFormSelectBoxProps {
   isDisabled: boolean;
   setIsChecked: React.Dispatch<React.SetStateAction<boolean[]>>;
   setIsDisabled: React.Dispatch<React.SetStateAction<boolean[]>>;
-  getValues: any;
-  register: any;
+  getValues: UseFormGetValues<FieldValues>;
+  setValue: UseFormSetValue<FieldValues>;
+  register: UseFormRegister<FieldValues>;
 }
 
 const RespondentFormSelectBox = ({
@@ -28,11 +34,24 @@ const RespondentFormSelectBox = ({
   setIsChecked,
   setIsDisabled,
   getValues,
+  setValue,
   register,
 }: IRespondentFormSelectBoxProps): JSX.Element => {
   const { _id: id, plural, select, required } = form;
+  const inititalIsChecked = isChecked.map(() => false);
 
   const handleIsSingleChecked = (i: number) => {
+    const mutationIsChecked = isChecked.map(
+      (value: boolean, isCheckedIndex) => {
+        return isCheckedIndex === i ? text : false;
+      },
+    );
+    if (!isChecked[i]) {
+      setValue(`form${formIndex + 1}`, mutationIsChecked);
+    } else {
+      setValue(`form${formIndex + 1}`, inititalIsChecked);
+    }
+
     if (logic) {
       const includeLogic = logic.selector.includes(select[i]);
       const existingIndex = forms.findIndex(
@@ -84,7 +103,7 @@ const RespondentFormSelectBox = ({
   const handleValidate = () => {
     if (isDisabled) return;
     if (!required) return;
-    const respondentForms: any = Object.values(getValues());
+    const respondentForms: any[] = Object.values(getValues());
     const checkRespondentForms = respondentForms[formIndex];
     const someCheckRespondentForms = checkRespondentForms.some(
       (item: boolean | string) => typeof item === "string",
@@ -112,9 +131,9 @@ const RespondentFormSelectBox = ({
             className="cursor-pointer"
             id={`${id}_select_${index}`}
             type="checkbox"
-            checked={isChecked[index]}
+            // checked={isChecked[index]}
             value={text}
-            onClick={() => {
+            onClick={(e: any) => {
               if (!plural) {
                 handleIsSingleChecked(index);
               } else {
