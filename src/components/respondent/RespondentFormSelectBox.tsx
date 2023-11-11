@@ -9,10 +9,11 @@ interface IRespondentFormSelectBoxProps {
   index: number;
   formIndex: number;
   isChecked: boolean[];
+  isDisabled: boolean;
   setIsChecked: React.Dispatch<React.SetStateAction<boolean[]>>;
   setIsDisabled: React.Dispatch<React.SetStateAction<boolean[]>>;
+  getValues: any;
   register: any;
-  control: any;
 }
 
 const RespondentFormSelectBox = ({
@@ -23,13 +24,13 @@ const RespondentFormSelectBox = ({
   index,
   formIndex,
   isChecked,
+  isDisabled,
   setIsChecked,
   setIsDisabled,
+  getValues,
   register,
-  control,
 }: IRespondentFormSelectBoxProps): JSX.Element => {
   const { _id: id, plural, select, required } = form;
-  // console.log(isChecked);
 
   const handleIsSingleChecked = (i: number) => {
     if (logic) {
@@ -61,7 +62,6 @@ const RespondentFormSelectBox = ({
       return copyIsChecked;
     });
   };
-  // console.log(isChecked);
 
   const handleIsPluralChecked = (i: number) => {
     const checkedLength = isChecked.filter((item: boolean) => item === true);
@@ -79,6 +79,19 @@ const RespondentFormSelectBox = ({
       copyIsChecked.splice(i, 1, !isChecked[i]);
       return copyIsChecked;
     });
+  };
+
+  const handleValidate = () => {
+    if (isDisabled) return;
+    if (!required) return;
+    const respondentForms: any = Object.values(getValues());
+    const checkRespondentForms = respondentForms[formIndex];
+    const someCheckRespondentForms = checkRespondentForms.some(
+      (item: boolean | string) => typeof item === "string",
+    );
+    if (!someCheckRespondentForms) {
+      return "본 문항에 응답해주세요!";
+    }
   };
 
   return (
@@ -99,7 +112,7 @@ const RespondentFormSelectBox = ({
             className="cursor-pointer"
             id={`${id}_select_${index}`}
             type="checkbox"
-            checked={isChecked[index]} // 이부분 콘솔오류
+            checked={isChecked[index]}
             value={text}
             onClick={() => {
               if (!plural) {
@@ -108,7 +121,9 @@ const RespondentFormSelectBox = ({
                 handleIsPluralChecked(index);
               }
             }}
-            {...register(`form${formIndex + 1}[${index}]`)}
+            {...register(`form${formIndex + 1}[${index}]`, {
+              validate: handleValidate,
+            })}
           />
         </div>
       </div>

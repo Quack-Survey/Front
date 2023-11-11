@@ -11,12 +11,14 @@ import ResponseTitle from "@/components/respondent/ResponseTitle";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import RespondentFormWrapper from "@/components/respondent/RespondentFormWrapper";
 import SubmitResponseButton from "@/components/SubmitResponseButton";
+import Toast from "@/components/Toast";
 
 const Respondent: NextPage = (): JSX.Element => {
   const router = useRouter();
   const { templateId } = useParams();
 
   const [isDisabled, setIsDisabled] = useState<boolean[]>([]);
+  const [toastText, setToastText] = useState("");
 
   const { data, isLoading } = useQuery(["respondent"], () =>
     getFetch(`/template/respondent?templateId=${templateId}`),
@@ -26,7 +28,7 @@ const Respondent: NextPage = (): JSX.Element => {
     (response) =>
       postFetch(`/complete?templateId=${templateId}`, JSON.stringify(response)),
     {
-      onSuccess: (data) => console.log(data),
+      onSuccess: () => router.replace("/respondent/complete"),
     },
   );
 
@@ -34,12 +36,11 @@ const Respondent: NextPage = (): JSX.Element => {
     register,
     handleSubmit,
     formState: { errors },
-    control,
+    getValues,
   } = useForm({ mode: "onChange" });
 
   const onValid = (respondentData: any) => {
     const respondentForms: any = Object.values(respondentData);
-
     const filterDisabledResponse = respondentForms.map(
       (response: string[] | string, i: number) => {
         if (isDisabled[i]) {
@@ -60,7 +61,6 @@ const Respondent: NextPage = (): JSX.Element => {
         }
       },
     );
-
     const mutationResponse = data?.form?.map((formData: Form, i: number) => {
       return {
         formId: formData._id,
@@ -69,9 +69,15 @@ const Respondent: NextPage = (): JSX.Element => {
     });
 
     mutate(mutationResponse);
-    router.replace("/respondent/complete");
   };
-  console.log(data?.template.deadline);
+
+  const onInValid = () => {
+    setToastText("필수문항에 응답해주세요!");
+  };
+
+  const onClose = () => {
+    setToastText("");
+  };
 
   useEffect(() => {
     if (!isLoading) {
@@ -88,7 +94,6 @@ const Respondent: NextPage = (): JSX.Element => {
         copyIsDisabled.push(...newIsDisabled);
         return copyIsDisabled;
       });
-      // mutate();
     }
   }, [isLoading]);
 
@@ -100,7 +105,7 @@ const Respondent: NextPage = (): JSX.Element => {
             title={data?.template?.title}
             description={data?.template?.description}
           />
-          <form onSubmit={handleSubmit(onValid)}>
+          <form onSubmit={handleSubmit(onValid, onInValid)}>
             {data?.form?.map((formData: Form, i: number) => (
               <RespondentFormWrapper
                 key={formData._id}
@@ -110,8 +115,8 @@ const Respondent: NextPage = (): JSX.Element => {
                 form={formData}
                 isDisabled={isDisabled[i]}
                 setIsDisabled={setIsDisabled}
+                getValues={getValues}
                 register={register}
-                control={control}
               />
             ))}
             <SubmitResponseButton buttonText={"제출"} />
@@ -120,6 +125,9 @@ const Respondent: NextPage = (): JSX.Element => {
       ) : (
         <LoadingSpinner />
       )}
+      {toastText !== "" ? (
+        <Toast editMode={false} toastText={toastText} onClose={onClose} />
+      ) : null}
     </main>
   );
 };

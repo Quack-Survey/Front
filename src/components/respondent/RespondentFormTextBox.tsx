@@ -1,18 +1,37 @@
 interface IRespondentFormTextBoxProps {
   formIndex: number;
+  required: boolean;
+  isDisabled: boolean;
+  getValues: any;
   register: any;
 }
 
 const RespondentFormTextBox = ({
   formIndex,
+  required,
+  isDisabled,
+  getValues,
   register,
 }: IRespondentFormTextBoxProps): JSX.Element => {
+  const handleValidate = () => {
+    if (isDisabled) return;
+    if (!required) return;
+    const respondentForms: any = Object.values(getValues());
+    const checkRespondentForms = respondentForms[formIndex];
+
+    if (checkRespondentForms === "") {
+      return "본 문항에 응답해주세요!";
+    }
+  };
+
   return (
     <>
       <textarea
         className="ml-8 mr-2 h-[240px] w-[300px] resize-none rounded-md border border-n-blue p-2 text-n-sm"
         placeholder="답변을 입력해주세요."
-        {...register(`form${formIndex + 1}`)}
+        {...register(`form${formIndex + 1}`, {
+          validate: handleValidate,
+        })}
         maxLength={300}
       />
     </>

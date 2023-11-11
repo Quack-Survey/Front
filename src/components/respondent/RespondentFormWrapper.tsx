@@ -11,11 +11,9 @@ interface IRespondentFormWrapperProps {
   index: number;
   isDisabled: boolean;
   setIsDisabled: React.Dispatch<React.SetStateAction<boolean[]>>;
+  getValues: any;
   register: any;
-  control: any;
 }
-// ${plural ? "border-dotted" : ""}
-// : "cursor-pointer border-n-dark-gray"
 const RespondentFormWrapper = ({
   form,
   forms,
@@ -23,10 +21,11 @@ const RespondentFormWrapper = ({
   index,
   isDisabled,
   setIsDisabled,
+  getValues,
   register,
-  control,
 }: IRespondentFormWrapperProps): JSX.Element => {
   const { title, plural, required, select, type } = form;
+
   const logicIndex = logics.findIndex(
     (logic: Logic) => logic.formId === form._id,
   );
@@ -49,8 +48,11 @@ const RespondentFormWrapper = ({
       }`}
     >
       <div className="flex">
-        {plural ? (
-          <div className="mb-3 ml-3 text-n-xs">( 모두선택 )</div>
+        {required && !isDisabled ? (
+          <span className="mb-3 ml-3 text-n-xs">( 필수항목 )</span>
+        ) : null}
+        {plural && !isDisabled ? (
+          <span className="mb-3 ml-3 text-n-xs">( 모두선택 )</span>
         ) : null}
       </div>
       <RespondentFormTitle
@@ -72,15 +74,22 @@ const RespondentFormWrapper = ({
                   index={i}
                   formIndex={index}
                   isChecked={isChecked}
+                  isDisabled={isDisabled}
                   setIsDisabled={setIsDisabled}
                   setIsChecked={setIsChecked}
+                  getValues={getValues}
                   register={register}
-                  control={control}
                 />
               ))}
             </div>
           ) : (
-            <RespondentFormTextBox formIndex={index} register={register} />
+            <RespondentFormTextBox
+              formIndex={index}
+              required={required}
+              isDisabled={isDisabled}
+              getValues={getValues}
+              register={register}
+            />
           )}
         </>
       ) : null}
