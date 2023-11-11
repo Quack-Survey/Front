@@ -2,9 +2,11 @@
 
 import { NextPage } from "next";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { read } from "@/constants/mode";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getFetch } from "@/utils/fetch/core";
 import Toast from "@/components/Toast";
 import TemplateWrapper from "@/components/templateBuilder/TemplateWrapper";
 import SavePreserveBar from "@/components/SavePreserveBar";
@@ -17,6 +19,11 @@ const TemplateBuilder: NextPage = (): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFold, setIsFold] = useState(false);
   const [modeName, setModeName] = useState(read);
+
+  const { data: complete, isLoading } = useQuery(
+    ["respondent", templateBuilderId],
+    () => getFetch(`/complete?templateId=${templateBuilderId}`),
+  );
 
   const onNavigateHome = () => {
     router.push("/home");
@@ -43,6 +50,15 @@ const TemplateBuilder: NextPage = (): JSX.Element => {
       router.push("/home");
     }
   };
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (complete.length >= 1) {
+        alert("설문이 시작 되었습니다.");
+        return router.replace("/home");
+      }
+    }
+  }, [isLoading]);
 
   return (
     <>
