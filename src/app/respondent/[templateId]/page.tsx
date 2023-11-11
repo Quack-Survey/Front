@@ -12,23 +12,15 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import RespondentFormWrapper from "@/components/respondent/RespondentFormWrapper";
 import SubmitResponseButton from "@/components/SubmitResponseButton";
 
-// useParams로 해당 url 을 가져와서 로딩
-
-// 페이지 진입시 deadline이 넘어가면 기간이만료됐다고 라우팅하고 띄우기
-
 const Respondent: NextPage = (): JSX.Element => {
   const router = useRouter();
   const { templateId } = useParams();
 
   const [isDisabled, setIsDisabled] = useState<boolean[]>([]);
+
   const { data, isLoading } = useQuery(["respondent"], () =>
     getFetch(`/template/respondent?templateId=${templateId}`),
   );
-
-  // const { data: complete } = useQuery(["respondentasdasdasd"], () =>
-  //   getFetch(`/complete?templateId=${templateId}`),
-  // );
-  // console.log(complete);
 
   const { mutate } = useMutation(
     (response) =>
@@ -56,22 +48,6 @@ const Respondent: NextPage = (): JSX.Element => {
         return response;
       },
     );
-
-    // const mutaionCheckedForm = isDisabled.map((disabled, i) => {
-    //   // const check = checkedForm[i].findIndex((chec))
-    //   if (disabled) {
-    //     if (typeof checkedForms[i] === "string" && checkedForms[i] !== "") {
-    //       return "";
-    //     } else if (Array.isArray(checkedForms[i])) {
-    //       const isCheckedRespondent = checkedForms[i].some(
-    //         (item: any) => typeof item === "string",
-    //       );
-    //       return isCheckedRespondent ? true : checkedForms[i];
-    //     }
-    //   }
-    //   return checkedForms[i];
-    // });
-    // console.log(res);
     const mutationResponseForms = filterDisabledResponse.map(
       (response: string[] | string, i: number) => {
         if (Array.isArray(response)) {
@@ -92,15 +68,20 @@ const Respondent: NextPage = (): JSX.Element => {
       };
     });
 
-    console.log(mutationResponse);
-
     mutate(mutationResponse);
-    // console.log(data);
-    // router.replace("/respondent/complete");
+    router.replace("/respondent/complete");
   };
+  console.log(data?.template.deadline);
 
   useEffect(() => {
     if (!isLoading) {
+      if (data?.template.deadline) {
+        const deadlineDate = new Date(data?.template.deadline);
+        const todayDate = new Date();
+        if (deadlineDate < todayDate) {
+          return router.replace("/respondent/notfound");
+        }
+      }
       setIsDisabled((prev) => {
         const copyIsDisabled = [...prev];
         const newIsDisabled = Array(data?.form?.length).fill(false);
