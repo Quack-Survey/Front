@@ -1,113 +1,100 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
-import { useMutation } from "@tanstack/react-query";
-import { deleteFetch, postFetch, putFetch } from "@/utils/fetch/core";
 import { useRouter } from "next/navigation";
+import { useDeleteForm } from "@/hooks/mutation/useDeleteForm";
+import { useUpdateForm } from "@/hooks/mutation/useUpdateForm";
+import { Form, Logic, TemplateOption } from "@/types/mongooseType";
 import FormTitle from "./FormTitle";
 import FormOption from "./FormOption";
 import FormContentText from "./FormContentText";
 import FormContentSelectWrapper from "./FormContentSelectWrapper";
-import Toast from "../Tost";
 import FloatingFormButtonCollection from "../FloatingFormButtonCollection";
+import FormRequiredCheckBox from "./FormRequiredCheckBox";
 
 export interface IFormValues {
   title: string;
   select: string[];
+  required: boolean;
 }
 
 interface IFormWrapperProps {
-  formStateData: any;
-  templateOption: any;
-  templateBuilderId: string | string[];
+  isFold: boolean;
   index: number;
   newOrder: number;
   modeName: string;
-  foldMode: boolean;
-  setModeName: any;
-  setFormsStateData: any;
+  createMutate: any;
+  templateBuilderId: string | string[];
+  form: Form;
+  templateOption: TemplateOption;
+  logics: Logic[];
+  setModeName: React.Dispatch<React.SetStateAction<string>>;
+  setToastText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FormWrapper = ({
-  formStateData,
-  templateOption,
+  isFold,
   index,
   newOrder,
-  templateBuilderId,
   modeName,
-  foldMode,
+  createMutate,
+  templateBuilderId,
+  form,
+  templateOption,
+  logics,
   setModeName,
-  setFormsStateData,
+  setToastText,
 }: IFormWrapperProps): JSX.Element => {
   const router = useRouter();
   const [mode, setMode] = useState(read);
   const [updateActive, setUpdateActive] = useState(0);
-  const [toastText, setToastText] = useState("");
-  const {
-    _id,
-    title,
-    type,
-    plural,
-    select,
-    isQuater: formIsQuater,
-  } = formStateData;
+  const { _id, title, type, plural, select, required } = form;
+
+  const isTemplateOption = templateOption?.formId === _id;
+  const isLogic =
+    logics?.findIndex((logic) => logic?.formId === _id) === -1 ? false : true;
+
   const editMode = mode === create || mode === update;
   const editModeName = modeName === create || modeName === update;
 
   const { register, handleSubmit, getValues, control, setFocus } =
     useForm<IFormValues>({
-      defaultValues: { title, select },
+      defaultValues: { title, select, required },
     });
 
-  const { mutate: createMutate } = useMutation((formData: any) =>
-    postFetch("/form", JSON.stringify(formData)),
+  const { mutate: updateMutate } = useUpdateForm(
+    `/form?formId=${_id}`,
+    templateBuilderId,
+    "forms",
   );
 
-  const { mutate: updateMutate } = useMutation((formData: any) =>
-    putFetch(`/form?formId=${_id}`, JSON.stringify(formData)),
+  const { mutate: deleteMutate } = useDeleteForm(
+    `/form?formId=${_id}`,
+    templateBuilderId,
+    "forms",
   );
 
-  const { mutate: deleteMutate } = useMutation((_id: any) =>
-    deleteFetch(`/form?formId=${_id}`),
-  );
-
-  // Fn
-  const onValid = (formData: any) => {
-    updateMutate(
-      {
-        title: formData.title,
-        select: [...formData.select],
-      },
-      {
-        onSuccess: () => {
-          setFormsStateData((prev: any) => {
-            const copyFormsStateData = JSON.parse(JSON.stringify(prev));
-            copyFormsStateData.splice(index, 1, {
-              ...prev[index],
-              title: formData.title,
-              select: [...formData.select],
-              type: type,
-            });
-            return copyFormsStateData;
-          });
-          setMode(read);
-          setModeName(read);
-        },
-      },
-    );
+  const onValid = ({ title, select, required }: IFormValues) => {
+    updateMutate({
+      title: title,
+      select: [...select],
+      required: required,
+    });
+    setMode(read);
+    setModeName(read);
   };
 
   const startPress = () => {
     if (editMode) return;
-    if (foldMode) {
-      return setToastText("접기를 풀어주세요.");
+    if (isFold) {
+      return setToastText("접기를 풀고 수정해주세요.");
     }
     setUpdateActive(Date.now());
   };
 
   const endPress = () => {
     if (editMode) return;
-    if (foldMode) return;
+    if (isFold) return;
 
     const endTime = Date.now();
     const duration = endTime - updateActive;
@@ -120,46 +107,27 @@ const FormWrapper = ({
     }
   };
 
-  const onClose = () => {
-    setToastText("");
-  };
-
   const onDelete = () => {
-    deleteMutate(_id, {
-      onSuccess: () => {
-        setFormsStateData((prev: any) => {
-          const copyFormData = [...prev];
-          copyFormData.splice(index, 1);
-          return copyFormData;
-        });
-        setMode(read);
-        setModeName(read);
-      },
-    });
+    if (isLogic || isTemplateOption) {
+      setMode(read);
+      setModeName(read);
+      return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
+    }
+    deleteMutate(_id);
+    setMode(read);
+    setModeName(read);
   };
 
   const onDuplicate = () => {
     const copiedForm = getValues();
-
-    createMutate(
-      {
-        title: copiedForm.title,
-        select: [...copiedForm.select],
-        plural,
-        type,
-        order: newOrder,
-        templateId: templateBuilderId,
-      },
-      {
-        onSuccess: (data) => {
-          setFormsStateData((prev: any) => {
-            const copyFormData = [...prev];
-            copyFormData.push({ ...data });
-            return copyFormData;
-          });
-        },
-      },
-    );
+    createMutate({
+      title: copiedForm.title,
+      select: [...copiedForm.select],
+      plural,
+      type,
+      order: newOrder,
+      templateId: templateBuilderId,
+    });
   };
 
   const onCreateLogic = () => {
@@ -170,14 +138,19 @@ const FormWrapper = ({
     <>
       <form
         onSubmit={handleSubmit(onValid)}
-        className={` w-[360px] flex-col border-l-[8px] bg-white ${
-          foldMode ? "h-[50px] overflow-hidden" : "h-full"
+        className={`w-[360px] flex-col border-l-[8px] bg-white ${
+          isFold ? "h-[70px] overflow-hidden" : "h-full"
         } ${plural ? "border-dotted" : ""} ${
           editMode ? "border-n-light-blue" : "cursor-pointer border-n-dark-gray"
         }`}
         onMouseDown={startPress}
         onMouseUp={endPress}
       >
+        <FormRequiredCheckBox
+          register={register}
+          editMode={editMode}
+          formId={form._id}
+        />
         <div className="pb-n-xlg ml-n-sm pt-n-sm">
           <FormTitle
             title={title}
@@ -185,18 +158,26 @@ const FormWrapper = ({
             index={index}
             editMode={editMode}
           />
-          <div className={`flex ${"옵션 및 로직이 있으면" ? "" : "ml-n-xl"}`}>
-            {"옵션 및 로직이 있으면" ? <FormOption /> : null}
+          <div
+            className={`flex ${isTemplateOption || isLogic ? "" : "ml-n-xl"}`}
+          >
+            {isTemplateOption || isLogic ? (
+              <FormOption
+                editMode={editMode}
+                isLogic={isLogic}
+                isTemplateOption={isTemplateOption}
+              />
+            ) : null}
             {type === "select" ? (
               <FormContentSelectWrapper
-                index={index}
+                isLogicAndTemplateOption={isLogic || isTemplateOption}
+                setToastText={setToastText}
                 editMode={editMode}
                 register={register}
                 setFocus={setFocus}
                 getValues={getValues}
                 control={control}
                 select={select}
-                setFormsStateData={setFormsStateData}
               />
             ) : (
               <FormContentText editMode={editMode} />
@@ -204,9 +185,6 @@ const FormWrapper = ({
           </div>
         </div>
       </form>
-      {toastText !== "" ? (
-        <Toast toastText={toastText} onClose={onClose} editMode={editMode} />
-      ) : null}
       {editMode ? (
         <FloatingFormButtonCollection
           modeName={update}
@@ -219,4 +197,4 @@ const FormWrapper = ({
   );
 };
 
-export default FormWrapper;
+export default React.memo(FormWrapper);

@@ -1,11 +1,14 @@
+import { UseFormRegister } from "react-hook-form";
+import { IOptionForm } from "./TemplateWrapper";
+
 interface ITemplateDeadLineProps {
-  register: any;
-  deadLine: string;
+  deadline: any;
+  register: UseFormRegister<IOptionForm>;
 }
 
 const TemplateDeadLine = ({
   register,
-  deadLine,
+  deadline,
 }: ITemplateDeadLineProps): JSX.Element => {
   const today = new Date().toISOString().split("T")[0];
 
@@ -16,8 +19,8 @@ const TemplateDeadLine = ({
       </label>
       <input
         className="rounded-n-sm border border-n-gray p-[2.5px] outline-none"
-        {...register("deadLine")}
-        defaultValue={deadLine ? deadLine.split("T")[0] : null}
+        {...register("deadline")}
+        defaultValue={deadline ? deadline.split("T")[0] : null}
         id="deadline"
         type="date"
         min={today}

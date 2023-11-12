@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
+import { FieldErrors, UseFormResetField } from "react-hook-form";
+import { IOptionForm } from "./TemplateWrapper";
 import ToggleButton from "../ToggleButton";
 
 interface ITemplateTargetNumberProps {
-  register: any;
-  errors: any;
-  resetField: any;
   targetNumber: number;
+  register: any;
+  errors: FieldErrors<IOptionForm>;
+  resetField: UseFormResetField<IOptionForm>;
 }
 
 const TemplateTargetNumber = ({
@@ -49,9 +51,9 @@ const TemplateTargetNumber = ({
             toggle ? onlyNumbers(value) : undefined,
         })}
         placeholder="내용을 입력해주세요."
-        defaultValue={toggle ? targetNumber : ""}
         maxLength={3}
         disabled={!toggle}
+        defaultValue={toggle ? targetNumber : ""}
       />
       <span
         className={`h-[12px] text-n-xs ${

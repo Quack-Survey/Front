@@ -1,12 +1,9 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
-import { useMutation } from "@tanstack/react-query";
-import { putFetch } from "@/utils/fetch/core";
+import { Template } from "@/types/mongooseType";
 import TemplateDescription from "./TemplateDescription";
-import Toast from "../Tost";
+import Toast from "../Toast";
 
 export interface ITemplateData {
   title: string;
@@ -14,40 +11,29 @@ export interface ITemplateData {
 }
 
 interface ITemplateDescriptionWrapperProps {
-  templateBuilderId: string;
-  templateStateData: ITemplateData;
   modeName: string;
+  updateTemplateMutate: any;
+  template: Template;
   setModeName: React.Dispatch<React.SetStateAction<string>>;
-  setTemplateStateData: React.Dispatch<React.SetStateAction<ITemplateData>>;
 }
 
 const TemplateDescriptionWrapper = ({
-  templateBuilderId,
-  templateStateData,
+  template,
+  updateTemplateMutate,
   modeName,
   setModeName,
-  setTemplateStateData,
-}: any): JSX.Element => {
+}: ITemplateDescriptionWrapperProps): JSX.Element => {
   const [mode, setMode] = useState("");
   const [toastText, setToastText] = useState("");
   const [updateActive, setUpdateActive] = useState(0);
-  const { register, handleSubmit } = useForm();
+
   const editMode = mode === create || mode === update;
   const editModeName = modeName === create || modeName === update;
 
-  const { mutate } = useMutation((templateData: ITemplateData) =>
-    putFetch(
-      `/template?templateId=${templateBuilderId}`,
-      JSON.stringify(templateData),
-    ),
-  );
+  const { register, handleSubmit } = useForm();
 
-  // Fn
   const onValid: SubmitHandler<FieldValues> = ({ title, description }) => {
-    mutate({ title, description });
-    setTemplateStateData((prev: ITemplateData) => {
-      return { ...prev, title, description };
-    });
+    updateTemplateMutate({ title, description });
     setMode(read);
     setModeName(read);
   };
@@ -75,23 +61,21 @@ const TemplateDescriptionWrapper = ({
     setToastText("");
   };
 
-  // Effect
   useEffect(() => {
-    if (templateStateData.title === "") {
+    if (template?.title === "") {
       setMode(update);
       setModeName(update);
     } else {
       setMode(read);
       setModeName(read);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [templateStateData.title]);
+  }, [template.title]);
 
   return (
     <div onMouseDown={startPress} onMouseUp={endPress}>
       <TemplateDescription
-        title={templateStateData.title}
-        description={templateStateData.description}
+        title={template.title}
+        description={template.description}
         register={register}
         handleSubmit={handleSubmit}
         onValid={onValid}

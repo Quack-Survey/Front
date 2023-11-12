@@ -1,27 +1,32 @@
-import { useState, useEffect } from "react";
-import { Control, UseFormRegister, useFieldArray } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import {
+  Control,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetFocus,
+  useFieldArray,
+} from "react-hook-form";
 import { IFormValues } from "./FormWrapper";
 import Image from "next/image";
 import ToolbarTypeCase from "../ToolbarTypingCase";
 import FormContentSelect from "./FormContentSelect";
 
 interface IFormContentSelectWrapperProps {
-  index: number;
   select: string[];
   editMode: boolean;
-  setFormsStateData: any;
+  isLogicAndTemplateOption: boolean;
   register: UseFormRegister<IFormValues>;
-  setFocus: any;
-  getValues: any;
+  setFocus: UseFormSetFocus<IFormValues>;
+  getValues: UseFormGetValues<IFormValues>;
+  setToastText: React.Dispatch<React.SetStateAction<string>>;
   control: Control<IFormValues | any>;
 }
 
 const FormContentSelectWrapper = ({
-  index,
-  select,
   editMode,
-  setFormsStateData,
   register,
+  isLogicAndTemplateOption,
+  setToastText,
   setFocus,
   getValues,
   control,
@@ -34,23 +39,19 @@ const FormContentSelectWrapper = ({
   });
 
   const createInputForm = () => {
+    if (isLogicAndTemplateOption) {
+      return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
+    }
     append("");
-    setFormsStateData((prev: any) => {
-      const copyAllFormsStateData = JSON.parse(JSON.stringify(prev));
-      copyAllFormsStateData[index].select.push("");
-      return copyAllFormsStateData;
-    });
   };
 
   const onDuplicate = () => {
+    if (isLogicAndTemplateOption) {
+      return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
+    }
     const previousSelect = getValues().select;
     const duplicateLastInput = previousSelect[previousSelect.length - 1];
     append(duplicateLastInput);
-    setFormsStateData((prev: any) => {
-      const copyFormsStateData = JSON.parse(JSON.stringify(prev));
-      copyFormsStateData[index].select.push(select[select.length - 1]);
-      return copyFormsStateData;
-    });
   };
 
   const onFocusUp = () => {
@@ -74,13 +75,12 @@ const FormContentSelectWrapper = ({
           <FormContentSelect
             key={field.id}
             remove={remove}
-            field={field}
+            isLogicAndTemplateOption={isLogicAndTemplateOption}
+            setToastText={setToastText}
             setFocusNumber={setFocusNumber}
             fieldsLength={fields.length}
-            setFormsStateData={setFormsStateData}
             editMode={editMode}
             register={register}
-            formIndex={index}
             index={i}
           />
         ))}
@@ -113,4 +113,4 @@ const FormContentSelectWrapper = ({
   );
 };
 
-export default FormContentSelectWrapper;
+export default React.memo(FormContentSelectWrapper);

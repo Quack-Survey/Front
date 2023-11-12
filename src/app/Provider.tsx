@@ -9,10 +9,18 @@ import store from "@/store/store";
 // import "sfac-designkit-react/style.css";
 
 const Provider = ({ children }: { children: ReactNode }) => {
-  const [queryClient] = useState(new QueryClient());
+  const [queryClient] = useState(
+    new QueryClient({
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: false,
+        },
+      },
+    }),
+  );
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       <ReduxProvider store={store}>{children}</ReduxProvider>
     </QueryClientProvider>
   );

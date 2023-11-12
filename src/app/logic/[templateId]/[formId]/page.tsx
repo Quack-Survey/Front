@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { useEffect } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useGetLogics } from "@/hooks/queries/useGetLogics";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import LogicFormSelectList from "@/components/logic/LogicFormSelectList";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import Image from "next/image";
@@ -30,14 +31,18 @@ const LogicFormManagement: NextPage = (): JSX.Element => {
 
   useEffect(() => {
     if (!form) {
-      router.back();
+      return router.back();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    if (!(form._id === formId && form.templateId === templateId)) {
+      alert("유효하지 않은 주소입니다.");
+      router.replace("/home");
+    }
   }, []);
 
   return (
-    <div className="h-screen bg-n-light-gray">
-      <div className="fixed top-0 z-50 flex w-full min-w-[360px] flex-col items-center justify-center border-b border-solid border-n-light-gray bg-n-black p-n-xs text-n-white">
+    <div className="h-screen min-w-[360px] bg-n-light-gray">
+      <div className="fixed top-0 z-50 mb-[60px] flex w-full min-w-[360px] flex-col items-center justify-center border-b border-solid border-n-light-gray bg-n-black p-n-xs text-n-white">
         <div className="my-n-md flex">
           <Image src="/images/logo_black.png" alt="" width={50} height={32} />
           <Image
@@ -66,7 +71,9 @@ const LogicFormManagement: NextPage = (): JSX.Element => {
             );
           })}
         </div>
-      ) : null}
+      ) : (
+        <LoadingSpinner />
+      )}
       <NextPreviousButton
         modeName={"double"}
         buttonText={["취소", "확인"]}

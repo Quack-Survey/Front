@@ -38,8 +38,8 @@ const LogicFormSelectList = ({
   const isLogic = existingIndex === -1 ? false : true;
 
   const { data: appliedForm, isLoading } = useGetForms(
-    `/form?formId=${logic.appliedFormId}`,
-    logic.appliedFormId,
+    `/form?formId=${logic?.appliedFormId}`,
+    logic?.appliedFormId,
   );
 
   const { mutate: updateMutate } = useMutation(
@@ -48,6 +48,7 @@ const LogicFormSelectList = ({
     {
       onSuccess: () => {
         queryClient.invalidateQueries([form._id, "logics"]);
+        queryClient.invalidateQueries([templateId, "logics"]);
       },
     },
   );
@@ -56,6 +57,7 @@ const LogicFormSelectList = ({
     (logicId: string) => deleteFetch(`/logic?logicId=${logicId}`),
     {
       onSuccess: () => {
+        queryClient.invalidateQueries([templateId, "logics"]);
         router.push(`/logic/${templateId}?formId=${form._id}`);
       },
     },
@@ -119,7 +121,7 @@ const LogicFormSelectList = ({
               />
             )}
             {!isLoading ? (
-              <span>{isLogic ? `: ${appliedForm[0].title}` : null}</span>
+              <span>{isLogic ? `: ${appliedForm[0]?.title}` : null}</span>
             ) : null}
           </div>
         </div>

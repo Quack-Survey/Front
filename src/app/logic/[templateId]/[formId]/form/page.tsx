@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postFetch } from "@/utils/fetch/core";
 import { Form } from "@/types/mongooseType";
 import { NextPage } from "next";
@@ -10,7 +10,7 @@ import { useGetForms } from "@/hooks/queries/useGetForms";
 import NextPreviousButton from "@/components/NextPreviousButton";
 import LogicHeader from "@/components/logic/LogicHeader";
 import LogicProcess from "@/components/logic/LogicProcess";
-import Toast from "@/components/Tost";
+import Toast from "@/components/Toast";
 
 interface ILogicData {
   type: string | null;
@@ -25,12 +25,15 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+
   const [forms, setForms] = useState<Form[]>([]);
   const [isSelectedForm, setIsSelectedForm] = useState<boolean[]>([]);
   const [toastText, setToastText] = useState("");
 
   const form = JSON.parse(searchParams.get("form") as string);
   const selector = JSON.parse(searchParams.get("selector") as string);
+  const index = searchParams.get("index");
   const type = searchParams.get("type");
 
   const { data, isLoading } = useGetForms(
@@ -59,6 +62,7 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
         },
         {
           onSuccess: () => {
+            queryClient.invalidateQueries([templateId, "logics"]);
             setToastText("저장을 성공했습니다");
             setTimeout(() => {
               router.push(
@@ -93,17 +97,22 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!searchParams.get("form") || !selector || !type) {
-      router.replace(`/logic/${templateId}`);
+    if (!searchParams.get("form") || !selector || !type || !index) {
+      return router.replace(`/logic/${templateId}`);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    if (!(form._id === formId && form.templateId === templateId)) {
+      alert("유효하지 않은 주소입니다.");
+      return router.replace("/home");
+    }
+
     if (!isLoading) {
       const ascendingOrderForm = data.filter(
-        (rawForm: Form) => rawForm.order > form?.order,
+        (rawForm: Form) => rawForm?.order > form?.order,
       );
+
       setForms((prev) => {
         const copyForms = [...prev];
         copyForms.push(...ascendingOrderForm);
@@ -116,34 +125,37 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
         return copyIsSelectedForm;
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   return (
-    <div>
-      <LogicHeader title={form?.title} />
-      <LogicProcess
-        modeName={"form"}
-        createDescription={"링크될 문항을 설정하세요"}
-      />
-      <div className="mt-n-lg flex w-full flex-wrap justify-center gap-n-sm">
-        {forms?.map((formData: Form, i: number) => {
-          return (
-            <div
-              key={formData._id}
-              className={`flex h-[56px] w-[56px]  cursor-pointer items-center justify-center border border-n-gray ${
-                isSelectedForm[i]
-                  ? "bg-n-light-gray text-n-gray"
-                  : "bg-n-white text-black"
-              }`}
-              onClick={() => handleIsSelectedForm(i)}
-            >
-              <div className="flex flex-col items-center justify-center text-n-xl">
-                {form?.order + i + 1}
-              </div>
-            </div>
-          );
-        })}
+    <>
+      <div className="flex min-w-[360px] flex-col items-center">
+        <LogicHeader title={form?.title} />
+        <LogicProcess
+          modeName={"form"}
+          createDescription={"링크될 문항을 설정하세요"}
+        />
+        <div className="flex items-center justify-center">
+          <div className="mt-n-lg flex w-full flex-wrap justify-start gap-n-sm">
+            {forms?.map((formData: Form, i: number) => {
+              return (
+                <div
+                  key={formData._id}
+                  className={`flex h-[56px] w-[56px]  cursor-pointer items-center justify-center border border-n-gray ${
+                    isSelectedForm[i]
+                      ? "bg-n-light-gray text-n-gray"
+                      : "bg-n-white text-black"
+                  }`}
+                  onClick={() => handleIsSelectedForm(i)}
+                >
+                  <div className="flex flex-col items-center justify-center text-n-xl">
+                    {Number(index) + i + 2}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
       <NextPreviousButton
         modeName={"double"}
@@ -158,7 +170,7 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
           onClose={onClose}
         />
       ) : null}
-    </div>
+    </>
   );
 };
 

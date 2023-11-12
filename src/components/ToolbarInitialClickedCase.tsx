@@ -3,25 +3,21 @@ import Image from "next/image";
 
 interface IToolbarInitialClickedCaseProp {
   modeName?: string;
-  foldMode?: boolean;
-  isOpen?: boolean;
+  isFold?: boolean;
   onFoldingAll?: () => void;
 }
 
 const ToolbarInitialClickedCase = ({
   modeName,
-  foldMode,
+  isFold,
   onFoldingAll,
-  isOpen,
 }: IToolbarInitialClickedCaseProp): JSX.Element => {
   const imageNameInitial = ["fold"];
   const toolPartInitial = [onFoldingAll];
 
   return (
     <div
-      className={`fixed bottom-[0px] flex h-[49px] w-full min-w-[360px] items-center justify-end gap-n-md bg-n-light-black p-n-md ${
-        isOpen ? "-z-10" : ""
-      }`}
+      className={`fixed bottom-[0px] flex h-[49px] w-full min-w-[360px] items-center justify-end gap-n-md bg-n-light-black p-n-md `}
     >
       <div className="flex items-center justify-end gap-n-md">
         {modeName === read
@@ -30,7 +26,7 @@ const ToolbarInitialClickedCase = ({
                 <Image
                   priority
                   src={
-                    foldMode
+                    isFold
                       ? `/images/${imageNameInitial[index]}_b.svg`
                       : `/images/${imageNameInitial[index]}.svg`
                   }

@@ -8,7 +8,7 @@ interface ILogicListProps {
   logics: Logic[];
   templateId: string | string[];
   index: number;
-  logicsLoading: boolean;
+  isLoadingLogics: boolean;
 }
 
 const LogicList = ({
@@ -16,12 +16,12 @@ const LogicList = ({
   logics,
   index,
   templateId,
-  logicsLoading,
+  isLoadingLogics,
 }: ILogicListProps): JSX.Element => {
   const [isLogic, setIsLogic] = useState(false);
 
   useEffect(() => {
-    if (!logicsLoading) {
+    if (!isLoadingLogics) {
       const existingIndex = logics?.findIndex(
         (logic: Logic) => logic.formId === form._id,
       );
@@ -29,8 +29,7 @@ const LogicList = ({
         setIsLogic(true);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [logicsLoading]);
+  }, [isLoadingLogics]);
 
   return (
     <Link
@@ -38,7 +37,7 @@ const LogicList = ({
         pathname: isLogic
           ? `${templateId}/${form._id}`
           : `${templateId}/${form._id}/type`,
-        query: { form: JSON.stringify(form) },
+        query: { form: JSON.stringify(form), index },
       }}
       className="flex cursor-pointer justify-between  border bg-white hover:bg-n-light-gray"
     >

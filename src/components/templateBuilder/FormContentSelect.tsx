@@ -1,37 +1,33 @@
-import { FieldValues, UseFormRegister, useFormContext } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 import { IFormValues } from "./FormWrapper";
 import Image from "next/image";
 
 interface IFormContentSelectProps {
   editMode: boolean;
-  formIndex: number;
+  isLogicAndTemplateOption: boolean;
   index: number;
   fieldsLength: number;
-  field: any;
-  setFormsStateData: any;
-  setFocusNumber: any;
   register: UseFormRegister<IFormValues>;
+  setToastText: React.Dispatch<React.SetStateAction<string>>;
+  setFocusNumber: React.Dispatch<React.SetStateAction<number>>;
   remove: (index?: number | number[]) => void;
 }
 
 const FormContentSelect = ({
   editMode,
-  formIndex,
+  isLogicAndTemplateOption,
   index,
   fieldsLength,
-  field,
-  setFormsStateData,
-  setFocusNumber,
   register,
+  setToastText,
+  setFocusNumber,
   remove,
 }: IFormContentSelectProps): JSX.Element => {
   const deleteInputForm = () => {
+    if (isLogicAndTemplateOption) {
+      return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
+    }
     remove(index);
-    setFormsStateData((prev: any) => {
-      const copyFormsStateData = JSON.parse(JSON.stringify(prev));
-      copyFormsStateData[formIndex].select.splice(index, 1);
-      return copyFormsStateData;
-    });
   };
 
   const handleFocusNumber = () => {
@@ -57,7 +53,7 @@ const FormContentSelect = ({
             required: "보기를 작성해주세요.",
           })}
           onFocus={handleFocusNumber}
-          disabled={!editMode}
+          disabled={!editMode || isLogicAndTemplateOption}
           maxLength={18}
         />
       </div>
