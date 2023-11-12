@@ -1,9 +1,9 @@
-const page = () => {
+const NotFound = (): JSX.Element => {
   return (
-    <div className="flex h-screen w-full items-center justify-center text-center">
-      <strong>설문조사를 찾을 수 없습니다!</strong>
+    <div className="flex h-screen w-full items-center justify-center text-center text-n-xl">
+      <strong>설문조사 기간이 만료되었습니다!</strong>
     </div>
   );
 };
 
-export default page;
+export default NotFound;
