@@ -5,6 +5,7 @@ interface ISavePreserveProps {
   modeName?: string;
   onOption?: () => void;
   onNavigateHome?: () => void;
+  onPreview?: () => void;
   onSave?: () => void;
 }
 
@@ -12,6 +13,7 @@ const SavePreserveBar = ({
   modeName,
   onOption,
   onNavigateHome,
+  onPreview,
   onSave,
 }: ISavePreserveProps): JSX.Element => {
   return (
@@ -31,6 +33,7 @@ const SavePreserveBar = ({
           </div>
           <div className="flex gap-n-md">
             <button onClick={onNavigateHome}>홈으로</button>
+            <button onClick={onPreview}>미리보기</button>
             <button onClick={onSave}>저장</button>
           </div>
         </div>
