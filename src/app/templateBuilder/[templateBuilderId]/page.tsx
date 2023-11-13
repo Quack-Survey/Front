@@ -41,6 +41,10 @@ const TemplateBuilder: NextPage = (): JSX.Element => {
     setToastMsg("템플릿 저장이 완료되었습니다.");
   };
 
+  const onPreview = () => {
+    router.push(`/templateBuilder/${templateBuilderId}/preview`);
+  };
+
   const onClose = () => {
     setToastMsg("");
 
@@ -66,6 +70,7 @@ const TemplateBuilder: NextPage = (): JSX.Element => {
         onOption={onOption}
         modeName={modeName}
         onSave={onSave}
+        onPreview={onPreview}
         onNavigateHome={onNavigateHome}
       />
       <TemplateWrapper
