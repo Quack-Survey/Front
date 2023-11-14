@@ -14,12 +14,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard/status", request.url));
 
   if (pathname === "/verify" && !email) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/home", request.url));
   } else if (pathname === "/verify" && email) {
     const { state, cert } = await getFetch(`/users/verify?email=${email}`);
 
     if (!state || (state && cert)) {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/home", request.url));
     } else {
       return NextResponse.next();
     }
@@ -30,14 +30,25 @@ export async function middleware(request: NextRequest) {
     const { state } = await getFetch(`/users/verify/${code}?checkState=true`);
 
     if (state) return NextResponse.next();
-    else return NextResponse.redirect(new URL("/", request.url));
+    else return NextResponse.redirect(new URL("/home", request.url));
+  }
+
+  if (pathname === "/password")
+    return NextResponse.redirect(new URL("/home", request.url));
+
+  if (pathname.includes("/password")) {
+    const code = pathname.split("/")[2];
+    const { state } = await getFetch(`/users/find/password/${code}`);
+
+    if (state) return NextResponse.next();
+    else return NextResponse.redirect(new URL("/home", request.url));
   }
 
   if (
     username &&
     (pathname === "/login" || pathname === "/signup" || pathname === "/verify")
   ) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/home", request.url));
   }
 
   if (
