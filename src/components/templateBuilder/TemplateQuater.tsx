@@ -57,6 +57,8 @@ const TemplateQuater = ({
   };
 
   useEffect(() => {
+    if (selectTypeForms?.length === 0) return;
+
     if (templateOption?.quater) {
       setIndex(existingIndex);
       setToggle((prev) => !prev);
