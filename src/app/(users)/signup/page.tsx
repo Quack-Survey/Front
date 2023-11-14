@@ -13,7 +13,7 @@ import {
   handleSignup,
   validateEmail,
   validatePassword,
-} from "@/utils/userUtils";
+} from "@/utils/users";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
@@ -83,7 +83,11 @@ const Signup = (): JSX.Element => {
           type="text"
           placeholder="(선택사항) 닉네임을 입력해 주세요."
         />
-        <LinkInfo />
+        <LinkInfo
+          linkDescription="로그인"
+          infoDescription="이미 아이디가 있다면? "
+          url="/login"
+        />
         <Button
           disabled={!isValid || isSubmitting || !checkEmptyObject(errors)}
         >
