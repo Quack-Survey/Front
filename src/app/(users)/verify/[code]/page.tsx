@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { setCookie } from "cookies-next";
 
-const Home = () => {
+const Verify = () => {
   const [count, setCount] = useState<number>(3);
   const router = useRouter();
   const { code } = useParams();
@@ -18,7 +18,7 @@ const Home = () => {
       (async () => {
         const res = await getFetch(`/users/verify/${code}`);
         setCookie("username", res.data.username);
-        router.replace("/");
+        router.replace("/home");
       })();
     }
 
@@ -33,4 +33,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Verify;
