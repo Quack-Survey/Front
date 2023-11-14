@@ -8,7 +8,7 @@ const layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
         <div className="relative mb-[30px] h-[41px] min-w-[280px]">
           <Image
             className="max-w-[280px]"
-            src="/images/quack survey.png"
+            src="/images/quack_survey.png"
             fill={true}
             priority={true}
             sizes="(min-width: 0px) 100vw"

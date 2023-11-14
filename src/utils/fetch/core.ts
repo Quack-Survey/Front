@@ -24,25 +24,33 @@ interface IPostFetch {
   (url: string, body?: BodyInit): Promise<any>;
 }
 
+interface IPutFetch {
+  (url: string, body?: BodyInit): Promise<any>;
+}
+
+interface IPatchFetch {
+  (url: string, body?: BodyInit): Promise<any>;
+}
+
+interface IDeleteFetch {
+  (url: string): Promise<any>;
+}
+
 const instance: IInstanceParameter = async (url, method, params) => {
   const baseUrl = process.env.BASE_URL;
 
-  try {
-    const res = await fetch(`${baseUrl}${url}`, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      ...params,
-    });
+  const res = await fetch(`${baseUrl}${url}`, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    ...params,
+  });
 
-    const data = res.json();
+  const data = res.json();
 
-    return data;
-  } catch (err) {
-    return err;
-  }
+  return data;
 };
 
 const getFetch: IGetFetch = async (url, options) => {
@@ -65,7 +73,7 @@ const postFetch: IPostFetch = async (url, body) => {
   }
 };
 
-const putFetch: IPostFetch = async (url, body) => {
+const putFetch: IPutFetch = async (url, body) => {
   try {
     const data = await instance(url, "PUT", { body });
 
@@ -75,9 +83,9 @@ const putFetch: IPostFetch = async (url, body) => {
   }
 };
 
-const deleteFetch: any = async (url, options) => {
+const patchFetch: IPatchFetch = async (url, body) => {
   try {
-    const data = await instance(url, "DELETE", options);
+    const data = await instance(url, "PATCH", { body });
 
     return data;
   } catch (err) {
@@ -85,4 +93,14 @@ const deleteFetch: any = async (url, options) => {
   }
 };
 
-export { getFetch, postFetch, putFetch, deleteFetch };
+const deleteFetch: IDeleteFetch = async (url) => {
+  try {
+    const data = await instance(url, "DELETE");
+
+    return data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export { getFetch, postFetch, putFetch, patchFetch, deleteFetch };

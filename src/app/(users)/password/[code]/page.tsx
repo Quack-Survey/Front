@@ -1,24 +1,17 @@
 "use client";
+
 import React from "react";
-import {
-  Button,
-  SignupForm,
-  UserDataInput,
-  ErrorMessage,
-  LinkInfo,
-} from "@/components/users";
+import { Button, ErrorMessage, UserDataInput } from "@/components/users";
 import {
   checkEmptyObject,
   checkPassword,
-  handleSignup,
-  validateEmail,
+  handleChange,
   validatePassword,
 } from "@/utils/users";
+import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 
-const Signup = (): JSX.Element => {
+const Password = () => {
   const {
     register,
     handleSubmit,
@@ -27,25 +20,16 @@ const Signup = (): JSX.Element => {
     watch,
     formState: { isSubmitting, errors, isValid },
   } = useForm();
-  const router: AppRouterInstance = useRouter();
+  const { code } = useParams();
+  const router = useRouter();
 
   return (
-    <SignupForm>
+    <div className="w-[360px]">
       <form
-        onSubmit={handleSubmit((data) => handleSignup(data, router, setError))}
+        onSubmit={handleSubmit((data) =>
+          handleChange(data.rePassword, code, router),
+        )}
       >
-        <UserDataInput
-          {...register("email", {
-            required: "이메일은 필수 입력입니다.",
-            onChange: (data) => {
-              validateEmail(data.target.value, setError, clearErrors);
-            },
-          })}
-          isError={!!errors.email}
-          type="email"
-          placeholder="이메일을 입력해 주세요."
-        />
-        <ErrorMessage>{errors.email?.message?.toString()}</ErrorMessage>
         <UserDataInput
           {...register("password", {
             required: "비밀번호는 필수 입력입니다.",
@@ -75,27 +59,14 @@ const Signup = (): JSX.Element => {
           placeholder="비밀번호를 다시 입력해 주세요."
         />
         <ErrorMessage>{errors.rePassword?.message?.toString()}</ErrorMessage>
-        <UserDataInput
-          {...register("username", {
-            required: false,
-          })}
-          isError={!!errors.username}
-          type="text"
-          placeholder="(선택사항) 닉네임을 입력해 주세요."
-        />
-        <LinkInfo
-          linkDescription="로그인"
-          infoDescription="이미 아이디가 있다면? "
-          url="/login"
-        />
         <Button
           disabled={!isValid || isSubmitting || !checkEmptyObject(errors)}
         >
-          회원가입
+          변경하기
         </Button>
       </form>
-    </SignupForm>
+    </div>
   );
 };
 
-export default Signup;
+export default Password;
