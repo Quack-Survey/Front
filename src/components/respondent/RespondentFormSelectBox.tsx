@@ -61,7 +61,7 @@ const RespondentFormSelectBox = ({
         setIsDisabled((prev) => {
           const copyIsDisabled = [...prev];
           if (logic.type === "filter") {
-            copyIsDisabled.splice(existingIndex, 1, !prev[existingIndex]);
+            copyIsDisabled.splice(existingIndex, 1, true);
             return copyIsDisabled;
           } else {
             const newCopyIsDisabled = prev.map((item: boolean, i: number) => {
@@ -84,6 +84,28 @@ const RespondentFormSelectBox = ({
 
   const handleIsPluralChecked = (i: number) => {
     const checkedLength = isChecked.filter((item: boolean) => item === true);
+
+    if (logic) {
+      const includeLogic = logic.selector.includes(select[i]);
+      const existingIndex = forms.findIndex(
+        (item) => item._id === logic.appliedFormId,
+      );
+      if (includeLogic) {
+        setIsDisabled((prev) => {
+          const copyIsDisabled = [...prev];
+          if (logic.type === "filter") {
+            copyIsDisabled.splice(existingIndex, 1, true);
+            return copyIsDisabled;
+          } else {
+            const newCopyIsDisabled = prev.map((item: boolean, i: number) => {
+              return formIndex < i && i < existingIndex ? true : false;
+            });
+            return newCopyIsDisabled;
+          }
+        });
+      }
+    }
+
     if (isChecked[i]) {
       setIsChecked((prev) => {
         const copyIsChecked = [...prev];
@@ -92,6 +114,7 @@ const RespondentFormSelectBox = ({
       });
       return;
     }
+
     if (checkedLength.length >= 3) return;
     setIsChecked((prev) => {
       const copyIsChecked = [...prev];
