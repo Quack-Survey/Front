@@ -154,9 +154,8 @@ const RespondentFormSelectBox = ({
             className="cursor-pointer"
             id={`${id}_select_${index}`}
             type="checkbox"
-            // checked={isChecked[index]}
             value={text}
-            onClick={(e: any) => {
+            onClick={() => {
               if (!plural) {
                 handleIsSingleChecked(index);
               } else {

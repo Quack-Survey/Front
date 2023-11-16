@@ -73,7 +73,7 @@ const Respondent: NextPage = (): JSX.Element => {
     setToastText("필수문항에 응답해주세요!");
   };
 
-  const onClose = () => {
+  const handleClose = () => {
     setToastText("");
   };
 
@@ -128,7 +128,7 @@ const Respondent: NextPage = (): JSX.Element => {
         <LoadingSpinner />
       )}
       {toastText !== "" ? (
-        <Toast editMode={false} toastText={toastText} onClose={onClose} />
+        <Toast editMode={false} toastText={toastText} onClose={handleClose} />
       ) : null}
     </main>
   );
