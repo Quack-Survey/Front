@@ -1,4 +1,4 @@
-import ToolbarTypeCase from "../ToolbarTypingCase";
+import ToolbarTypeCase from "../../ToolbarTypingCase";
 
 interface IFormContentTextProps {
   editMode: boolean;

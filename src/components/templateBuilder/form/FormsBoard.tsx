@@ -9,7 +9,7 @@ import { useUpdateForm } from "@/hooks/mutation/useUpdateForm";
 import { read } from "@/constants/mode";
 import React, { useState } from "react";
 import FormWrapper from "./FormWrapper";
-import Toast from "../Toast";
+import Toast from "../../Toast";
 
 interface IFormsBoardProps {
   isFold: boolean;
@@ -66,7 +66,7 @@ const FormsBoard = ({
     updateMutate(formsData);
   };
 
-  const onClose = () => {
+  const handleClose = () => {
     setToastText("");
   };
 
@@ -116,7 +116,7 @@ const FormsBoard = ({
         </Droppable>
       </DragDropContext>
       {toastText !== "" ? (
-        <Toast toastText={toastText} onClose={onClose} editMode={false} />
+        <Toast toastText={toastText} onClose={handleClose} editMode={false} />
       ) : null}
     </>
   );

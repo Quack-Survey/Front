@@ -4,7 +4,7 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
-import ToolbarTypeCase from "../ToolbarTypingCase";
+import ToolbarTypeCase from "../../ToolbarTypingCase";
 
 interface ITemplateDescriptionProps {
   title?: string;

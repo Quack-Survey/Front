@@ -1,5 +1,5 @@
 import { SubmitHandler, UseFormHandleSubmit } from "react-hook-form";
-import { IOptionForm } from "./templateBuilder/TemplateWrapper";
+import { IOptionForm } from "./templateBuilder/template/TemplateWrapper";
 
 interface IInputModalProps {
   isOpen: boolean;

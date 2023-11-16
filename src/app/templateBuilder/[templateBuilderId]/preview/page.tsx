@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import LogoBar from "@/components/LogoBar";
 import ResponseTitle from "@/components/respondent/ResponseTitle";
 import NextPreviousButton from "@/components/NextPreviousButton";
-import PreviewFormWrapper from "@/components/templateBuilder/PreviewFormWrapper";
+import PreviewFormWrapper from "@/components/templateBuilder/preview/PreviewFormWrapper";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import Link from "next/link";
 import Toast from "@/components/Toast";

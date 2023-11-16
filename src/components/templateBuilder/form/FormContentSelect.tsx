@@ -23,7 +23,7 @@ const FormContentSelect = ({
   setFocusNumber,
   remove,
 }: IFormContentSelectProps): JSX.Element => {
-  const deleteInputForm = () => {
+  const handleDeleteInputForm = () => {
     if (isLogicAndTemplateOption) {
       return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
     }
@@ -58,7 +58,7 @@ const FormContentSelect = ({
         />
       </div>
       {editMode && fieldsLength > 1 ? (
-        <button type="button" onClick={deleteInputForm}>
+        <button type="button" onClick={handleDeleteInputForm}>
           <Image
             className="mx-n-sm cursor-pointer"
             src="/images/delete.svg"

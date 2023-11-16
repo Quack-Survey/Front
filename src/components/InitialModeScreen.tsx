@@ -1,16 +1,16 @@
 interface IInitialModeScreenProps {
   innerText?: string;
-  createTemplate: any;
+  onCreateTemplate: any;
 }
 
 const InitialModeScreen = ({
   innerText,
-  createTemplate,
+  onCreateTemplate,
 }: IInitialModeScreenProps): JSX.Element => {
   return (
     <div>
       <div
-        onClick={createTemplate}
+        onClick={onCreateTemplate}
         className="flex h-screen w-screen min-w-[360px] cursor-pointer items-center justify-center bg-n-light-gray text-center font-[bold] text-n-xl text-n-gray"
       >
         {innerText}

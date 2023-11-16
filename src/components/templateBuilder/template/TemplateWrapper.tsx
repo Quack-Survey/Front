@@ -7,12 +7,12 @@ import { useForm } from "react-hook-form";
 import { useCreateForm } from "@/hooks/mutation/useCreateForm";
 import { useUpdateTemplate } from "@/hooks/mutation/useUpdateTemplate";
 import { useGetForms } from "@/hooks/queries/useGetForms";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../../LoadingSpinner";
 import InputModal from "@/components/InputModal";
 import TemplateDescriptionWrapper from "./TemplateDescriptionWrapper";
 import TemplateOption from "./TemplateOption";
 import FloatingFormButtonCollection from "@/components/FloatingFormButtonCollection";
-import FormsBoard from "./FormsBoard";
+import FormsBoard from "../form/FormsBoard";
 
 export interface IOptionForm {
   deadline?: string;
@@ -34,7 +34,7 @@ interface ITemplateWrapperProps {
   templateBuilderId: string | string[];
   modeName: string;
   setModeName: React.Dispatch<React.SetStateAction<string>>;
-  setToastMsg: React.Dispatch<React.SetStateAction<string>>;
+  setToastText: React.Dispatch<React.SetStateAction<string>>;
   onOption: () => void;
 }
 
@@ -43,7 +43,7 @@ const TemplateWrapper = ({
   isFold,
   templateBuilderId,
   modeName,
-  setToastMsg,
+  setToastText,
   setModeName,
   onOption,
 }: ITemplateWrapperProps): JSX.Element => {
@@ -72,9 +72,8 @@ const TemplateWrapper = ({
     () => getFetch(`/templateOption?templateId=${templateBuilderId}`),
   );
 
-  const { data: logics, isLoading: logicsLoading } = useQuery(
-    [templateBuilderId, "templateLogics"],
-    () => getFetch(`/logic/all?templateId=${templateBuilderId}`),
+  const { data: logics } = useQuery([templateBuilderId, "templateLogics"], () =>
+    getFetch(`/logic/all?templateId=${templateBuilderId}`),
   );
 
   const { data: forms, isLoading: isLoadingForm } = useGetForms(
@@ -142,7 +141,7 @@ const TemplateWrapper = ({
       }, 3000);
       return;
     }
-    setToastMsg("옵션 저장이 완료되었습니다");
+    setToastText("옵션 저장이 완료되었습니다");
 
     updateTemplateMutate({
       deadline: deadline !== "" ? deadline : null,
@@ -167,7 +166,7 @@ const TemplateWrapper = ({
     }
   };
 
-  const onCreateForm = (type: string, plural: boolean) => {
+  const handleCreateForm = (type: string, plural: boolean) => {
     createFormMutate(
       {
         title: "",
@@ -199,10 +198,10 @@ const TemplateWrapper = ({
   }, [isOpen, reset]);
 
   useEffect(() => {
-    if (!isLoadingTemplate) {
-      if (!(template._id === templateBuilderId)) {
-        router.replace("/home");
-      }
+    if (isLoadingTemplate) return;
+
+    if (template._id !== templateBuilderId) {
+      router.replace("/home");
     }
   }, [isLoadingTemplate]);
 
@@ -212,8 +211,8 @@ const TemplateWrapper = ({
         {!isLoadingTemplate ? (
           <TemplateDescriptionWrapper
             template={template}
-            updateTemplateMutate={updateTemplateMutate}
             modeName={modeName}
+            updateTemplateMutate={updateTemplateMutate}
             setModeName={setModeName}
           />
         ) : (
@@ -222,14 +221,14 @@ const TemplateWrapper = ({
         {!isLoadingForm && Array.isArray(forms) ? (
           <FormsBoard
             forms={forms}
-            newOrder={newOrder}
             logics={logics}
             templateOption={!isLoadingTemplateOption ? templateOption[0] : null}
             templateBuilderId={templateBuilderId}
-            isFold={isFold}
-            setModeName={setModeName}
+            newOrder={newOrder}
             modeName={modeName}
+            isFold={isFold}
             createMutate={createFormMutate}
+            setModeName={setModeName}
           />
         ) : (
           <LoadingSpinner />
@@ -238,7 +237,7 @@ const TemplateWrapper = ({
       {modeName === read ? (
         <FloatingFormButtonCollection
           modeName={read}
-          onCreateForm={onCreateForm}
+          onCreateForm={handleCreateForm}
         />
       ) : null}
       <InputModal

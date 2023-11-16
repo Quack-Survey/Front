@@ -9,7 +9,7 @@ import FormTitle from "./FormTitle";
 import FormOption from "./FormOption";
 import FormContentText from "./FormContentText";
 import FormContentSelectWrapper from "./FormContentSelectWrapper";
-import FloatingFormButtonCollection from "../FloatingFormButtonCollection";
+import FloatingFormButtonCollection from "../../FloatingFormButtonCollection";
 import FormRequiredCheckBox from "./FormRequiredCheckBox";
 
 export interface IFormValues {
@@ -107,7 +107,7 @@ const FormWrapper = ({
     }
   };
 
-  const onDelete = () => {
+  const handleDelete = () => {
     if (isLogic || isTemplateOption) {
       setMode(read);
       setModeName(read);
@@ -118,7 +118,7 @@ const FormWrapper = ({
     setModeName(read);
   };
 
-  const onDuplicate = () => {
+  const handleDuplicate = () => {
     const copiedForm = getValues();
     createMutate({
       title: copiedForm.title,
@@ -130,7 +130,7 @@ const FormWrapper = ({
     });
   };
 
-  const onCreateLogic = () => {
+  const handleCreateLogic = () => {
     router.push(`/logic/${templateBuilderId}`);
   };
 
@@ -188,9 +188,9 @@ const FormWrapper = ({
       {editMode ? (
         <FloatingFormButtonCollection
           modeName={update}
-          onDelete={onDelete}
-          onDuplicate={onDuplicate}
-          onCreateLogic={onCreateLogic}
+          onDelete={handleDelete}
+          onDuplicate={handleDuplicate}
+          onCreateLogic={handleCreateLogic}
         />
       ) : null}
     </>
