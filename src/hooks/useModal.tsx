@@ -32,7 +32,7 @@ const useModal: IUseModal = (callback) => {
     return (
       isOpen && (
         <div
-          className="z-1 absolute left-0 top-0 flex h-screen w-screen items-center justify-center bg-black/30"
+          className="fixed left-0 top-0 z-[9999] flex h-screen w-screen items-center justify-center bg-black/30"
           onClick={(event) => {
             if (event.currentTarget === event.target) closeModal();
           }}
