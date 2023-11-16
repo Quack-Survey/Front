@@ -21,11 +21,11 @@ const LogicFormManagement: NextPage = (): JSX.Element => {
     formId,
   );
 
-  const onLeftClick = () => {
+  const handleLeftClick = () => {
     router.push(`/logic/${templateId}?formId=${formId}`);
   };
 
-  const onRightClick = () => {
+  const handleRightClick = () => {
     router.push(`/logic/${templateId}?formId=${formId}`);
   };
 
@@ -77,8 +77,8 @@ const LogicFormManagement: NextPage = (): JSX.Element => {
       <NextPreviousButton
         modeName={"double"}
         buttonText={["취소", "확인"]}
-        onLeftClick={onLeftClick}
-        onRightClick={onRightClick}
+        onLeftClick={handleLeftClick}
+        onRightClick={handleRightClick}
       />
     </div>
   );

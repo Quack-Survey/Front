@@ -45,11 +45,11 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
     postFetch("/logic", JSON.stringify(logicData)),
   );
 
-  const onLeftClick = () => {
+  const handleLeftClick = () => {
     router.back();
   };
 
-  const onRightClick = () => {
+  const handleRightClick = () => {
     const existingIndex = isSelectedForm.findIndex((item) => item === true);
     if (existingIndex !== -1) {
       mutate(
@@ -82,7 +82,7 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
     }
   };
 
-  const onClose = () => {
+  const handleClose = () => {
     setToastText("");
   };
 
@@ -160,14 +160,14 @@ const SettingLogicForm: NextPage = (): JSX.Element => {
       <NextPreviousButton
         modeName={"double"}
         buttonText={["이전", "저장"]}
-        onLeftClick={onLeftClick}
-        onRightClick={onRightClick}
+        onLeftClick={handleLeftClick}
+        onRightClick={handleRightClick}
       />
       {toastText !== "" ? (
         <Toast
           editMode={toastText === "저장을 성공했습니다" ? true : false}
           toastText={toastText}
-          onClose={onClose}
+          onClose={handleClose}
         />
       ) : null}
     </>

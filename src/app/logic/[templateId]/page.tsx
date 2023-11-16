@@ -26,16 +26,15 @@ const LogicManagement: NextPage = (): JSX.Element => {
     0,
   );
 
-  const onSingleClick = () => {
+  const handleSingleClick = () => {
     router.push(`/templateBuilder/${templateId}`);
   };
 
   useEffect(() => {
-    if (!isLoadingForms) {
-      if (forms?.error) {
-        alert("유효하지 않은 주소입니다.");
-        router.replace("/home");
-      }
+    if (isLoadingForms) return;
+    if (forms?.error) {
+      alert("유효하지 않은 주소입니다.");
+      router.replace("/home");
     }
   }, [isLoadingForms, forms]);
 
@@ -65,7 +64,7 @@ const LogicManagement: NextPage = (): JSX.Element => {
       <NextPreviousButton
         modeName={"single"}
         buttonText={["취소"]}
-        onSingleClick={onSingleClick}
+        onSingleClick={handleSingleClick}
       />
     </div>
   );

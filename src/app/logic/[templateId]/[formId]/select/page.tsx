@@ -28,11 +28,11 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
     });
   };
 
-  const onLeftClick = () => {
+  const handleLeftClick = () => {
     router.back();
   };
 
-  const onRightClick = () => {
+  const handleRightClick = () => {
     const existingIndex = isSelected.findIndex((item) => item === true);
     if (existingIndex !== -1) {
       const selector = isSelected
@@ -103,8 +103,8 @@ const SettingLogicSelect: NextPage = (): JSX.Element => {
       <NextPreviousButton
         modeName={"double"}
         buttonText={["이전", "다음"]}
-        onLeftClick={onLeftClick}
-        onRightClick={onRightClick}
+        onLeftClick={handleLeftClick}
+        onRightClick={handleRightClick}
       />
       {toastText !== "" ? (
         <Toast toastText={toastText} onClose={onClose} />

@@ -24,11 +24,11 @@ const Preview: NextPage = (): JSX.Element => {
     getFetch(`/template/respondent?templateId=${templateBuilderId}`),
   );
 
-  const onLeftClick = () => {
+  const handleLeftClick = () => {
     router.push(`/templateBuilder/${templateBuilderId}`);
   };
 
-  const onRightClick = async () => {
+  const handleRightClick = async () => {
     try {
       await navigator.clipboard.writeText(
         `http://localhost:3000/respondent/${templateBuilderId}`,
@@ -39,7 +39,7 @@ const Preview: NextPage = (): JSX.Element => {
     }
   };
 
-  const onClose = () => {
+  const handleClose = () => {
     setToastText("");
   };
 
@@ -80,11 +80,11 @@ const Preview: NextPage = (): JSX.Element => {
       <NextPreviousButton
         modeName={"double"}
         buttonText={["수정모드", "링크복사"]}
-        onLeftClick={onLeftClick}
-        onRightClick={onRightClick}
+        onLeftClick={handleLeftClick}
+        onRightClick={handleRightClick}
       />
       {toastText !== "" ? (
-        <Toast editMode={true} toastText={toastText} onClose={onClose} />
+        <Toast editMode={true} toastText={toastText} onClose={handleClose} />
       ) : null}
     </>
   );
