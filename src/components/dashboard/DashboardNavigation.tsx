@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,10 +9,7 @@ const DashboardNavigation = (): JSX.Element => {
   const [route, setRoute] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onCancel = () => setIsOpen(false);
-  const onSubmit = (events: any) => {
-    // events.preventDefault();
-    // setIsOpen(false);
-  };
+  const onSubmit = (events: any) => {};
 
   return (
     <div>
@@ -30,34 +28,6 @@ const DashboardNavigation = (): JSX.Element => {
             width={18}
           ></Image>
           템플릿이름이 표시됩니다
-          <InputModal
-            isOpen={isOpen}
-            submitText={"확인"}
-            onCancel={onCancel}
-            handleSubmit={onSubmit}
-          >
-            <div className="flex max-h-[150px] flex-col items-start gap-n-sm overflow-scroll text-n-sm text-n-black">
-              {/* 데이터 매핑필요 */}
-              <div>
-                <label>
-                  <input name="formName" type="radio"></input> 당연히 그러할
-                  것이다
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input name="formName" type="radio"></input> 당연히 그러할
-                  것이다
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input name="formName" type="radio"></input> 당연히 그러할
-                  것이다
-                </label>
-              </div>
-            </div>
-          </InputModal>
         </div>
         <div className="flex">
           <Link
