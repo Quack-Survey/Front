@@ -3,7 +3,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { create, update, read } from "@/constants/mode";
 import { Template } from "@/types/mongooseType";
 import TemplateDescription from "./TemplateDescription";
-import Toast from "../Toast";
+import Toast from "../../Toast";
 
 export interface ITemplateData {
   title: string;
@@ -57,7 +57,7 @@ const TemplateDescriptionWrapper = ({
     }
   };
 
-  const onClose = () => {
+  const handleClose = () => {
     setToastText("");
   };
 
@@ -82,7 +82,11 @@ const TemplateDescriptionWrapper = ({
         editMode={editMode}
       />
       {toastText !== "" ? (
-        <Toast toastText={toastText} onClose={onClose} editMode={editMode} />
+        <Toast
+          toastText={toastText}
+          onClose={handleClose}
+          editMode={editMode}
+        />
       ) : null}
     </div>
   );

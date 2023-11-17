@@ -4,16 +4,16 @@ import Image from "next/image";
 interface IToolbarInitialClickedCaseProp {
   modeName?: string;
   isFold?: boolean;
-  onFoldingAll?: () => void;
+  onFoldAll?: () => void;
 }
 
 const ToolbarInitialClickedCase = ({
   modeName,
   isFold,
-  onFoldingAll,
+  onFoldAll,
 }: IToolbarInitialClickedCaseProp): JSX.Element => {
   const imageNameInitial = ["fold"];
-  const toolPartInitial = [onFoldingAll];
+  const toolPartInitial = [onFoldAll];
 
   return (
     <div

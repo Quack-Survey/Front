@@ -23,7 +23,7 @@ const FormContentSelect = ({
   setFocusNumber,
   remove,
 }: IFormContentSelectProps): JSX.Element => {
-  const deleteInputForm = () => {
+  const handleDeleteInputForm = () => {
     if (isLogicAndTemplateOption) {
       return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
     }
@@ -36,14 +36,16 @@ const FormContentSelect = ({
 
   return (
     <div className="h-n-xlg flex w-[85%] items-center  rounded-n-sm bg-n-light-gray ">
-      <Image
-        className="cursor-pointer"
-        src="/images/dragging.svg"
-        width={20}
-        height={24}
-        alt=""
-        priority
-      />
+      <div className="w-[20px]">
+        <Image
+          className="cursor-pointer"
+          src="/images/dragging.svg"
+          width={24}
+          height={24}
+          alt=""
+          priority
+        />
+      </div>
       <div className="w-[90%]">
         <input
           className="mx-n-sm w-full shrink-0 bg-inherit text-n-sm outline-none"
@@ -58,15 +60,17 @@ const FormContentSelect = ({
         />
       </div>
       {editMode && fieldsLength > 1 ? (
-        <button type="button" onClick={deleteInputForm}>
-          <Image
-            className="mx-n-sm cursor-pointer"
-            src="/images/delete.svg"
-            width={20}
-            height={24}
-            alt=""
-            priority
-          />
+        <button type="button" onClick={handleDeleteInputForm}>
+          <div className="w-[20px]">
+            <Image
+              className="mx-n-sm cursor-pointer"
+              src="/images/delete.svg"
+              width={24}
+              height={24}
+              alt=""
+              priority
+            />
+          </div>
         </button>
       ) : null}
     </div>

@@ -8,7 +8,7 @@ import {
 } from "react-hook-form";
 import { IFormValues } from "./FormWrapper";
 import Image from "next/image";
-import ToolbarTypeCase from "../ToolbarTypingCase";
+import ToolbarTypeCase from "../../ToolbarTypingCase";
 import FormContentSelect from "./FormContentSelect";
 
 interface IFormContentSelectWrapperProps {
@@ -38,14 +38,14 @@ const FormContentSelectWrapper = ({
     control: control,
   });
 
-  const createInputForm = () => {
+  const handleCreateInputForm = () => {
     if (isLogicAndTemplateOption) {
       return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
     }
     append("");
   };
 
-  const onDuplicate = () => {
+  const handleDuplicate = () => {
     if (isLogicAndTemplateOption) {
       return setToastText("로직 및 옵션을 먼저 삭제해주세요.");
     }
@@ -54,11 +54,11 @@ const FormContentSelectWrapper = ({
     append(duplicateLastInput);
   };
 
-  const onFocusUp = () => {
+  const handleFocusUp = () => {
     setFocus(`select.${focusNumber - 1}`, { shouldSelect: true });
   };
 
-  const onFocusDown = () => {
+  const handleFocusDown = () => {
     setFocus(`select.${focusNumber + 1}`, { shouldSelect: true });
   };
 
@@ -88,7 +88,7 @@ const FormContentSelectWrapper = ({
           <button
             type="button"
             className="h-n-xlg flex w-[85%] cursor-pointer items-center  justify-center rounded-n-sm bg-n-light-gray"
-            onClick={createInputForm}
+            onClick={handleCreateInputForm}
           >
             <Image
               src="/images/plus.svg"
@@ -102,10 +102,10 @@ const FormContentSelectWrapper = ({
       </div>
       {editMode ? (
         <ToolbarTypeCase
-          onFocusUp={onFocusUp}
-          onFocusDown={onFocusDown}
-          onDuplicate={onDuplicate}
-          onEnter={createInputForm}
+          onFocusUp={handleFocusUp}
+          onFocusDown={handleFocusDown}
+          onDuplicate={handleDuplicate}
+          onEnter={handleCreateInputForm}
           modeName="form"
         />
       ) : null}

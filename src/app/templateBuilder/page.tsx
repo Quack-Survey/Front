@@ -3,7 +3,7 @@
 import { NextPage } from "next";
 import { useMutation } from "@tanstack/react-query";
 import { postFetch } from "@/utils/fetch/core";
-import { ITemplateData } from "@/components/templateBuilder/TemplateDescriptionWrapper";
+import { ITemplateData } from "@/components/templateBuilder/template/TemplateDescriptionWrapper";
 import { useRouter } from "next/navigation";
 import SavePreserveBar from "@/components/SavePreserveBar";
 import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";
@@ -29,7 +29,7 @@ const Template: NextPage = (): JSX.Element => {
     <>
       <SavePreserveBar />
       <InitialModeScreen
-        createTemplate={handleCreateTemplate}
+        onCreateTemplate={handleCreateTemplate}
         innerText="폼을 생성해주세요."
       />
       <ToolbarInitialClickedCase />

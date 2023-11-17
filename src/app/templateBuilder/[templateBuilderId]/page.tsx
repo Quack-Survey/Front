@@ -8,89 +8,89 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getFetch } from "@/utils/fetch/core";
 import Toast from "@/components/Toast";
-import TemplateWrapper from "@/components/templateBuilder/TemplateWrapper";
+import TemplateWrapper from "@/components/templateBuilder/template/TemplateWrapper";
 import SavePreserveBar from "@/components/SavePreserveBar";
 import ToolbarInitialClickedCase from "@/components/ToolbarInitialClickedCase";
 
 const TemplateBuilder: NextPage = (): JSX.Element => {
   const router = useRouter();
   const { templateBuilderId } = useParams();
-  const [toastMsg, setToastMsg] = useState("");
+  const [toastText, setToastText] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isFold, setIsFold] = useState(false);
   const [modeName, setModeName] = useState(read);
 
-  const { data: complete, isLoading } = useQuery(
+  const { data: complete, isLoading: isLoadingComplete } = useQuery(
     ["respondent", templateBuilderId],
     () => getFetch(`/complete?templateId=${templateBuilderId}`),
   );
 
-  const onNavigateHome = () => {
+  const handleNavigateHome = () => {
     router.push("/home");
   };
 
-  const onOption = () => {
+  const handleOption = () => {
     setIsOpen((prev) => !prev);
   };
 
-  const onFoldingAll = () => {
+  const handleFoldAll = () => {
     setIsFold((prev) => !prev);
   };
 
-  const onSave = () => {
-    setToastMsg("템플릿 저장이 완료되었습니다.");
+  const handleSave = () => {
+    setToastText("템플릿 저장이 완료되었습니다.");
   };
 
-  const onPreview = () => {
+  const handlePreview = () => {
     router.push(`/templateBuilder/${templateBuilderId}/preview`);
   };
 
-  const onClose = () => {
-    setToastMsg("");
+  const handleClose = () => {
+    setToastText("");
 
-    if (toastMsg === "옵션 저장이 완료되었습니다") {
+    if (toastText === "옵션 저장이 완료되었습니다") {
       setIsOpen((prev) => !prev);
     } else {
-      router.push("/home");
+      router.push(`/templateBuilder/${templateBuilderId}/preview`);
     }
   };
 
   useEffect(() => {
-    if (!isLoading) {
-      if (complete.length >= 1) {
-        alert("설문이 시작 되었습니다.");
-        return router.replace("/home");
-      }
+    if (isLoadingComplete) return;
+
+    if (complete.length >= 1) {
+      alert("설문이 시작 되었습니다.");
+      return router.replace("/home");
     }
-  }, [isLoading]);
+  }, [isLoadingComplete]);
 
   return (
     <>
       <SavePreserveBar
-        onOption={onOption}
         modeName={modeName}
-        onSave={onSave}
-        onPreview={onPreview}
-        onNavigateHome={onNavigateHome}
+        onOption={handleOption}
+        onSave={handleSave}
+        onPreview={handlePreview}
+        onNavigateHome={handleNavigateHome}
       />
       <TemplateWrapper
         templateBuilderId={templateBuilderId}
         isOpen={isOpen}
-        onOption={onOption}
-        modeName={modeName}
-        setModeName={setModeName}
         isFold={isFold}
-        setToastMsg={setToastMsg}
+        modeName={modeName}
+        onOption={handleOption}
+        setModeName={setModeName}
+        setToastText={setToastText}
       />
       {modeName === read ? (
         <ToolbarInitialClickedCase
           modeName={modeName}
           isFold={isFold}
-          onFoldingAll={onFoldingAll}
+          onFoldAll={handleFoldAll}
         />
       ) : null}
-      {toastMsg !== "" ? (
-        <Toast editMode={true} toastText={toastMsg} onClose={onClose} />
+      {toastText !== "" ? (
+        <Toast editMode={true} toastText={toastText} onClose={handleClose} />
       ) : null}
     </>
   );

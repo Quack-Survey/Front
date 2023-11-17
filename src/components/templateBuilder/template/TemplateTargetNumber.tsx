@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FieldErrors, UseFormResetField } from "react-hook-form";
 import { IOptionForm } from "./TemplateWrapper";
-import ToggleButton from "../ToggleButton";
+import ToggleButton from "../../ToggleButton";
 
 interface ITemplateTargetNumberProps {
   targetNumber: number;

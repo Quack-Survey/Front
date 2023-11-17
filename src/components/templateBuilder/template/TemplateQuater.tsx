@@ -8,7 +8,7 @@ import {
 } from "react-hook-form";
 import { IOptionForm } from "./TemplateWrapper";
 import Image from "next/image";
-import ToggleButton from "../ToggleButton";
+import ToggleButton from "../../ToggleButton";
 
 interface ITemplateQuaterProps {
   existingIndex: number;
@@ -57,6 +57,8 @@ const TemplateQuater = ({
   };
 
   useEffect(() => {
+    if (selectTypeForms?.length === 0) return;
+
     if (templateOption?.quater) {
       setIndex(existingIndex);
       setToggle((prev) => !prev);
