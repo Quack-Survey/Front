@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
 import useExpiration from "@/hooks/useExpiration";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const Home = (): JSX.Element => {
   const router = useRouter();
@@ -52,7 +53,7 @@ const Home = (): JSX.Element => {
     <div className="relative m-auto max-w-[768px] p-[20px]">
       <h1 className="mb-4">최근 템플릿</h1>
       {isLoading ? (
-        <p>Loading</p>
+        <LoadingSpinner />
       ) : (
         <HomeContainer>
           {data?.map((item) => (

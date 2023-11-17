@@ -11,6 +11,7 @@ import FormContentText from "./FormContentText";
 import FormContentSelectWrapper from "./FormContentSelectWrapper";
 import FloatingFormButtonCollection from "../../FloatingFormButtonCollection";
 import FormRequiredCheckBox from "./FormRequiredCheckBox";
+import useModal from "@/hooks/useModal";
 
 export interface IFormValues {
   title: string;
@@ -118,6 +119,8 @@ const FormWrapper = ({
     setModeName(read);
   };
 
+  const { ModalContainer, openModal } = useModal(handleDelete);
+
   const handleDuplicate = () => {
     const copiedForm = getValues();
     createMutate({
@@ -188,11 +191,14 @@ const FormWrapper = ({
       {editMode ? (
         <FloatingFormButtonCollection
           modeName={update}
-          onDelete={handleDelete}
+          onDelete={openModal}
           onDuplicate={handleDuplicate}
           onCreateLogic={handleCreateLogic}
         />
       ) : null}
+      <ModalContainer>
+        <p className="text-center">삭제 하시겠습니까?</p>
+      </ModalContainer>
     </>
   );
 };

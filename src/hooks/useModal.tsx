@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 interface IModalContainerProps {
-  children: JSX.Element | JSX.Element[];
-  title: string;
+  children?: JSX.Element | JSX.Element[];
+  title?: string;
 }
 
 interface IUseModal {
