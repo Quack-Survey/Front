@@ -33,7 +33,7 @@ interface IPatchFetch {
 }
 
 interface IDeleteFetch {
-  (url: string): Promise<any>;
+  (url: string, body?: BodyInit): Promise<any>;
 }
 
 const instance: IInstanceParameter = async (url, method, params) => {
@@ -93,9 +93,9 @@ const patchFetch: IPatchFetch = async (url, body) => {
   }
 };
 
-const deleteFetch: IDeleteFetch = async (url) => {
+const deleteFetch: IDeleteFetch = async (url, body) => {
   try {
-    const data = await instance(url, "DELETE");
+    const data = await instance(url, "DELETE", { body });
 
     return data;
   } catch (err) {
