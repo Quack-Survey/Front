@@ -18,7 +18,7 @@ const DashboardToolbar = ({
     <div>
       <ToolTip
         isOpen={isOpen}
-        bottom={"[1px]"}
+        bottom={1}
         onCancel={() => {
           onClose();
         }}
