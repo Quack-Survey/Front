@@ -51,7 +51,7 @@ const TemplateBuilder: NextPage = (): JSX.Element => {
     if (toastText === "옵션 저장이 완료되었습니다") {
       setIsOpen((prev) => !prev);
     } else {
-      router.push("/home");
+      router.push(`/templateBuilder/${templateBuilderId}/preview`);
     }
   };
 

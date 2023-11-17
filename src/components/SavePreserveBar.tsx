@@ -37,7 +37,13 @@ const SavePreserveBar = ({
             <button onClick={onSave}>저장</button>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className="flex justify-end text-n-white">
+          <div className="flex gap-n-md">
+            <button onClick={onNavigateHome}>홈으로</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
