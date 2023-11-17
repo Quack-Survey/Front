@@ -6,7 +6,7 @@ const layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
   return (
     <>
       <LogoBar modeName="light" />
-      <div className="my-[56px]">{children}</div>
+      <div className="mb-[48px] mt-[56px]">{children}</div>
       <GlobalNavigation />
     </>
   );

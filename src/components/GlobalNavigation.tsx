@@ -12,7 +12,7 @@ const Navigation = (): JSX.Element => {
     <nav>
       <div
         className={
-          "fixed bottom-0 h-[48px] w-full min-w-[360px] bg-n-blue text-n-white"
+          "fixed bottom-0 z-[9998] h-[48px] w-full min-w-[360px] bg-n-blue text-n-white"
         }
       >
         <div className="m-auto flex h-[48px] w-[360px]">
@@ -26,7 +26,7 @@ const Navigation = (): JSX.Element => {
           >
             <Image
               priority
-              src="images/dashboard.svg"
+              src="/images/dashboard.svg"
               alt=""
               width={24}
               height={24}
@@ -42,7 +42,7 @@ const Navigation = (): JSX.Element => {
           >
             <Image
               priority
-              src="images/home.svg"
+              src="/images/home.svg"
               alt=""
               width={24}
               height={24}
@@ -58,7 +58,7 @@ const Navigation = (): JSX.Element => {
           >
             <Image
               priority
-              src="images/mypage.svg"
+              src="/images/mypage.svg"
               alt=""
               width={24}
               height={24}
