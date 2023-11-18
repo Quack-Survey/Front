@@ -31,7 +31,7 @@ const Preview: NextPage = (): JSX.Element => {
   const handleRightClick = async () => {
     try {
       await navigator.clipboard.writeText(
-        `http://localhost:3000/respondent/${templateBuilderId}`,
+        `https://quack-survey.vercel.app/respondent/${templateBuilderId}`,
       );
       setToastText("링크가 복사되었습니다.");
     } catch (err) {
