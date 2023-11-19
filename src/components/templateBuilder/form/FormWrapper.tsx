@@ -58,10 +58,16 @@ const FormWrapper = ({
   const editMode = mode === create || mode === update;
   const editModeName = modeName === create || modeName === update;
 
-  const { register, handleSubmit, getValues, control, setFocus } =
-    useForm<IFormValues>({
-      defaultValues: { title, select, required },
-    });
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    control,
+    setFocus,
+    formState: { errors },
+  } = useForm<IFormValues>({
+    defaultValues: { title, select, required },
+  });
 
   const { mutate: updateMutate } = useUpdateForm(
     `/form?formId=${_id}`,
@@ -187,6 +193,13 @@ const FormWrapper = ({
             )}
           </div>
         </div>
+        <p className="mr-n-lg h-[24px] text-end text-n-sm text-n-red">
+          <span>
+            {errors?.select === undefined
+              ? null
+              : errors.select[errors.select.length! - 1]?.message}
+          </span>
+        </p>
       </form>
       {editMode ? (
         <FloatingFormButtonCollection

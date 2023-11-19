@@ -46,7 +46,7 @@ const FormContentSelect = ({
           priority
         />
       </div>
-      <div className="w-[90%]">
+      <div className="w-[80%]">
         <input
           className="mx-n-sm w-full shrink-0 bg-inherit text-n-sm outline-none"
           type="text"
@@ -56,7 +56,7 @@ const FormContentSelect = ({
           })}
           onFocus={handleFocusNumber}
           disabled={!editMode || isLogicAndTemplateOption}
-          maxLength={18}
+          maxLength={17}
         />
       </div>
       {editMode && fieldsLength > 1 ? (
