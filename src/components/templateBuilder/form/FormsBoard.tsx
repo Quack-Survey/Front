@@ -7,7 +7,7 @@ import {
 } from "@hello-pangea/dnd";
 import { useUpdateForm } from "@/hooks/mutation/useUpdateForm";
 import { read } from "@/constants/mode";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormWrapper from "./FormWrapper";
 import Toast from "../../Toast";
 
@@ -34,6 +34,7 @@ const FormsBoard = ({
   setModeName,
   createMutate,
 }: IFormsBoardProps): JSX.Element => {
+  const [formsState, setFormsState] = useState<Form[]>([]);
   const [toastText, setToastText] = useState("");
 
   const { mutate: updateMutate } = useUpdateForm(
@@ -59,6 +60,13 @@ const FormsBoard = ({
       }
     }
 
+    setFormsState((prev) => {
+      const copyFormsState = [...prev];
+      const copyFormsStateSplice = copyFormsState.splice(source.index, 1);
+      copyFormsState.splice(destination?.index, 0, copyFormsStateSplice[0]);
+      return copyFormsState;
+    });
+
     const formsData: string[] | null = [];
     forms.forEach((form) => formsData.push(form._id));
     formsData.splice(source.index, 1);
@@ -70,6 +78,15 @@ const FormsBoard = ({
     setToastText("");
   };
 
+  useEffect(() => {
+    setFormsState((prev) => {
+      const copyFormsState = [...prev];
+      copyFormsState.splice(0);
+      copyFormsState.push(...forms);
+      return copyFormsState;
+    });
+  }, [forms]);
+
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -80,7 +97,7 @@ const FormsBoard = ({
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {forms?.map((form: Form, i: number) => (
+              {formsState?.map((form: Form, i: number) => (
                 <Draggable
                   key={form._id}
                   draggableId={form._id}
