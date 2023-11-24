@@ -61,7 +61,8 @@ const Respondent: NextPage = (): JSX.Element => {
     });
     const mutationResponses = data?.form?.map((formData: Form, i: number) => {
       return {
-        formId: formData._id,
+        order: i + 1,
+        title: formData.title,
         response: mutationResponseForms[i],
       };
     });
