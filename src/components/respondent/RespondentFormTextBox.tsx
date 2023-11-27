@@ -7,7 +7,7 @@ import {
 interface IRespondentFormTextBoxProps {
   formIndex: number;
   required: boolean;
-  isDisabled: (boolean | null)[];
+  isDisabled: (number | null)[];
   getValues: UseFormGetValues<FieldValues>;
   register: UseFormRegister<FieldValues>;
 }
