@@ -14,9 +14,9 @@ interface IRespondentFormSelectBoxProps {
   index: number;
   formIndex: number;
   isChecked: boolean[];
-  isDisabled: boolean;
+  isDisabled: (boolean | null)[];
   setIsChecked: React.Dispatch<React.SetStateAction<boolean[]>>;
-  setIsDisabled: React.Dispatch<React.SetStateAction<boolean[]>>;
+  setIsDisabled: React.Dispatch<React.SetStateAction<(boolean | null)[][]>>;
   getValues: UseFormGetValues<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
   register: UseFormRegister<FieldValues>;
@@ -53,21 +53,54 @@ const RespondentFormSelectBox = ({
     }
 
     if (logic) {
-      const includeLogic = logic.selector.includes(select[i]);
+      const isChoiceLogic = getValues(`form${formIndex + 1}`).some(
+        (value: any) => logic.selector.includes(value) === true,
+      );
       const existingIndex = forms.findIndex(
         (item) => item._id === logic.appliedFormId,
       );
-      if (includeLogic) {
+      if (isChoiceLogic) {
         setIsDisabled((prev) => {
-          const copyIsDisabled = [...prev];
+          const copyIsDisabled = JSON.parse(JSON.stringify(prev));
+          const appliedLogic = copyIsDisabled.findIndex(
+            (item: any) => item.includes(formIndex) === true,
+          );
+          if (appliedLogic !== -1) return copyIsDisabled;
           if (logic.type === "filter") {
-            copyIsDisabled.splice(existingIndex, 1, true);
+            copyIsDisabled[existingIndex].push(formIndex);
             return copyIsDisabled;
           } else {
-            const newCopyIsDisabled = prev.map((item: boolean, i: number) => {
-              return formIndex < i && i < existingIndex ? true : false;
+            copyIsDisabled.forEach((item: any, i: number) => {
+              return formIndex < i && i < existingIndex
+                ? item.push(formIndex)
+                : item;
             });
-            return newCopyIsDisabled;
+            return copyIsDisabled;
+          }
+        });
+      } else {
+        setIsDisabled((prev) => {
+          const copyIsDisabled = JSON.parse(JSON.stringify(prev));
+          const appliedLogic = copyIsDisabled.some((item: any) =>
+            item.includes(formIndex),
+          );
+          if (!appliedLogic) return copyIsDisabled;
+          if (logic.type === "filter") {
+            const filterCopyIsDisabled = copyIsDisabled[existingIndex].filter(
+              (item: any) => item !== formIndex,
+            );
+            copyIsDisabled.splice(existingIndex, 1, filterCopyIsDisabled);
+            return copyIsDisabled;
+          } else {
+            const mapCopyIsDisabled = copyIsDisabled.map(
+              (item: any, i: number) => {
+                const filterItem = item.filter(
+                  (value: any) => value !== formIndex,
+                );
+                return formIndex < i && i < existingIndex ? filterItem : item;
+              },
+            );
+            return mapCopyIsDisabled;
           }
         });
       }
@@ -86,21 +119,55 @@ const RespondentFormSelectBox = ({
     const checkedLength = isChecked.filter((item: boolean) => item === true);
 
     if (logic) {
-      const includeLogic = logic.selector.includes(select[i]);
+      const isChoiceLogic = getValues(`form${formIndex + 1}`).some(
+        (value: any) => logic.selector.includes(value) === true,
+      );
       const existingIndex = forms.findIndex(
         (item) => item._id === logic.appliedFormId,
       );
-      if (includeLogic) {
+      if (isChoiceLogic) {
         setIsDisabled((prev) => {
-          const copyIsDisabled = [...prev];
+          const copyIsDisabled = JSON.parse(JSON.stringify(prev));
+          const appliedLogic = copyIsDisabled.findIndex(
+            (item: any) => item.includes(formIndex) === true,
+          );
+
+          if (appliedLogic !== -1) return copyIsDisabled;
           if (logic.type === "filter") {
-            copyIsDisabled.splice(existingIndex, 1, true);
+            copyIsDisabled[existingIndex].push(formIndex);
             return copyIsDisabled;
           } else {
-            const newCopyIsDisabled = prev.map((item: boolean, i: number) => {
-              return formIndex < i && i < existingIndex ? true : false;
+            copyIsDisabled.forEach((item: any, i: number) => {
+              return formIndex < i && i < existingIndex
+                ? item.push(formIndex)
+                : item;
             });
-            return newCopyIsDisabled;
+            return copyIsDisabled;
+          }
+        });
+      } else {
+        setIsDisabled((prev) => {
+          const copyIsDisabled = JSON.parse(JSON.stringify(prev));
+          const appliedLogic = copyIsDisabled.some((item: any) =>
+            item.includes(formIndex),
+          );
+          if (!appliedLogic) return copyIsDisabled;
+          if (logic.type === "filter") {
+            const filterCopyIsDisabled = copyIsDisabled[existingIndex].filter(
+              (item: any) => item !== formIndex,
+            );
+            copyIsDisabled.splice(existingIndex, 1, filterCopyIsDisabled);
+            return copyIsDisabled;
+          } else {
+            const mapCopyIsDisabled = copyIsDisabled.map(
+              (item: any, i: number) => {
+                const filterItem = item.filter(
+                  (value: any) => value !== formIndex,
+                );
+                return formIndex < i && i < existingIndex ? filterItem : item;
+              },
+            );
+            return mapCopyIsDisabled;
           }
         });
       }
@@ -124,7 +191,7 @@ const RespondentFormSelectBox = ({
   };
 
   const handleValidate = () => {
-    if (isDisabled) return;
+    if (isDisabled.length !== 0) return;
     if (!required) return;
     const respondentForms: any[] = Object.values(getValues());
     const checkRespondentForms = respondentForms[formIndex];
@@ -155,14 +222,15 @@ const RespondentFormSelectBox = ({
             id={`${id}_select_${index}`}
             type="checkbox"
             value={text}
-            onClick={() => {
-              if (!plural) {
-                handleIsSingleChecked(index);
-              } else {
-                handleIsPluralChecked(index);
-              }
-            }}
+            checked={isChecked[index] || false}
             {...register(`form${formIndex + 1}[${index}]`, {
+              onChange() {
+                if (plural) {
+                  handleIsPluralChecked(index);
+                } else {
+                  handleIsSingleChecked(index);
+                }
+              },
               validate: handleValidate,
             })}
           />
@@ -173,3 +241,15 @@ const RespondentFormSelectBox = ({
 };
 
 export default RespondentFormSelectBox;
+// setIsDisabled((prev) => {
+//   const copyIsDisabled = [...prev];
+//   if (logic.type === "filter") {
+//     copyIsDisabled.splice(existingIndex, 1, true);
+//     return copyIsDisabled;
+//   } else {
+//     const newCopyIsDisabled = prev.map((item: boolean, i: number) => {
+//       return formIndex < i && i < existingIndex ? true : false;
+//     });
+//     return newCopyIsDisabled;
+//   }
+// });

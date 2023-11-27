@@ -1,7 +1,7 @@
 interface IRespondentFormTitleProps {
   title: string;
   index: number;
-  isDisabled: boolean;
+  isDisabled: (boolean | null)[];
 }
 
 const RespondentFormTitle = ({
@@ -13,7 +13,7 @@ const RespondentFormTitle = ({
     <div className="mx-2 mb-3 flex items-center">
       <span
         className={`mr-n-sm self-start text-n-xl ${
-          isDisabled ? "text-n-dark-gray" : " text-n-light-blue"
+          isDisabled?.length !== 0 ? "text-n-dark-gray" : " text-n-light-blue"
         }`}
       >
         {index + 1}
