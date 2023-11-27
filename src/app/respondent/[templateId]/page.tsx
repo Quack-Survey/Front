@@ -21,7 +21,7 @@ const Respondent: NextPage = (): JSX.Element => {
   const router = useRouter();
   const { templateId } = useParams();
 
-  const [isDisabled, setIsDisabled] = useState<(boolean | null)[][]>([]);
+  const [isDisabled, setIsDisabled] = useState<(number | null)[][]>([]);
   const [toastText, setToastText] = useState("");
 
   const { data, isLoading } = useQuery(["respondent"], () =>

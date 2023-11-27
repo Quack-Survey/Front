@@ -1,7 +1,7 @@
 interface IRespondentFormTitleProps {
   title: string;
   index: number;
-  isDisabled: (boolean | null)[];
+  isDisabled: (number | null)[];
 }
 
 const RespondentFormTitle = ({

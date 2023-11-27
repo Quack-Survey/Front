@@ -15,8 +15,8 @@ interface IRespondentFormWrapperProps {
   forms: Form[];
   logics: Logic[];
   index: number;
-  isDisabled: (boolean | null)[];
-  setIsDisabled: React.Dispatch<React.SetStateAction<(boolean | null)[][]>>;
+  isDisabled: (number | null)[];
+  setIsDisabled: React.Dispatch<React.SetStateAction<(number | null)[][]>>;
   getValues: UseFormGetValues<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
   register: UseFormRegister<FieldValues>;

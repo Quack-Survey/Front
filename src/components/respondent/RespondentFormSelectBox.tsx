@@ -1,4 +1,5 @@
 import { Form, Logic } from "@/types/mongooseType";
+import { useEffect } from "react";
 import {
   FieldValues,
   UseFormGetValues,
@@ -14,9 +15,9 @@ interface IRespondentFormSelectBoxProps {
   index: number;
   formIndex: number;
   isChecked: boolean[];
-  isDisabled: (boolean | null)[];
+  isDisabled: (number | null)[];
   setIsChecked: React.Dispatch<React.SetStateAction<boolean[]>>;
-  setIsDisabled: React.Dispatch<React.SetStateAction<(boolean | null)[][]>>;
+  setIsDisabled: React.Dispatch<React.SetStateAction<(number | null)[][]>>;
   getValues: UseFormGetValues<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
   register: UseFormRegister<FieldValues>;
@@ -37,7 +38,7 @@ const RespondentFormSelectBox = ({
   setValue,
   register,
 }: IRespondentFormSelectBoxProps): JSX.Element => {
-  const { _id: id, plural, select, required } = form;
+  const { _id: id, plural, required } = form;
   const inititalIsChecked = isChecked.map(() => false);
 
   const handleIsSingleChecked = (i: number) => {
@@ -54,7 +55,7 @@ const RespondentFormSelectBox = ({
 
     if (logic) {
       const isChoiceLogic = getValues(`form${formIndex + 1}`).some(
-        (value: any) => logic.selector.includes(value) === true,
+        (value: string) => logic.selector.includes(value) === true,
       );
       const existingIndex = forms.findIndex(
         (item) => item._id === logic.appliedFormId,
@@ -63,14 +64,14 @@ const RespondentFormSelectBox = ({
         setIsDisabled((prev) => {
           const copyIsDisabled = JSON.parse(JSON.stringify(prev));
           const appliedLogic = copyIsDisabled.findIndex(
-            (item: any) => item.includes(formIndex) === true,
+            (item: number[]) => item.includes(formIndex) === true,
           );
           if (appliedLogic !== -1) return copyIsDisabled;
           if (logic.type === "filter") {
             copyIsDisabled[existingIndex].push(formIndex);
             return copyIsDisabled;
           } else {
-            copyIsDisabled.forEach((item: any, i: number) => {
+            copyIsDisabled.forEach((item: number[], i: number) => {
               return formIndex < i && i < existingIndex
                 ? item.push(formIndex)
                 : item;
@@ -81,21 +82,21 @@ const RespondentFormSelectBox = ({
       } else {
         setIsDisabled((prev) => {
           const copyIsDisabled = JSON.parse(JSON.stringify(prev));
-          const appliedLogic = copyIsDisabled.some((item: any) =>
+          const appliedLogic = copyIsDisabled.some((item: number[]) =>
             item.includes(formIndex),
           );
           if (!appliedLogic) return copyIsDisabled;
           if (logic.type === "filter") {
             const filterCopyIsDisabled = copyIsDisabled[existingIndex].filter(
-              (item: any) => item !== formIndex,
+              (item: number) => item !== formIndex,
             );
             copyIsDisabled.splice(existingIndex, 1, filterCopyIsDisabled);
             return copyIsDisabled;
           } else {
             const mapCopyIsDisabled = copyIsDisabled.map(
-              (item: any, i: number) => {
+              (item: number[], i: number) => {
                 const filterItem = item.filter(
-                  (value: any) => value !== formIndex,
+                  (value: number) => value !== formIndex,
                 );
                 return formIndex < i && i < existingIndex ? filterItem : item;
               },
@@ -120,7 +121,7 @@ const RespondentFormSelectBox = ({
 
     if (logic) {
       const isChoiceLogic = getValues(`form${formIndex + 1}`).some(
-        (value: any) => logic.selector.includes(value) === true,
+        (value: string) => logic.selector.includes(value) === true,
       );
       const existingIndex = forms.findIndex(
         (item) => item._id === logic.appliedFormId,
@@ -129,7 +130,7 @@ const RespondentFormSelectBox = ({
         setIsDisabled((prev) => {
           const copyIsDisabled = JSON.parse(JSON.stringify(prev));
           const appliedLogic = copyIsDisabled.findIndex(
-            (item: any) => item.includes(formIndex) === true,
+            (item: number[]) => item.includes(formIndex) === true,
           );
 
           if (appliedLogic !== -1) return copyIsDisabled;
@@ -137,7 +138,7 @@ const RespondentFormSelectBox = ({
             copyIsDisabled[existingIndex].push(formIndex);
             return copyIsDisabled;
           } else {
-            copyIsDisabled.forEach((item: any, i: number) => {
+            copyIsDisabled.forEach((item: number[], i: number) => {
               return formIndex < i && i < existingIndex
                 ? item.push(formIndex)
                 : item;
@@ -148,21 +149,21 @@ const RespondentFormSelectBox = ({
       } else {
         setIsDisabled((prev) => {
           const copyIsDisabled = JSON.parse(JSON.stringify(prev));
-          const appliedLogic = copyIsDisabled.some((item: any) =>
+          const appliedLogic = copyIsDisabled.some((item: number[]) =>
             item.includes(formIndex),
           );
           if (!appliedLogic) return copyIsDisabled;
           if (logic.type === "filter") {
             const filterCopyIsDisabled = copyIsDisabled[existingIndex].filter(
-              (item: any) => item !== formIndex,
+              (item: number) => item !== formIndex,
             );
             copyIsDisabled.splice(existingIndex, 1, filterCopyIsDisabled);
             return copyIsDisabled;
           } else {
             const mapCopyIsDisabled = copyIsDisabled.map(
-              (item: any, i: number) => {
+              (item: number[], i: number) => {
                 const filterItem = item.filter(
-                  (value: any) => value !== formIndex,
+                  (value: number) => value !== formIndex,
                 );
                 return formIndex < i && i < existingIndex ? filterItem : item;
               },
@@ -241,15 +242,3 @@ const RespondentFormSelectBox = ({
 };
 
 export default RespondentFormSelectBox;
-// setIsDisabled((prev) => {
-//   const copyIsDisabled = [...prev];
-//   if (logic.type === "filter") {
-//     copyIsDisabled.splice(existingIndex, 1, true);
-//     return copyIsDisabled;
-//   } else {
-//     const newCopyIsDisabled = prev.map((item: boolean, i: number) => {
-//       return formIndex < i && i < existingIndex ? true : false;
-//     });
-//     return newCopyIsDisabled;
-//   }
-// });
