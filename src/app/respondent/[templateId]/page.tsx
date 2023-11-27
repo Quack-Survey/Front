@@ -21,7 +21,7 @@ const Respondent: NextPage = (): JSX.Element => {
   const router = useRouter();
   const { templateId } = useParams();
 
-  const [isDisabled, setIsDisabled] = useState<boolean[]>([]);
+  const [isDisabled, setIsDisabled] = useState<(boolean | null)[][]>([]);
   const [toastText, setToastText] = useState("");
 
   const { data, isLoading } = useQuery(["respondent"], () =>
@@ -44,7 +44,7 @@ const Respondent: NextPage = (): JSX.Element => {
     const arrResponsesData: ((string | boolean)[] | string)[] =
       Object.values(responsesData);
     const filterDisabledResponses = arrResponsesData.map((response, i) => {
-      if (isDisabled[i]) {
+      if (isDisabled[i]?.length !== 0) {
         return typeof response === "string" ? "" : [""];
       }
       return response;
@@ -61,7 +61,8 @@ const Respondent: NextPage = (): JSX.Element => {
     });
     const mutationResponses = data?.form?.map((formData: Form, i: number) => {
       return {
-        formId: formData._id,
+        order: i + 1,
+        title: formData.title,
         response: mutationResponseForms[i],
       };
     });
@@ -91,7 +92,7 @@ const Respondent: NextPage = (): JSX.Element => {
       }
       setIsDisabled((prev) => {
         const copyIsDisabled = [...prev];
-        const newIsDisabled = Array(data?.form?.length).fill(false);
+        const newIsDisabled = Array(data?.form?.length).fill([]);
         copyIsDisabled.push(...newIsDisabled);
         return copyIsDisabled;
       });
