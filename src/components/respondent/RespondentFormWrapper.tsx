@@ -49,6 +49,33 @@ const RespondentFormWrapper = ({
     });
   }, []);
 
+  useEffect(() => {
+    if (isDisabled?.length === 0 || isDisabled?.length === undefined) return;
+    const includeIsChecked = isChecked.includes(true);
+    if (includeIsChecked) {
+      const mapIsChecked = isChecked.map(() => {
+        return false;
+      });
+      setIsChecked((prev) => {
+        const copyIsChecked = prev.map(() => {
+          return false;
+        });
+        return copyIsChecked;
+      });
+
+      setIsDisabled((prev) => {
+        const copyIsDisabled = JSON.parse(JSON.stringify(prev));
+        const mapCopyIsDisabled = copyIsDisabled.map((value: number[]) => {
+          const filterValue = value.filter((item) => item !== index);
+          return filterValue;
+        });
+        return mapCopyIsDisabled;
+      });
+
+      setValue(`form${index + 1}`, mapIsChecked);
+    }
+  }, [isDisabled]);
+
   return (
     <div
       className={`mb-3 h-full w-[360px] flex-col border-l-[8px]  bg-white py-2 ${
