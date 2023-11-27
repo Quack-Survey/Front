@@ -15,8 +15,8 @@ interface IRespondentFormWrapperProps {
   forms: Form[];
   logics: Logic[];
   index: number;
-  isDisabled: boolean;
-  setIsDisabled: React.Dispatch<React.SetStateAction<boolean[]>>;
+  isDisabled: (boolean | null)[];
+  setIsDisabled: React.Dispatch<React.SetStateAction<(boolean | null)[][]>>;
   getValues: UseFormGetValues<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
   register: UseFormRegister<FieldValues>;
@@ -52,14 +52,14 @@ const RespondentFormWrapper = ({
   return (
     <div
       className={`mb-3 h-full w-[360px] flex-col border-l-[8px]  bg-white py-2 ${
-        isDisabled ? " border-n-gray" : "border-n-light-blue"
+        isDisabled?.length !== 0 ? " border-n-gray" : "border-n-light-blue"
       }`}
     >
       <div className="flex">
-        {required && !isDisabled ? (
+        {required && isDisabled?.length === 0 ? (
           <span className="mb-3 ml-3 text-n-xs">( 필수항목 )</span>
         ) : null}
-        {plural && !isDisabled ? (
+        {plural && isDisabled?.length === 0 ? (
           <span className="mb-3 ml-3 text-n-xs">( 모두선택 )</span>
         ) : null}
       </div>
@@ -68,7 +68,7 @@ const RespondentFormWrapper = ({
         title={title}
         index={index}
       />
-      {!isDisabled ? (
+      {isDisabled?.length === 0 ? (
         <>
           {type === "select" ? (
             <div className="space-y-n-sm">
