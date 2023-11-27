@@ -15,8 +15,8 @@ interface IRespondentFormWrapperProps {
   forms: Form[];
   logics: Logic[];
   index: number;
-  isDisabled: (boolean | null)[];
-  setIsDisabled: React.Dispatch<React.SetStateAction<(boolean | null)[][]>>;
+  isDisabled: (number | null)[];
+  setIsDisabled: React.Dispatch<React.SetStateAction<(number | null)[][]>>;
   getValues: UseFormGetValues<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
   register: UseFormRegister<FieldValues>;
@@ -48,6 +48,33 @@ const RespondentFormWrapper = ({
       return copyIsSelected;
     });
   }, []);
+
+  useEffect(() => {
+    if (isDisabled?.length === 0 || isDisabled?.length === undefined) return;
+    const includeIsChecked = isChecked.includes(true);
+    if (includeIsChecked) {
+      const mapIsChecked = isChecked.map(() => {
+        return false;
+      });
+      setIsChecked((prev) => {
+        const copyIsChecked = prev.map(() => {
+          return false;
+        });
+        return copyIsChecked;
+      });
+
+      setIsDisabled((prev) => {
+        const copyIsDisabled = JSON.parse(JSON.stringify(prev));
+        const mapCopyIsDisabled = copyIsDisabled.map((value: number[]) => {
+          const filterValue = value.filter((item) => item !== index);
+          return filterValue;
+        });
+        return mapCopyIsDisabled;
+      });
+
+      setValue(`form${index + 1}`, mapIsChecked);
+    }
+  }, [isDisabled]);
 
   return (
     <div
