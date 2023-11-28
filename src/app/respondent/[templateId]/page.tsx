@@ -28,11 +28,6 @@ const Respondent: NextPage = (): JSX.Element => {
     getFetch(`/template/respondent?templateId=${templateId}`),
   );
 
-  const { data: complete } = useQuery(["complete"], () =>
-    getFetch(`/complete/dashboard?templateId=${templateId}`),
-  );
-  console.log(complete);
-
   const { mutate } = useMutation(
     (response) =>
       postFetch(`/complete?templateId=${templateId}`, JSON.stringify(response)),
