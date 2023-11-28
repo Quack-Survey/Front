@@ -7,7 +7,7 @@ import {
 interface IRespondentFormTextBoxProps {
   formIndex: number;
   required: boolean;
-  isDisabled: boolean;
+  isDisabled: (number | null)[];
   getValues: UseFormGetValues<FieldValues>;
   register: UseFormRegister<FieldValues>;
 }
@@ -20,7 +20,7 @@ const RespondentFormTextBox = ({
   register,
 }: IRespondentFormTextBoxProps): JSX.Element => {
   const handleValidate = () => {
-    if (isDisabled) return;
+    if (isDisabled.length !== 0) return;
     if (!required) return;
     const respondentForms: ((string | boolean)[] | string)[] = Object.values(
       getValues(),

@@ -15,8 +15,8 @@ interface IRespondentFormWrapperProps {
   forms: Form[];
   logics: Logic[];
   index: number;
-  isDisabled: boolean;
-  setIsDisabled: React.Dispatch<React.SetStateAction<boolean[]>>;
+  isDisabled: (number | null)[];
+  setIsDisabled: React.Dispatch<React.SetStateAction<(number | null)[][]>>;
   getValues: UseFormGetValues<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
   register: UseFormRegister<FieldValues>;
@@ -49,17 +49,44 @@ const RespondentFormWrapper = ({
     });
   }, []);
 
+  useEffect(() => {
+    if (isDisabled?.length === 0 || isDisabled?.length === undefined) return;
+    const includeIsChecked = isChecked.includes(true);
+    if (includeIsChecked) {
+      const mapIsChecked = isChecked.map(() => {
+        return false;
+      });
+      setIsChecked((prev) => {
+        const copyIsChecked = prev.map(() => {
+          return false;
+        });
+        return copyIsChecked;
+      });
+
+      setIsDisabled((prev) => {
+        const copyIsDisabled = JSON.parse(JSON.stringify(prev));
+        const mapCopyIsDisabled = copyIsDisabled.map((value: number[]) => {
+          const filterValue = value.filter((item) => item !== index);
+          return filterValue;
+        });
+        return mapCopyIsDisabled;
+      });
+
+      setValue(`form${index + 1}`, mapIsChecked);
+    }
+  }, [isDisabled]);
+
   return (
     <div
       className={`mb-3 h-full w-[360px] flex-col border-l-[8px]  bg-white py-2 ${
-        isDisabled ? " border-n-gray" : "border-n-light-blue"
+        isDisabled?.length !== 0 ? " border-n-gray" : "border-n-light-blue"
       }`}
     >
       <div className="flex">
-        {required && !isDisabled ? (
+        {required && isDisabled?.length === 0 ? (
           <span className="mb-3 ml-3 text-n-xs">( 필수항목 )</span>
         ) : null}
-        {plural && !isDisabled ? (
+        {plural && isDisabled?.length === 0 ? (
           <span className="mb-3 ml-3 text-n-xs">( 모두선택 )</span>
         ) : null}
       </div>
@@ -68,7 +95,7 @@ const RespondentFormWrapper = ({
         title={title}
         index={index}
       />
-      {!isDisabled ? (
+      {isDisabled?.length === 0 ? (
         <>
           {type === "select" ? (
             <div className="space-y-n-sm">
