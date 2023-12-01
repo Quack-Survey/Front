@@ -1,9 +1,6 @@
-/** @type {import('tailwindcss').Config} */
+import type { Config } from "tailwindcss";
 
-module.exports = {
-  corePlugins: {
-    preflight: true,
-  },
+const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -58,3 +55,5 @@ module.exports = {
   },
   plugins: [require("tailwindcss"), require("autoprefixer")],
 };
+
+export default config;
