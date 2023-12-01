@@ -60,6 +60,9 @@ const handleLogin: IHandleUserAction = async (data, router, setError) => {
   const res = await postFetch("/users/login", JSON.stringify(data));
 
   if (res.state) {
+    setCookie("accessToken", res.data.accessToken);
+    setCookie("refreshToken", res.data.refreshToken);
+    setCookie("email", res.data.email);
     setCookie("username", res.data.username);
     router.replace("/home");
   } else if (res.message === "Email not verified.") {
