@@ -1,3 +1,5 @@
+import { getCookie, setCookie } from "cookies-next";
+
 interface IInstanceParameter {
   (
     url: string,
@@ -38,19 +40,39 @@ interface IDeleteFetch {
 
 const instance: IInstanceParameter = async (url, method, params) => {
   const baseUrl = process.env.BASE_URL;
+  const accessToken = getCookie("accessToken");
+  const refreshToken = getCookie("refreshToken");
 
   const res = await fetch(`${baseUrl}${url}`, {
     method,
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
-    credentials: "include",
     ...params,
   });
 
-  const data = res.json();
+  const data = await res.json();
 
-  return data;
+  if (!(data.message === "No authentication.")) {
+    return data;
+  } else {
+    const res = await fetch(`${baseUrl}${url}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${refreshToken}`,
+      },
+      ...params,
+    });
+
+    const data = await res.json();
+
+    if (!(data.message === "No authentication."))
+      setCookie("accessToken", res.headers.get("accessToken"));
+
+    return data;
+  }
 };
 
 const getFetch: IGetFetch = async (url, options) => {
