@@ -17,6 +17,9 @@ const Verify = () => {
     if (count === 0) {
       (async () => {
         const res = await getFetch(`/users/verify/${code}`);
+        setCookie("accessToken", res.data.accessToken);
+        setCookie("refreshToken", res.data.refreshToken);
+        setCookie("email", res.data.email);
         setCookie("username", res.data.username);
         router.replace("/home");
       })();
