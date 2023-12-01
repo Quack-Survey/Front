@@ -210,7 +210,7 @@ const RespondentFormSelectBox = ({
           isChecked[index] ? "bg-n-light-blue text-white" : "bg-n-light-gray"
         }`}
       >
-        <div className="flex w-full">
+        <div className="flex w-full items-center">
           <label
             htmlFor={`${id}_select_${index}`}
             className="mx-n-sm w-full shrink-0 cursor-pointer bg-inherit py-[5px] text-n-sm outline-none"
