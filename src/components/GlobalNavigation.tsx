@@ -18,6 +18,7 @@ const Navigation = (): JSX.Element => {
         <div className="m-auto flex h-[48px] w-[360px]">
           <Link
             href="/dashboard/status"
+            scroll={false}
             className={
               splitPathName === "dashboard"
                 ? "box-border flex w-[120px] items-center justify-center border-b-[5px] border-n-white opacity-100"
@@ -34,6 +35,7 @@ const Navigation = (): JSX.Element => {
           </Link>
           <Link
             href="/home"
+            scroll={false}
             className={
               splitPathName === "home"
                 ? "box-border flex w-[120px] items-center justify-center border-b-[5px] border-n-white opacity-100"
@@ -50,6 +52,7 @@ const Navigation = (): JSX.Element => {
           </Link>
           <Link
             href="/mypage"
+            scroll={false}
             className={
               splitPathName === "mypage"
                 ? "box-border flex w-[120px] items-center justify-center border-b-[5px] border-n-white opacity-100"
