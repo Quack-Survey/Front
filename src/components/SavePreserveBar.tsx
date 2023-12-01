@@ -17,7 +17,7 @@ const SavePreserveBar = ({
   onSave,
 }: ISavePreserveProps): JSX.Element => {
   return (
-    <div className="fixed top-0  h-[56px] w-full min-w-[360px] bg-n-light-black  p-n-md ">
+    <div className="fixed top-0 z-50 h-[56px] w-full min-w-[360px] bg-n-light-black p-n-md ">
       {modeName === read ? (
         <div className="flex   justify-between   text-n-white">
           <div className="flex gap-n-md">

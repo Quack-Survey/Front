@@ -38,20 +38,11 @@ const TemplateDescriptionWrapper = ({
     setModeName(read);
   };
 
-  const startPress = () => {
+  const handleUpdateMode = () => {
     if (editMode) return;
-    setUpdateActive(Date.now());
-  };
-
-  const endPress = () => {
-    if (editMode) return;
-
-    const endTime = Date.now();
-    const duration = endTime - updateActive;
-
-    if (editModeName && duration > 500) {
+    if (editModeName) {
       return setToastText("폼을 저장해주세요.");
-    } else if (!editModeName && duration > 500) {
+    } else {
       setMode(update);
       setModeName(update);
     }
@@ -72,11 +63,12 @@ const TemplateDescriptionWrapper = ({
   }, [template.title]);
 
   return (
-    <div onMouseDown={startPress} onMouseUp={endPress}>
+    <div>
       <TemplateDescription
         title={template.title}
         description={template.description}
         register={register}
+        onUpdateMode={handleUpdateMode}
         handleSubmit={handleSubmit}
         onValid={onValid}
         editMode={editMode}
