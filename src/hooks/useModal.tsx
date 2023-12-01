@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IModalContainerProps {
   children?: JSX.Element | JSX.Element[];
@@ -29,6 +29,14 @@ const useModal: IUseModal = (callback) => {
   };
 
   const ModalContainer = ({ children, title }: IModalContainerProps) => {
+    useEffect(() => {
+      if (isOpen) document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.removeAttribute("style");
+      };
+    }, []);
+
     return (
       isOpen && (
         <div

@@ -31,7 +31,7 @@ const useGetTemplateLists = (
     queryConfig.cacheTime = time;
   }
 
-  const { data, isLoading, error } = useQuery<ITemplateDatas[]>(
+  const { data, isLoading, error, isFetching } = useQuery<ITemplateDatas[]>(
     queryKey,
     () => getFetch(url),
     queryConfig,
@@ -43,6 +43,7 @@ const useGetTemplateLists = (
       : [],
     isLoading,
     error,
+    isFetching,
   };
 };
 
