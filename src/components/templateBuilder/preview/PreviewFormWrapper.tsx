@@ -34,7 +34,7 @@ const PreviewFormWrapper = ({
             return (
               <div key={`${_id}_${i}`} className="ml-8 mr-2">
                 <div className="h-n-xlg flex w-[85%] items-center rounded-n-sm  bg-n-light-gray">
-                  <div className="flex w-full">
+                  <div className="flex w-full items-center">
                     <label className="mx-n-sm w-full shrink-0 cursor-pointer bg-inherit py-[5px] text-n-sm outline-none">
                       {text}
                     </label>

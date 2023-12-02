@@ -5,11 +5,13 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import ToolbarTypeCase from "../../ToolbarTypingCase";
+import Image from "next/image";
 
 interface ITemplateDescriptionProps {
   title?: string;
   description?: string;
   editMode: boolean;
+  onUpdateMode: () => void;
   handleSubmit: UseFormHandleSubmit<FieldValues>;
   register: UseFormRegister<FieldValues>;
   onValid: SubmitHandler<FieldValues>;
@@ -19,6 +21,7 @@ const TemplateDescription = ({
   title,
   description,
   editMode,
+  onUpdateMode,
   handleSubmit,
   register,
   onValid,
@@ -54,6 +57,18 @@ const TemplateDescription = ({
           maxLength={200}
         />
         {editMode ? <ToolbarTypeCase modeName="text" /> : null}
+        <div
+          className="flex h-[20px] w-[20px] cursor-pointer items-center justify-center self-end rounded bg-n-blue opacity-80 duration-100 hover:opacity-100"
+          onClick={onUpdateMode}
+        >
+          <Image
+            src="/images/create.svg"
+            width={30}
+            height={30}
+            priority={true}
+            alt="수정"
+          />
+        </div>
       </form>
     </div>
   );

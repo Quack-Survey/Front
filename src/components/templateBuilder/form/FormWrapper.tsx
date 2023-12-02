@@ -48,7 +48,6 @@ const FormWrapper = ({
 }: IFormWrapperProps): JSX.Element => {
   const router = useRouter();
   const [mode, setMode] = useState(read);
-  const [updateActive, setUpdateActive] = useState(0);
   const { _id, title, type, plural, select, required } = form;
 
   const isTemplateOption = templateOption?.formId === _id;
@@ -91,24 +90,14 @@ const FormWrapper = ({
     setModeName(read);
   };
 
-  const startPress = () => {
+  const handleUpdateMode = () => {
     if (editMode) return;
     if (isFold) {
       return setToastText("접기를 풀고 수정해주세요.");
     }
-    setUpdateActive(Date.now());
-  };
-
-  const endPress = () => {
-    if (editMode) return;
-    if (isFold) return;
-
-    const endTime = Date.now();
-    const duration = endTime - updateActive;
-
-    if (editModeName && duration > 500) {
+    if (editModeName) {
       return setToastText("폼을 저장해주세요.");
-    } else if (!editModeName && duration > 500) {
+    } else {
       setMode(update);
       setModeName(update);
     }
@@ -152,13 +141,12 @@ const FormWrapper = ({
         } ${plural ? "border-dotted" : ""} ${
           editMode ? "border-n-light-blue" : "cursor-pointer border-n-dark-gray"
         }`}
-        onMouseDown={startPress}
-        onMouseUp={endPress}
       >
         <FormRequiredCheckBox
           register={register}
           editMode={editMode}
           formId={form._id}
+          onUpdateMode={handleUpdateMode}
         />
         <div className="pb-n-xlg ml-n-sm pt-n-sm">
           <FormTitle
