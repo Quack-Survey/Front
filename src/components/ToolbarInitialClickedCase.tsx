@@ -17,7 +17,7 @@ const ToolbarInitialClickedCase = ({
 
   return (
     <div
-      className={`sticky bottom-[0px] flex h-[49px] w-full min-w-[360px] items-center justify-end gap-n-md bg-n-light-black p-n-md`}
+      className={`fixed bottom-[0px] flex h-[49px] w-full min-w-[360px] items-center justify-end gap-n-md bg-n-light-black p-n-md`}
     >
       <div className="flex items-center justify-end gap-n-md">
         {modeName === read
