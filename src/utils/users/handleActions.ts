@@ -1,4 +1,4 @@
-import { setCookie } from "cookies-next";
+import { setCookie, deleteCookie } from "cookies-next";
 import { patchFetch, postFetch } from "../fetch/core";
 import { FieldValues, UseFormSetError } from "react-hook-form";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
@@ -93,4 +93,13 @@ const handleChange: IHandleChange = async (newPassword, code, router) => {
   }
 };
 
-export { handleSignup, handleLogin, handleChange };
+const handleLogout = (router: AppRouterInstance) => {
+  deleteCookie("email");
+  deleteCookie("username");
+  deleteCookie("refreshToken");
+  deleteCookie("accessToken");
+  alert("로그아웃 되었습니다.");
+  router.replace("/login");
+};
+
+export { handleLogout, handleSignup, handleLogin, handleChange };
