@@ -22,7 +22,7 @@ const ToolbarTypeCase = ({
   return (
     <>
       {modeName === "form" ? (
-        <div className="fixed bottom-[0px] left-0 flex h-[49px] w-full min-w-[360px] justify-between bg-n-light-black px-n-md py-n-sm">
+        <div className="fixed bottom-[0px] left-0 z-10 flex h-[49px] w-full  justify-between bg-n-light-black px-n-md py-n-sm">
           <div className="flex items-center gap-n-sm">
             {toolPartLeft.map((tool, index) => (
               <button
@@ -71,7 +71,7 @@ const ToolbarTypeCase = ({
           </div>
         </div>
       ) : (
-        <div className="fixed bottom-[0px] left-0 flex h-[49px] w-full min-w-[360px] justify-end bg-n-light-black px-n-md py-n-sm">
+        <div className="fixed bottom-[0px] left-0 z-10 flex h-[49px] w-full min-w-[360px] justify-end bg-n-light-black px-n-md py-n-sm">
           <div className="flex items-center gap-n-sm">
             <div className="mr-n-sm h-[30px] w-[1px] bg-n-dark-gray"></div>
             <button
