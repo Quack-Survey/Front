@@ -8,29 +8,38 @@ const getResultCount = (
 
   const currentDate =
     deadLine && new Date(deadLine) < new Date(Date.now())
-      ? new Date(deadLine).toLocaleDateString()
-      : new Date(Date.now()).toLocaleDateString();
+      ? new Date(deadLine).toDateString()
+      : new Date(Date.now()).toDateString();
 
   const resultCount = data?.reduce((acc: { [index: string]: number }, cur) => {
-    const date = new Date(cur.createdAt).toLocaleDateString();
+    const date = new Date(cur.createdAt);
+    const key = `${date.getFullYear()}. ${
+      date.getMonth() + 1
+    }. ${date.getDate()}.`;
 
-    if (acc[date]) acc[date] = ++acc[date];
-    else acc[date] = acc[date] = 1;
+    if (acc[key]) acc[key] = ++acc[key];
+    else acc[key] = acc[key] = 1;
 
     return acc;
   }, {});
 
   const resultCountArray: [string, number][] = [...Array(7)].map((_, index) => {
     const currentMilli = Date.parse(currentDate);
-    const key = new Date(currentMilli - 86400000 * index).toLocaleDateString();
+    const date = new Date(currentMilli - 86400000 * index);
+    const key = `${date.getFullYear()}. ${
+      date.getMonth() + 1
+    }. ${date.getDate()}.`;
 
     if (resultCount) return [key, resultCount[key] ? resultCount[key] : 0];
     else return [key, 0];
   });
 
-  const sortedResultCount = resultCountArray.sort((a, b) => {
-    return Date.parse(a[0]) - Date.parse(b[0]);
-  });
+  // const sortedResultCount = resultCountArray.sort((a, b) => {
+  //   console.log(b[0], a[0]);
+  //   return Date.parse(a[0]) - Date.parse(b[0]);
+  // });
+
+  const sortedResultCount = resultCountArray.reverse();
 
   return sortedResultCount;
 };

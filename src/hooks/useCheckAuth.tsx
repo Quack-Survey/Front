@@ -11,7 +11,10 @@ const useCheckAuth = () => {
       const data = await getFetch("/users");
 
       if (!data.state) {
+        deleteCookie("email");
         deleteCookie("username");
+        deleteCookie("refreshToken");
+        deleteCookie("accessToken");
         router.replace("/login");
       }
     })();
