@@ -130,7 +130,13 @@
 -	객관식/서술형 응답현황 표출
 -	맨위/맨아래로 이동기능
 
+|① 설문별 응답현황 표출|② 설문결과 표출|
+|-|-|
+|![응답현황_resize](https://github.com/Quack-Survey/Front/assets/52587871/7a87c60d-9aab-4221-a8dc-e3e3330d404e)|![설문결과_resize](https://github.com/Quack-Survey/Front/assets/52587871/47a9bf90-73c6-4492-a200-95fc6b3f8af0)|
+
+
 ## 5. 마이페이지
+
 - 로그인된 계정확인
 - 로그아웃
 
