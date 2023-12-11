@@ -20,14 +20,14 @@ const DashboardTargetContainer = ({
         <span>전체 응답 현황</span>
       </div>
       {targetCount ? (
-        <div className="flex px-n-2xl">
-          <div className="basis-[40%]">
+        <div className="flex">
+          <div className="basis-[50%] md:basis-[40%]">
             <DashboardDoughnutChart
               targetRatio={currenrResponseRatio}
               increaseRate={currenrResponseRatio - prevResponseRatio}
             />
           </div>
-          <div className="flex basis-[60%] flex-col justify-center gap-n-md">
+          <div className="flex basis-[50%] flex-col justify-center gap-n-md md:basis-[60%]">
             <div className="flex justify-between">
               <span>목표 응답수</span>
               <span>{targetCount} 명</span>
